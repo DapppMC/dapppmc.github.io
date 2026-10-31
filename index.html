@@ -7,11 +7,11 @@
     <title>Ahmad Dafa Salam | Portfolio</title>
     <meta name="description"
         content="Portfolio of Ahmad Dafa Salam — Fourth-Year Computer Engineering Student at Sepuluh Nopember Institute of Technology (ITS) specializing in Full-Stack Systems, Computer Vision & OCR, and Embedded IoT.">
-    <!-- Google Fonts (Matching Theo's Outfit + Plus Jakarta Sans + Pixelify Sans + JetBrains Mono) -->
+    <!-- Google Fonts: Pixelify Sans + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;800&family=Pixelify+Sans:wght@400..700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Pixelify+Sans:wght@400..700&display=swap"
         rel="stylesheet">
     <!-- Font Awesome & Devicon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,45 +20,85 @@
 </head>
 
 <body>
-    <!-- Monochrome Ambient Background + Subtle 2-Frame Pixel Watermarks -->
+    <!-- 1. Opening Multi-Greeting + Pixel Boot Intro Animation -->
+    <div class="intro-preloader" id="intro-preloader">
+        <div class="intro-pixel-badge">
+            <span class="pixel-art pixel-star" style="margin:0 24px 18px 0;"></span>
+            <span>DAFA.OS v4.0 // ITS COMPUTER ENGINEERING</span>
+        </div>
+        <div class="intro-greeting">
+            <span class="intro-dot">●</span>
+            <span id="intro-greeting-text">HALO</span>
+        </div>
+        <div class="intro-bar-wrap">
+            <div class="intro-bar-fill" id="intro-bar-fill"></div>
+        </div>
+        <div class="intro-sub" id="intro-sub">Loading modules: PLN-OCR · MMPI-2 · HERMES-v2 · SMARTCOOP...</div>
+        <button class="intro-skip" id="intro-skip">Skip Intro [ESC]</button>
+    </div>
+
+    <!-- 2. Interactive Ambient Background + Colorful Floating Pixel Art -->
     <div class="ambient-bg">
+        <canvas id="bg-canvas"></canvas>
+        <div class="cyber-grid-overlay"></div>
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
         <div class="glow-orb orb-3"></div>
-        <div class="noise-overlay"></div>
 
-        <!-- Subtle Pixel Watermark 1: Invader (Top Left) -->
-        <div class="bg-pixel-item" style="top: 12%; left: 5%; width: 220px; height: 220px;">
+        <!-- Colorful Pixel Sprite 1: Cyan Space Invader (Top Left) -->
+        <div class="bg-pixel-item" style="top: 13%; left: 4%; width: 170px; height: 130px;">
             <svg viewBox="0 0 11 8">
-                <g class="frame-1" fill="#ffffff">
+                <g class="frame-1" fill="#38bdf8">
                     <path d="M2,0 h1 v1 h-1 z M8,0 h1 v1 h-1 z M3,1 h1 v1 h-1 z M7,1 h1 v1 h-1 z M2,2 h7 v1 h-7 z M1,3 h2 v1 h-2 z M4,3 h3 v1 h-3 z M8,3 h2 v1 h-2 z M0,4 h11 v1 h-11 z M0,5 h1 v2 h-1 z M2,5 h7 v1 h-7 z M10,5 h1 v2 h-1 z M2,6 h1 v1 h-1 z M8,6 h1 v1 h-1 z M3,7 h2 v1 h-2 z M6,7 h2 v1 h-2 z" />
                 </g>
-                <g class="frame-2" fill="#ffffff">
+                <g class="frame-2" fill="#38bdf8">
                     <path d="M2,0 h1 v1 h-1 z M8,0 h1 v1 h-1 z M0,1 h1 v2 h-1 z M3,1 h1 v1 h-1 z M7,1 h1 v1 h-1 z M10,1 h1 v2 h-1 z M2,2 h7 v1 h-7 z M1,3 h2 v1 h-2 z M4,3 h3 v1 h-3 z M8,3 h2 v1 h-2 z M1,4 h9 v1 h-9 z M2,5 h7 v1 h-7 z M2,6 h1 v1 h-1 z M8,6 h1 v1 h-1 z M1,7 h1 v1 h-1 z M9,7 h1 v1 h-1 z" />
                 </g>
             </svg>
         </div>
 
-        <!-- Subtle Pixel Watermark 2: Ghost (Middle Right) -->
-        <div class="bg-pixel-item" style="top: 48%; right: 5%; width: 260px; height: 260px;">
-            <svg viewBox="0 0 14 14">
-                <g class="frame-1" fill="#ffffff">
-                    <path d="M4,0 h6 v1 h-6 z M2,1 h10 v1 h-10 z M1,2 h12 v2 h-12 z M0,4 h3 v3 h-3 z M5,4 h2 v3 h-2 z M9,4 h1 v3 h-1 z M12,4 h2 v3 h-2 z M0,7 h14 v5 h-14 z M0,12 h2 v2 h-2 z M3,12 h2 v1 h-2 z M6,12 h2 v2 h-2 z M9,12 h2 v1 h-2 z M12,12 h2 v2 h-2 z" />
+        <!-- Colorful Pixel Sprite 2: Golden & Flame Rocket (Top Right) -->
+        <div class="bg-pixel-item" style="top: 22%; right: 5%; width: 150px; height: 180px; animation-delay: -3s;">
+            <svg viewBox="0 0 12 16">
+                <g class="frame-1">
+                    <path fill="#facc15" d="M5,0 h2 v2 h-2 z M4,2 h4 v3 h-4 z M3,5 h6 v5 h-6 z M1,8 h2 v3 h-2 z M9,8 h2 v3 h-2 z" />
+                    <path fill="#38bdf8" d="M5,4 h2 v2 h-2 z" />
+                    <path fill="#f43f5e" d="M4,10 h4 v2 h-4 z M5,12 h2 v3 h-2 z" />
                 </g>
-                <g class="frame-2" fill="#ffffff">
-                    <path d="M4,0 h6 v1 h-6 z M2,1 h10 v1 h-10 z M1,2 h12 v2 h-12 z M0,4 h2 v3 h-2 z M4,4 h2 v3 h-2 z M8,4 h1 v3 h-1 z M11,4 h3 v3 h-3 z M0,7 h14 v5 h-14 z M1,12 h2 v2 h-2 z M4,12 h2 v1 h-2 z M7,12 h2 v2 h-2 z M10,12 h3 v2 h-3 z" />
+                <g class="frame-2">
+                    <path fill="#facc15" d="M5,0 h2 v2 h-2 z M4,2 h4 v3 h-4 z M3,5 h6 v5 h-6 z M1,8 h2 v3 h-2 z M9,8 h2 v3 h-2 z" />
+                    <path fill="#38bdf8" d="M5,4 h2 v2 h-2 z" />
+                    <path fill="#fb923c" d="M4,10 h4 v3 h-4 z M5,13 h2 v3 h-2 z" />
                 </g>
             </svg>
         </div>
 
-        <!-- Subtle Pixel Watermark 3: Gamepad (Bottom Left) -->
-        <div class="bg-pixel-item" style="bottom: 8%; left: 7%; width: 280px; height: 180px;">
-            <svg viewBox="0 0 16 10">
-                <g class="frame-1" fill="#ffffff">
-                    <path d="M2,1 h12 v1 h-12 z M1,2 h14 v6 h-14 z M2,8 h12 v1 h-12 z M3,3 h1 v3 h-1 z M2,4 h3 v1 h-3 z M11,5 h2 v2 h-2 z M13,4 h2 v2 h-2 z" />
+        <!-- Colorful Pixel Sprite 3: Rose-Pink Pixel Heart (Middle Left) -->
+        <div class="bg-pixel-item" style="top: 56%; left: 6%; width: 130px; height: 120px; animation-delay: -6s;">
+            <svg viewBox="0 0 11 10">
+                <g class="frame-1" fill="#f43f5e">
+                    <path d="M2,1 h2 v1 h-2 z M7,1 h2 v1 h-2 z M1,2 h4 v1 h-4 z M6,2 h4 v1 h-4 z M1,3 h9 v3 h-9 z M2,6 h7 v1 h-7 z M3,7 h5 v1 h-5 z M4,8 h3 v1 h-3 z M5,9 h1 v1 h-1 z" />
                 </g>
-                <g class="frame-2" fill="#ffffff">
-                    <path d="M2,2 h12 v1 h-12 z M1,3 h14 v6 h-14 z M2,9 h12 v1 h-12 z M3,4 h1 v3 h-1 z M2,5 h3 v1 h-3 z M11,6 h2 v2 h-2 z M13,5 h2 v2 h-2 z" />
+                <g class="frame-2" fill="#fb7185">
+                    <path d="M2,0 h2 v1 h-2 z M7,0 h2 v1 h-2 z M1,1 h4 v1 h-4 z M6,1 h4 v1 h-4 z M1,2 h9 v3 h-9 z M2,5 h7 v1 h-7 z M3,6 h5 v1 h-5 z M4,7 h3 v1 h-3 z M5,8 h1 v1 h-1 z" />
+                </g>
+            </svg>
+        </div>
+
+        <!-- Colorful Pixel Sprite 4: Purple & Emerald Gamepad (Bottom Right) -->
+        <div class="bg-pixel-item" style="bottom: 10%; right: 6%; width: 210px; height: 140px; animation-delay: -9s;">
+            <svg viewBox="0 0 16 10">
+                <g class="frame-1">
+                    <path fill="#c084fc" d="M2,1 h12 v1 h-12 z M1,2 h14 v6 h-14 z M2,8 h12 v1 h-12 z" />
+                    <path fill="#ffffff" d="M3,3 h1 v3 h-1 z M2,4 h3 v1 h-3 z" />
+                    <path fill="#10b981" d="M11,5 h2 v2 h-2 z" />
+                    <path fill="#f43f5e" d="M13,3 h2 v2 h-2 z" />
+                </g>
+                <g class="frame-2">
+                    <path fill="#a855f7" d="M2,2 h12 v1 h-12 z M1,3 h14 v6 h-14 z M2,9 h12 v1 h-12 z" />
+                    <path fill="#ffffff" d="M3,4 h1 v3 h-1 z M2,5 h3 v1 h-3 z" />
+                    <path fill="#10b981" d="M11,6 h2 v2 h-2 z" />
+                    <path fill="#f43f5e" d="M13,4 h2 v2 h-2 z" />
                 </g>
             </svg>
         </div>
@@ -67,7 +107,7 @@
     <!-- Floating Pixel-Brutalist Navbar -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#hero" class="logo">Dafa<span>.</span></a>
+            <a href="#hero" class="logo">Dafa<span>.OS</span></a>
             <ul class="nav-links">
                 <li><a href="#hero" class="nav-link active" data-section="hero">Profile</a></li>
                 <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
@@ -84,30 +124,43 @@
         </div>
     </nav>
 
-    <!-- Centered Hero Section -->
+    <!-- 3. Balanced Hybrid Hero Section (Left: Typography & Telemetry | Right: Proportional Pixel Character ID Card) -->
     <section id="hero" class="hero">
-        <div class="hero-centered-container">
-            <!-- Transparent Cutout Portrait with Bottom Fade Mask -->
-            <div class="hero-center-img-wrapper">
-                <div class="hero-pixel-badge badge-left">
-                    <span class="pixel-art pixel-sword" style="margin:0 24px 18px 0;"></span>
-                    <span>ITS Computer Eng. '23 (4th Yr)</span>
+        <div class="hero-hybrid-grid">
+            <!-- Left Column -->
+            <div class="hero-left-col">
+                <div class="hero-status-pill">
+                    <span class="status-dot"></span>
+                    <span>AVAILABLE FOR INTERNSHIP &amp; PROJECTS · SURABAYA / HYBRID</span>
                 </div>
-                <div class="hero-pixel-badge badge-right">
-                    <span class="pixel-art pixel-coin" style="margin:0 24px 18px 0;"></span>
-                    <span>GPA 3.50 · Sem 6: 3.93</span>
-                </div>
-                <img src="assets/hero/dafa-clean.png" alt="Ahmad Dafa Salam" class="hero-center-img" />
-            </div>
 
-            <!-- Overlapping Centered Hero Content -->
-            <div class="hero-center-content">
                 <h1 class="hero-title pixel-title">
                     AHMAD DAFA <span class="gradient-text">SALAM</span>
                 </h1>
+
                 <p class="hero-subtitle">
-                    <span id="typewriter-text">Fourth-year Computer Engineering student experienced in Full-Stack Systems, Computer Vision &amp; OCR, and Embedded IoT.</span><span class="cursor-blink">|</span>
+                    <span id="typewriter-text">Fourth-year Computer Engineering student at ITS Surabaya experienced in Full-Stack Systems, Computer Vision &amp; OCR, and Embedded IoT.</span><span class="cursor-blink">_</span>
                 </p>
+
+                <!-- Clean Interactive Telemetry Counters (From V1, Balanced for V3) -->
+                <div class="hero-stats-row">
+                    <div class="hero-stat-box">
+                        <span class="stat-num">82,989<span>+</span></span>
+                        <span class="stat-label">PLN Files Indexed</span>
+                    </div>
+                    <div class="hero-stat-box">
+                        <span class="stat-num">100<span>%</span></span>
+                        <span class="stat-label">MMPI-2 Score Match</span>
+                    </div>
+                    <div class="hero-stat-box">
+                        <span class="stat-num">3.93<span>/4.0</span></span>
+                        <span class="stat-label">Latest Sem GPA</span>
+                    </div>
+                    <div class="hero-stat-box">
+                        <span class="stat-num">12<span>+</span></span>
+                        <span class="stat-label">Systems Deployed</span>
+                    </div>
+                </div>
 
                 <div class="hero-cta">
                     <a href="#projects" class="btn primary">Explore Projects <i class="fas fa-arrow-right"></i></a>
@@ -119,96 +172,140 @@
                     <a href="https://github.com/DapppMC" target="_blank" class="social-icon" title="GitHub (@DapppMC)">
                         <i class="fab fa-github"></i>
                     </a>
+                    <a href="https://www.linkedin.com/in/ahmad-dafa-salam-858b82287/" target="_blank" class="social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
                     <a href="https://www.instagram.com/dafa_1013/" target="_blank" class="social-icon" title="Instagram (@dafa_1013)">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="mailto:Ahmaddafa1017@gmail.com" class="social-icon" title="Email (Ahmaddafa1017@gmail.com)">
+                    <a href="mailto:Ahmaddafa1017@gmail.com" class="social-icon" title="Email">
                         <i class="fas fa-envelope"></i>
                     </a>
-                    <a href="https://wa.me/6282214009950" target="_blank" class="social-icon" title="WhatsApp (+62 822-1400-9950)">
+                    <a href="https://wa.me/6282214009950" target="_blank" class="social-icon" title="WhatsApp">
                         <i class="fab fa-whatsapp"></i>
                     </a>
+                </div>
+            </div>
+
+            <!-- Right Column: Proportional Interactive Pixel Character / Engineer ID Card -->
+            <div class="hero-right-col">
+                <div class="character-id-card" id="character-card">
+                    <div class="id-card-topbar">
+                        <span>★ PLAYER 01 // ENGINEER ID</span>
+                        <span>NRP 5024231024</span>
+                    </div>
+
+                    <div class="id-portrait-stage">
+                        <div class="stage-floating-sprite" style="top:14px;left:14px;">
+                            <span class="pixel-art pixel-heart"></span>
+                        </div>
+                        <div class="stage-floating-sprite" style="top:14px;right:18px;">
+                            <span class="pixel-art pixel-star"></span>
+                        </div>
+                        <div class="stage-floating-sprite" style="bottom:18px;left:16px;">
+                            <span class="pixel-art pixel-sword"></span>
+                        </div>
+                        <img src="assets/hero/dafa-clean.png" alt="Ahmad Dafa Salam" class="id-portrait-img" />
+                    </div>
+
+                    <div class="id-card-meta">
+                        <div class="id-name-row">
+                            <h3>AHMAD DAFA SALAM</h3>
+                            <span class="id-lvl-badge">4TH YEAR · SEM 7</span>
+                        </div>
+                        <div class="id-stat-bars">
+                            <div class="id-stat-line">
+                                <span>GUILD / CAMPUS</span>
+                                <span>ITS SURABAYA (TEKKOM)</span>
+                            </div>
+                            <div class="id-stat-line">
+                                <span>CUMULATIVE GPA</span>
+                                <span>3.50 / 4.00 (144 SKS)</span>
+                            </div>
+                            <div class="id-stat-line">
+                                <span>SPECIALTY</span>
+                                <span>FULL-STACK · CV/OCR · IOT</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Skills & Certifications Section -->
+    <!-- 4. Skills & Certifications Section -->
     <section id="skills" class="skills section-container">
         <div class="section-header">
             <h2 class="section-title pixel-title">
                 <span class="pixel-art pixel-floppy"></span>
-                Skills &amp; <span class="gradient-text">Certifications</span>
+                Skills &amp; <span class="gradient-text">Milestones</span>
             </h2>
             <p class="section-subtitle">Production tools, technical architecture, and verified engineering milestones</p>
 
             <div class="skills-toggle-container">
                 <button class="skills-tab-btn active" data-target="tech-arsenal">
-                    <i class="fas fa-code"></i> Technical Skills
+                    <i class="fas fa-code"></i> Technical Arsenal
                 </button>
                 <button class="skills-tab-btn" data-target="certifications">
-                    <i class="fas fa-certificate"></i> Certifications &amp; Milestones
+                    <i class="fas fa-award"></i> Key Engineering Milestones
                 </button>
             </div>
         </div>
 
-        <!-- Tab 1: Technical Skills (3 Glass Columns + Infinite Ticker) -->
+        <!-- Tab 1: Technical Skills -->
         <div class="skills-tab-content active" id="tech-arsenal">
             <div class="skills-showcase">
-                <!-- Category 1 -->
                 <div class="skill-category glass-card">
                     <div class="skill-category-header">
-                        <i class="fas fa-brain skill-icon"></i>
+                        <i class="fas fa-eye skill-icon"></i>
                         <h3>AI, Vision &amp; OCR Pipelines</h3>
                     </div>
                     <p class="skill-category-desc">
-                        Architecting high-throughput document OCR pipelines, OpenCV perspective/bubble-sheet scanning, and deterministic clinical/LLM scoring engines.
+                        Architecting high-throughput document OCR pipelines, deterministic 80x25 DOS character-grid matching, and multi-model ONNX inference.
                     </p>
                     <div class="skill-tags-group">
                         <span class="skill-pill-sm"><i class="devicon-python-plain"></i> Python 3</span>
                         <span class="skill-pill-sm"><i class="devicon-opencv-plain"></i> OpenCV</span>
-                        <span class="skill-pill-sm"><i class="fas fa-file-pdf"></i> Tesseract &amp; RapidOCR</span>
-                        <span class="skill-pill-sm"><i class="devicon-pytorch-original"></i> PyTorch</span>
-                        <span class="skill-pill-sm"><i class="fas fa-eye"></i> YOLOv8</span>
-                        <span class="skill-pill-sm"><i class="fas fa-robot"></i> Gemini / Claude SDK</span>
+                        <span class="skill-pill-sm"><i class="fas fa-file-pdf"></i> RapidOCR &amp; PyMuPDF</span>
+                        <span class="skill-pill-sm"><i class="fas fa-microchip"></i> ONNX Runtime</span>
+                        <span class="skill-pill-sm"><i class="fas fa-robot"></i> Gemini 2.5 / Llama 3.3</span>
+                        <span class="skill-pill-sm"><i class="fas fa-project-diagram"></i> n8n &amp; Playwright</span>
                     </div>
                 </div>
 
-                <!-- Category 2 -->
                 <div class="skill-category glass-card">
                     <div class="skill-category-header">
                         <i class="fas fa-layer-group skill-icon"></i>
-                        <h3>Full-Stack &amp; Enterprise Web</h3>
+                        <h3>Full-Stack &amp; Mobile Apps</h3>
                     </div>
                     <p class="skill-category-desc">
-                        Building responsive enterprise dashboards, RESTful microservices, and automated bidirectional NAS/FTP &amp; HR data synchronization pipelines.
+                        Building enterprise dashboards, cross-platform Flutter apps, RESTful microservices, and automated NAS/FTP &amp; HR synchronization pipelines.
                     </p>
                     <div class="skill-tags-group">
-                        <span class="skill-pill-sm"><i class="devicon-nextjs-original"></i> Next.js 16</span>
-                        <span class="skill-pill-sm"><i class="devicon-react-original"></i> React 19</span>
-                        <span class="skill-pill-sm"><i class="devicon-typescript-plain"></i> TypeScript</span>
                         <span class="skill-pill-sm"><i class="devicon-fastapi-plain"></i> FastAPI &amp; Flask</span>
-                        <span class="skill-pill-sm"><i class="devicon-postgresql-plain"></i> PostgreSQL &amp; Prisma</span>
-                        <span class="skill-pill-sm"><i class="devicon-docker-plain"></i> Docker</span>
+                        <span class="skill-pill-sm"><i class="devicon-react-original"></i> React &amp; Next.js</span>
+                        <span class="skill-pill-sm"><i class="devicon-typescript-plain"></i> TypeScript &amp; Node.js</span>
+                        <span class="skill-pill-sm"><i class="devicon-flutter-plain"></i> Flutter (Dart)</span>
+                        <span class="skill-pill-sm"><i class="devicon-postgresql-plain"></i> PostgreSQL &amp; Supabase</span>
+                        <span class="skill-pill-sm"><i class="devicon-sqlite-plain"></i> SQLite3 WAL</span>
                     </div>
                 </div>
 
-                <!-- Category 3 -->
                 <div class="skill-category glass-card">
                     <div class="skill-category-header">
                         <i class="fas fa-microchip skill-icon"></i>
                         <h3>Embedded IoT &amp; Systems</h3>
                     </div>
                     <p class="skill-category-desc">
-                        Developing edge telemetry firmware, headless DOSBox process orchestration, and low-latency Windows network/DPI optimization tooling.
+                        Developing ESP32 sensor fusion firmware, NFC biosecurity tracking, Win32 process locking, and hardware-bound encrypted network daemons.
                     </p>
                     <div class="skill-tags-group">
                         <span class="skill-pill-sm"><i class="devicon-cplusplus-plain"></i> C / C++ (ESP32)</span>
-                        <span class="skill-pill-sm"><i class="fas fa-satellite-dish"></i> MQTT &amp; Edge IoT</span>
-                        <span class="skill-pill-sm"><i class="devicon-linux-plain"></i> Linux &amp; Bash</span>
-                        <span class="skill-pill-sm"><i class="fas fa-terminal"></i> PowerShell &amp; Win32</span>
-                        <span class="skill-pill-sm"><i class="fas fa-network-wired"></i> Synology NAS / FTP</span>
-                        <span class="skill-pill-sm"><i class="devicon-git-plain"></i> Git &amp; CI/CD</span>
+                        <span class="skill-pill-sm"><i class="fas fa-wifi"></i> Sensor Fusion &amp; NFC</span>
+                        <span class="skill-pill-sm"><i class="devicon-docker-plain"></i> Docker &amp; Linux</span>
+                        <span class="skill-pill-sm"><i class="fas fa-terminal"></i> PowerShell &amp; Win32 API</span>
+                        <span class="skill-pill-sm"><i class="fas fa-server"></i> Synology NAS / FTP</span>
+                        <span class="skill-pill-sm"><i class="devicon-git-plain"></i> Git &amp; Pytest</span>
                     </div>
                 </div>
             </div>
@@ -218,9 +315,9 @@
                 <div class="ticker-track">
                     <div class="ticker-item"><i class="devicon-python-plain"></i> Python</div>
                     <div class="ticker-item"><i class="devicon-typescript-plain"></i> TypeScript</div>
-                    <div class="ticker-item"><i class="devicon-nextjs-original"></i> Next.js 16</div>
-                    <div class="ticker-item"><i class="devicon-react-original"></i> React 19</div>
                     <div class="ticker-item"><i class="devicon-fastapi-plain"></i> FastAPI</div>
+                    <div class="ticker-item"><i class="devicon-react-original"></i> React 18</div>
+                    <div class="ticker-item"><i class="devicon-flutter-plain"></i> Flutter</div>
                     <div class="ticker-item"><i class="devicon-opencv-plain"></i> OpenCV</div>
                     <div class="ticker-item"><i class="devicon-postgresql-plain"></i> PostgreSQL</div>
                     <div class="ticker-item"><i class="devicon-sqlite-plain"></i> SQLite WAL</div>
@@ -231,9 +328,9 @@
                     <!-- Duplicate for seamless loop -->
                     <div class="ticker-item"><i class="devicon-python-plain"></i> Python</div>
                     <div class="ticker-item"><i class="devicon-typescript-plain"></i> TypeScript</div>
-                    <div class="ticker-item"><i class="devicon-nextjs-original"></i> Next.js 16</div>
-                    <div class="ticker-item"><i class="ticker-item-icon devicon-react-original"></i> React 19</div>
                     <div class="ticker-item"><i class="devicon-fastapi-plain"></i> FastAPI</div>
+                    <div class="ticker-item"><i class="devicon-react-original"></i> React 18</div>
+                    <div class="ticker-item"><i class="devicon-flutter-plain"></i> Flutter</div>
                     <div class="ticker-item"><i class="devicon-opencv-plain"></i> OpenCV</div>
                     <div class="ticker-item"><i class="devicon-postgresql-plain"></i> PostgreSQL</div>
                     <div class="ticker-item"><i class="devicon-sqlite-plain"></i> SQLite WAL</div>
@@ -245,7 +342,7 @@
             </div>
         </div>
 
-        <!-- Tab 2: Certifications & Verified Milestones -->
+        <!-- Tab 2: Verified Milestones -->
         <div class="skills-tab-content" id="certifications">
             <div class="cert-grid-new">
                 <div class="cert-card-new glass-card" data-project="pln">
@@ -253,60 +350,60 @@
                         <img src="assets/screenshots/pln_dashboard.png" alt="PT PLN Nusantara Power Services" />
                     </div>
                     <div class="cert-info-new">
-                        <h4>Enterprise Digitization — 82,989 Files Indexed</h4>
+                        <h4>82,989 Certificates &amp; 1,137 Resource Codes Indexed</h4>
                         <p>PT PLN Nusantara Power Services (Divisi TDC) · Automated OCR &amp; Synology NAS Sync</p>
-                        <span class="cert-date-new">Verified Production Deployment · 2025–2026</span>
+                        <span class="cert-date-new">Enterprise Production · 2026</span>
                     </div>
                 </div>
 
                 <div class="cert-card-new glass-card" data-project="mmpi">
                     <div class="cert-card-img-wrap">
-                        <img src="assets/screenshots/mmpi_dos_grid.png" alt="RSJ Menur MMPI-2 Clinical Verification" />
+                        <img src="assets/screenshots/mmpi_dos_grid.png" alt="LAB M-IOT MMPI-2 Psychological Assessment" />
                     </div>
                     <div class="cert-info-new">
-                        <h4>100% Clinical Psychogram Accuracy (RSJ Menur)</h4>
-                        <p>Zero T-score deviation across all 26 MMPI-2 clinical, validity &amp; research scales vs legacy DOSBox</p>
-                        <span class="cert-date-new">Hospital Clinical Validation · 2025–2026</span>
+                        <h4>100.0% MMPI-2 Psychological Scoring Accuracy (250/250 Scales)</h4>
+                        <p>LAB M-IOT · Deterministic 80x25 DOS Character-Cell Vision &amp; Web Assessment Portal</p>
+                        <span class="cert-date-new">Psychological Assessment · 2026</span>
                     </div>
                 </div>
 
-                <div class="cert-card-new glass-card" data-project="cert">
+                <div class="cert-card-new glass-card" data-project="hermes">
                     <div class="cert-card-img-wrap">
-                        <img src="assets/screenshots/cert_manager_studio.png" alt="Certificate Manager v3.0" />
+                        <img src="assets/screenshots/hermes_telegram_ui.png" alt="Hermes JobSeeker Bot v2.0" />
                     </div>
                     <div class="cert-info-new">
-                        <h4>Certificate Manager v3.0 (cert-slicer)</h4>
-                        <p>Multi-Database PDF OCR Slicer, Interactive Canvas Editor &amp; 4-Format Excel Generator</p>
-                        <span class="cert-date-new">Enterprise Tooling · 2025–2026</span>
+                        <h4>Hermes JobSeeker v2.0 — 85/85 Pytest PASS &amp; ITS Career Scraper</h4>
+                        <p>Dedicated careers.its.ac.id + @itscareercenter IG Flyer OCR, Entra ID 2FA Bridge &amp; Inbox Tracker</p>
+                        <span class="cert-date-new">Autonomous AI Daemon · 2026</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Education Journey Section -->
+    <!-- 5. Education Journey Section -->
     <section id="education" class="education section-container">
         <div class="section-header">
             <h2 class="section-title pixel-title">
                 <span class="pixel-art pixel-book"></span>
                 Education <span class="gradient-text">Journey</span>
             </h2>
-            <p class="section-subtitle">Academic foundation and core engineering specialization</p>
+            <p class="section-subtitle">Academic foundation and core engineering specialization at ITS Surabaya</p>
         </div>
 
         <div class="horizontal-timeline">
             <div class="h-timeline-item">
                 <div class="timeline-dot"></div>
-                <span class="timeline-date">Aug 2023 – Aug 2027 (Expected)</span>
+                <span class="timeline-date">Aug 2023 – Present (Fourth-Year · Semester 7)</span>
                 <div class="timeline-card glass-card">
-                    <h3>Sepuluh Nopember Institute of Technology (ITS)</h3>
-                    <h4>Bachelor of Engineering in Computer Engineering — Fourth-Year Student (Semester 7)</h4>
+                    <h3>Institut Teknologi Sepuluh Nopember (ITS)</h3>
+                    <h4>Bachelor of Engineering in Computer Engineering (FT-EIC)</h4>
                     <p>
-                        Completed <strong>144 credits (SKS)</strong> across 6 semesters with a <strong>Cumulative GPA of 3.50 / 4.00</strong> and a <strong>Latest Semester GPA of 3.93 / 4.00</strong> (6 Grade-A courses including Deep Learning, Computer Vision, Cloud Computing, and Embedded Systems).
+                        Fourth-year undergraduate student with <strong>144 credits (SKS)</strong> completed, maintaining a <strong>Cumulative GPA of 3.50 / 4.00</strong> and a <strong>Latest Semester GPA of 3.93 / 4.00</strong> (6 Grade-A courses including Deep Learning, Computer Vision, Cloud Computing, and Embedded Systems).
                     </p>
                     <div class="edu-highlights">
                         <span class="edu-pill"><i class="fas fa-graduation-cap"></i> GPA: 3.50 / 4.00</span>
-                        <span class="edu-pill"><i class="fas fa-chart-line"></i> Sem 6 GPA: 3.93 / 4.00</span>
+                        <span class="edu-pill"><i class="fas fa-chart-line"></i> Latest Sem GPA: 3.93 / 4.00</span>
                         <span class="edu-pill"><i class="fas fa-check-circle"></i> 144 SKS Completed</span>
                     </div>
                 </div>
@@ -314,12 +411,12 @@
 
             <div class="h-timeline-item">
                 <div class="timeline-dot"></div>
-                <span class="timeline-date">Core Specialization &amp; Research</span>
+                <span class="timeline-date">Core Engineering Specialization</span>
                 <div class="timeline-card glass-card">
-                    <h3>Applied AI, Computer Vision &amp; Enterprise Systems</h3>
-                    <h4>Department of Computer Engineering (Teknik Komputer — FTEIC ITS)</h4>
+                    <h3>Full-Stack Systems, Computer Vision &amp; Embedded IoT</h3>
+                    <h4>Department of Computer Engineering (Teknik Komputer — FT-EIC ITS)</h4>
                     <p>
-                        Focused on bridging legacy industrial/medical workflows with modern full-stack web architectures, automated OCR document intelligence, and edge microcontroller telemetry.
+                        Specializing in production web &amp; mobile platforms, deterministic OCR &amp; computer vision automation, and microcontroller sensor fusion—bridging legacy industrial/assessment systems with modern cloud architectures.
                     </p>
                     <div class="edu-highlights">
                         <span class="edu-pill"><i class="fas fa-eye"></i> Computer Vision (A)</span>
@@ -332,134 +429,162 @@
         </div>
     </section>
 
-    <!-- Experiences Section (Theo Split Interactive Selector + Embedded Visual Previews) -->
+    <!-- 6. Experiences Section (Dafa's 4 Core Experiences: PLN, LAB M-IOT MMPI-2, HIMATEKKOM, MAGE XI + Independent Systems) -->
     <section id="experience" class="experience section-container">
         <div class="section-header">
             <h2 class="section-title pixel-title">
                 <span class="pixel-art pixel-sword"></span>
-                Featured <span class="gradient-text">Experiences</span>
+                Professional &amp; Org <span class="gradient-text">Experience</span>
             </h2>
-            <p class="section-subtitle">Real-world engineering deployments — click any role to inspect its live system view</p>
+            <p class="section-subtitle">Internships at PT PLN Nusantara Power Services &amp; LAB M-IOT, plus leadership at HIMATEKKOM &amp; MAGE XI ITS</p>
         </div>
 
         <div class="interactive-selector">
             <!-- Left Vertical Selector Tabs -->
             <div class="selector-tabs">
-                <button class="selector-tab active" data-tab="exp-1">
+                <div class="selector-group-label">Professional Internships</div>
+                <button class="selector-tab active" data-tab="exp-pln">
                     <span class="tab-title">PT PLN Nusantara Power Services</span>
-                    <span class="tab-subtitle">Full-Stack &amp; AI Automation Engineer</span>
+                    <span class="tab-subtitle">Software Engineering &amp; IT Intern (Divisi TDC)</span>
                 </button>
-                <button class="selector-tab" data-tab="exp-2">
-                    <span class="tab-title">RSJ Menur &amp; ITS Medical AI</span>
-                    <span class="tab-subtitle">Lead Developer — MMPI-2 Diagnostic System</span>
+                <button class="selector-tab" data-tab="exp-miot">
+                    <span class="tab-title">LAB M-IOT (MMPI-2 Assessment)</span>
+                    <span class="tab-subtitle">Software Engineering Intern — Psychological Test</span>
                 </button>
-                <button class="selector-tab" data-tab="exp-3">
-                    <span class="tab-title">Enterprise Document Studio</span>
-                    <span class="tab-subtitle">Creator — Certificate Manager v3.0</span>
+
+                <div class="selector-group-label" style="margin-top:8px;">Organizational &amp; Committee</div>
+                <button class="selector-tab" data-tab="exp-hima">
+                    <span class="tab-title">HIMATEKKOM ITS</span>
+                    <span class="tab-subtitle">Staff of Student Welfare Division (KESMA)</span>
                 </button>
-                <button class="selector-tab" data-tab="exp-4">
-                    <span class="tab-title">Autonomous AI &amp; Network Tooling</span>
-                    <span class="tab-subtitle">Hermes JobSeeker Bot &amp; Freedom v2.0</span>
+                <button class="selector-tab" data-tab="exp-mage">
+                    <span class="tab-title">MAGE XI — Computer Engineering ITS</span>
+                    <span class="tab-subtitle">Expert Staff (Staf Ahli), Event Division</span>
+                </button>
+
+                <div class="selector-group-label" style="margin-top:8px;">Independent Engineering</div>
+                <button class="selector-tab" data-tab="exp-indie">
+                    <span class="tab-title">Autonomous AI &amp; Systems Developer</span>
+                    <span class="tab-subtitle">Hermes JobSeeker v2.0 · SmartCoop · Freedom v2.0</span>
                 </button>
             </div>
 
-            <!-- Right Content Area with Large Embedded Screenshot ("Show, Don't Tell") -->
+            <!-- Right Content Area -->
             <div class="selector-content-area glass-card">
-                <!-- Panel 1: PLN -->
-                <div class="selector-panel active" id="exp-1">
+                <!-- 1. PT PLN Nusantara Power Services -->
+                <div class="selector-panel active" id="exp-pln">
                     <div class="panel-header">
                         <div>
-                            <h3>Full-Stack &amp; AI Automation Engineer</h3>
-                            <h4>PT PLN Nusantara Power Services (Divisi Training &amp; Development Center)</h4>
+                            <h3>Software Engineering &amp; IT Intern — Divisi TDC</h3>
+                            <h4>PT PLN Nusantara Power Services (Sidoarjo / Surabaya)</h4>
                         </div>
-                        <span class="panel-date">2025 – 2026</span>
+                        <span class="panel-date">Oct 2026 – Present</span>
                     </div>
                     <ul class="panel-bullets">
-                        <li>Architected <strong>PLN Cert-Mon</strong> (Next.js 16, React 19, Prisma, PostgreSQL) to index and monitor <strong>82,989 training &amp; competency certificates</strong> across <strong>2,761 active personnel</strong> and 62 service units.</li>
-                        <li>Built a bidirectional <strong>Synology NAS / FTP synchronization engine</strong> and hybrid Tesseract + RapidOCR scanner that classifies PDFs into <code>Sertifikat</code> vs <code>Pendukung</code> folders and reconciles monthly Ellipse HR mutations.</li>
+                        <li>Architected and deployed an enterprise <strong>Certification &amp; Training Monitoring Platform</strong> tracking <strong>1,137 standardized competency codes</strong> (<code>Resource Code</code> &amp; <code>Level 1–9 SKP</code>), separating 3/5-year expiring technical certifications from non-expiring training records.</li>
+                        <li>Engineered an idempotent two-stage expiration notification service (<code>H-30</code> and <code>H-20</code> automated email alerts), a 4-format corporate Excel importer, and monthly Ellipse HR mutation synchronization.</li>
+                        <li>Built <strong>Certificate Manager v3.0 (<code>cert-slicer</code>)</strong>, an offline-first PDF certificate slicer and 3-database employee matcher indexed across an <strong>82,989-file Synology NAS/FTP archive</strong>.</li>
                     </ul>
                     <div class="timeline-img-wrapper" data-project="pln">
-                        <img src="assets/screenshots/pln_dashboard.png" alt="PLN Cert-Mon Dashboard" class="timeline-img" />
-                        <span class="timeline-img-caption"><i class="fas fa-expand"></i> Click to inspect PLN Cert-Mon Case Study</span>
+                        <img src="assets/screenshots/pln_dashboard.png" alt="PT PLN Nusantara Power Services Dashboard" class="timeline-img" />
+                        <span class="timeline-img-caption"><i class="fas fa-expand"></i> Click to view all 3 PLN Screenshots</span>
                     </div>
                 </div>
 
-                <!-- Panel 2: MMPI-2 -->
-                <div class="selector-panel" id="exp-2">
+                <!-- 2. LAB M-IOT (MMPI-2 Automated Psychological Assessment Platform) -->
+                <div class="selector-panel" id="exp-miot">
                     <div class="panel-header">
                         <div>
-                            <h3>Lead Developer — MMPI-2 Clinical Diagnostic Engine</h3>
-                            <h4>RSJ Menur Mental Hospital Surabaya × ITS Computer Engineering</h4>
+                            <h3>Software Engineering Intern — MMPI-2 Psychological Assessment</h3>
+                            <h4>LAB M-IOT · Surabaya, Indonesia</h4>
                         </div>
-                        <span class="panel-date">2025 – 2026</span>
+                        <span class="panel-date">Sep 2026 – Present</span>
                     </div>
                     <ul class="panel-bullets">
-                        <li>Engineered a four-stage clinical pipeline combining <strong>OpenCV 566-item LJK bubble-sheet OMR scanning</strong> with a modern web interface and headless <strong>DOSBox 0.74-3 <code>MMPI.EXE</code></strong> automation.</li>
-                        <li>Achieved <strong>100% clinical psychogram accuracy</strong> (zero T-score deviation across all 3 validity scales, 10 clinical scales, and 13 research scales) while cutting processing time per patient from 25 minutes to under 15 seconds.</li>
+                        <li>Diagnosed and resolved a critical <strong>74.0% (185/250 scales)</strong> scoring accuracy bottleneck in the 566-item <strong>MMPI-2 psychological assessment platform</strong> caused by legacy Tesseract OCR glyph confusion (<code>8</code> vs <code>0</code>, <code>6</code> vs <code>5</code>) and narrow column slicing.</li>
+                        <li>Engineered a deterministic <strong>80×25 DOS character-cell bitmap matcher (<code>baca_layar.py</code>)</strong> with <code>SetProcessDPIAware()</code> calibration, achieving <strong>100.0% psychological scoring accuracy (250/250 clinical &amp; research scales)</strong> with zero external OCR dependency.</li>
+                        <li>Implemented pre-scoring 566-item <code>+/-</code> screen buffer verification prior to <code>Esc</code> commit and PID-bound Win32 window focus locking.</li>
                     </ul>
                     <div class="timeline-img-wrapper" data-project="mmpi">
-                        <img src="assets/screenshots/mmpi_dos_grid.png" alt="MMPI-2 Web & DOSBox Pipeline" class="timeline-img" />
-                        <span class="timeline-img-caption"><i class="fas fa-expand"></i> Click to inspect MMPI-2 Web + DOSBox Case Study</span>
+                        <img src="assets/screenshots/mmpi_dos_grid.png" alt="MMPI-2 Psychological Assessment Web & DOSBox" class="timeline-img" />
+                        <span class="timeline-img-caption"><i class="fas fa-expand"></i> Click to inspect MMPI-2 Psychological Assessment</span>
                     </div>
                 </div>
 
-                <!-- Panel 3: Certificate Manager v3.0 -->
-                <div class="selector-panel" id="exp-3">
+                <!-- 3. HIMATEKKOM ITS -->
+                <div class="selector-panel" id="exp-hima">
                     <div class="panel-header">
                         <div>
-                            <h3>Creator — Certificate Manager v3.0 (cert-slicer)</h3>
-                            <h4>Multi-Database PDF OCR Slicer &amp; 4-Format Excel Automation</h4>
+                            <h3>Staff of Student Welfare Division (Kesejahteraan Mahasiswa / KESMA)</h3>
+                            <h4>HIMATEKKOM ITS (Himpunan Mahasiswa Teknik Komputer)</h4>
                         </div>
-                        <span class="panel-date">2025 – 2026</span>
+                        <span class="panel-date">2025</span>
                     </div>
                     <ul class="panel-bullets">
-                        <li>Developed an interactive web studio (<code>Flask + PDF.js + OpenCV + RapidOCR</code>) to slice multi-page scan batches, rotate/crop certificates on canvas, and extract participant metadata automatically.</li>
-                        <li>Implemented 3 isolated SQLite databases (<code>sertifikat</code>, <code>pegawai</code>, <code>diklat</code>) and 1-click export to 4 official corporate Excel templates (<code>Monitoring</code>, <code>Per-Folder</code>, <code>Master Simpel</code>, <code>Master Lengkap</code>).</li>
+                        <li>Served as the student welfare liaison between Computer Engineering undergraduate students and the Department of Computer Engineering (FT-EIC ITS) regarding academic policies, tuition (UKT) advocacy, and scholarships.</li>
+                        <li>Initiated and managed <strong>JAVA (<em>Jaringan Advokasi</em>)</strong>, an online student advocacy and academic feedback channel streamlining issue reporting and follow-up resolution.</li>
                     </ul>
-                    <div class="timeline-img-wrapper" data-project="cert">
-                        <img src="assets/screenshots/cert_manager_studio.png" alt="Certificate Manager v3.0 Studio" class="timeline-img" />
-                        <span class="timeline-img-caption"><i class="fas fa-expand"></i> Click to inspect Certificate Manager v3.0</span>
+                    <div class="timeline-img-wrapper">
+                        <img src="assets/screenshots/exp_himatekkom.png" alt="HIMATEKKOM ITS KESMA" class="timeline-img" />
                     </div>
                 </div>
 
-                <!-- Panel 4: Hermes & Freedom -->
-                <div class="selector-panel" id="exp-4">
+                <!-- 4. MAGE XI ITS -->
+                <div class="selector-panel" id="exp-mage">
                     <div class="panel-header">
                         <div>
-                            <h3>Creator — Hermes JobSeeker Bot &amp; Freedom v2.0</h3>
-                            <h4>Autonomous Multi-Portal Job Intelligence &amp; Windows Network Stack</h4>
+                            <h3>Expert Staff (Staf Ahli), Event Division</h3>
+                            <h4>Multimedia and Game Event (MAGE) XI — Computer Engineering ITS</h4>
+                        </div>
+                        <span class="panel-date">Mar 2025 – Nov 2025</span>
+                    </div>
+                    <ul class="panel-bullets">
+                        <li>Contributed to <strong>MAGE XI</strong>, a national-scale IT competition organized by the Computer Engineering Department at ITS covering <strong>Application/Game Development, Robotics, and IoT</strong> categories.</li>
+                        <li>Coordinated division budget planning (<em>Rencana Anggaran Biaya / RAB</em>), national competition rundowns, technical stage operations, and operational staff supervision.</li>
+                    </ul>
+                    <div class="timeline-img-wrapper">
+                        <img src="assets/screenshots/exp_mage_xi.png" alt="MAGE XI ITS Event Division" class="timeline-img" />
+                    </div>
+                </div>
+
+                <!-- 5. Independent Systems Development -->
+                <div class="selector-panel" id="exp-indie">
+                    <div class="panel-header">
+                        <div>
+                            <h3>Independent Full-Stack, AI &amp; Systems Developer</h3>
+                            <h4>Self-Directed Production Engineering Projects</h4>
                         </div>
                         <span class="panel-date">2025 – 2026</span>
                     </div>
                     <ul class="panel-bullets">
-                        <li>Built <strong>Hermes JobSeeker Bot</strong> (Streamlit Control Center + Telegram Bot + Camoufox Stealth Scraper + SQLite WAL) to scrape 6 job portals, score fit (0–100), and draft tailored cover letters automatically.</li>
-                        <li>Created <strong>Freedom v2.0 Speed Edition</strong> (<code>Freedom.bat</code> + <code>Status Check.bat</code> + PowerShell) orchestrating Acrylic DNS Proxy, Windows 11 Native DoH, and Green Tunnel DPI fragmentation.</li>
+                        <li>Architected <strong>Hermes JobSeeker Bot v2.0</strong> (`85/85 Pytest PASS`) featuring a dedicated <strong>ITS Career Center (`careers.its.ac.id` + `@itscareercenter` IG Gemini Vision Flyer OCR)</strong> scraper, myITS Entra ID 2-digit Authenticator bridge, and Smart HR Inbox Manager.</li>
+                        <li>Delivered <strong>SmartCoop</strong> (Flutter + Supabase RLS + 3-Model ONNX poultry disease detector + NFC tags), <strong>Planner System 4.0</strong> (8-worker swarm engine), and <strong>Freedom v2.0 Speed Edition</strong>.</li>
                     </ul>
                     <div class="timeline-img-wrapper" data-project="hermes">
-                        <img src="assets/screenshots/hermes_telegram_ui.png" alt="Hermes JobSeeker Streamlit & Telegram" class="timeline-img" />
-                        <span class="timeline-img-caption"><i class="fas fa-expand"></i> Click to inspect Hermes JobSeeker Bot</span>
+                        <img src="assets/screenshots/hermes_telegram_ui.png" alt="Hermes JobSeeker v2.0" class="timeline-img" />
+                        <span class="timeline-img-caption"><i class="fas fa-expand"></i> Click to inspect Hermes JobSeeker Bot v2.0</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Featured Projects Section (Theo Full-Width Horizontal Bento Image Carousel) -->
+    <!-- 7. Featured Projects Section (Auto-Sliding Right-to-Left + Pause on Hover + Blur Siblings + Reveal Details on Hover) -->
     <section id="projects" class="projects section-container">
         <div class="section-header">
             <h2 class="section-title pixel-title">
                 <span class="pixel-art pixel-coin"></span>
                 Featured <span class="gradient-text">Projects</span>
             </h2>
-            <p class="section-subtitle">Drag or scroll horizontally — click any project card to view full screenshots &amp; architecture</p>
+            <p class="section-subtitle">Auto-gliding showcase — hover any card to pause, focus, and reveal project details, or click to inspect full screenshots</p>
         </div>
 
         <div class="projects-controls-bar">
             <div class="project-filter-pills">
-                <button class="filter-pill active" data-filter="all">All Projects (7)</button>
+                <button class="filter-pill active" data-filter="all">All Projects (9)</button>
                 <button class="filter-pill" data-filter="enterprise">Enterprise &amp; Web</button>
                 <button class="filter-pill" data-filter="ai">AI, Vision &amp; OCR</button>
-                <button class="filter-pill" data-filter="systems">Automation &amp; IoT</button>
+                <button class="filter-pill" data-filter="systems">IoT &amp; Systems</button>
             </div>
             <div class="carousel-nav-btns">
                 <button class="carousel-btn" id="carousel-prev" title="Scroll Left"><i class="fas fa-chevron-left"></i></button>
@@ -470,148 +595,188 @@
         <div class="projects-carousel-wrapper">
             <div class="projects-carousel" id="projects-carousel">
                 <!-- Card 1: PLN Cert-Mon -->
-                <div class="bento-card carousel-card glass-card" data-category="enterprise ai" data-project="pln">
+                <div class="bento-card carousel-card" data-category="enterprise ai" data-project="pln">
                     <div class="bento-bg" style="background-image: url('assets/screenshots/pln_dashboard.png');"></div>
                     <div class="bento-overlay"></div>
-                    <span class="bento-top-badge">82,989 Files Indexed · PT PLN NPS</span>
+                    <span class="bento-top-badge">PT PLN NPS · 82,989 Files</span>
                     <div class="bento-content">
                         <h3>PLN Cert-Mon: Enterprise Monitoring</h3>
-                        <p>Enterprise certification &amp; training intelligence platform for PT PLN Nusantara Power Services with bidirectional Synology NAS sync and hybrid OCR.</p>
+                        <p>Enterprise certification &amp; training platform tracking 1,137 competency codes, H-30/H-20 email alerts, Ellipse HR sync, and 82,989 NAS files.</p>
                         <div class="tech-stack-mini">
-                            <span class="tech-tag">Next.js 16</span>
-                            <span class="tech-tag">React 19</span>
+                            <span class="tech-tag">FastAPI / Next.js</span>
                             <span class="tech-tag">PostgreSQL</span>
                             <span class="tech-tag">RapidOCR</span>
+                            <span class="tech-tag">Synology NAS</span>
                         </div>
                         <div class="bento-actions">
-                            <span class="bento-btn solid"><i class="fas fa-expand"></i> View Screenshots</span>
+                            <span class="bento-btn solid"><i class="fas fa-images"></i> 3 Screenshots</span>
                             <a href="https://github.com/DapppMC/pln-cert-mon" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 2: MMPI-2 Clinical Diagnostic Engine -->
-                <div class="bento-card carousel-card glass-card" data-category="ai enterprise" data-project="mmpi">
+                <!-- Card 2: MMPI-2 Psychological Assessment -->
+                <div class="bento-card carousel-card" data-category="ai enterprise" data-project="mmpi">
                     <div class="bento-bg" style="background-image: url('assets/screenshots/mmpi_dos_grid.png');"></div>
                     <div class="bento-overlay"></div>
-                    <span class="bento-top-badge">100% Clinical Accuracy · RSJ Menur</span>
+                    <span class="bento-top-badge">LAB M-IOT · 100% Score Match</span>
                     <div class="bento-content">
-                        <h3>MMPI-2 Clinical Diagnostic Engine</h3>
-                        <p>Automated 566-item OpenCV bubble-sheet OMR scanner, web patient portal, and headless DOSBox MMPI.EXE clinical psychogram bridge.</p>
+                        <h3>MMPI-2 Psychological Assessment Engine</h3>
+                        <p>Deterministic 80x25 DOS character-cell bitmap matcher &amp; web portal achieving 100.0% scoring accuracy across 250/250 psychological scales.</p>
                         <div class="tech-stack-mini">
                             <span class="tech-tag">Python</span>
-                            <span class="tech-tag">OpenCV OMR</span>
-                            <span class="tech-tag">DOSBox Bridge</span>
-                            <span class="tech-tag">Flask Web</span>
+                            <span class="tech-tag">OpenCV Vision</span>
+                            <span class="tech-tag">Win32 / DOSBox</span>
+                            <span class="tech-tag">PostgreSQL</span>
                         </div>
                         <div class="bento-actions">
-                            <span class="bento-btn solid"><i class="fas fa-expand"></i> View Screenshots</span>
+                            <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
                             <a href="https://github.com/DapppMC/mmpi2-clinical-automation" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 3: Certificate Manager v3.0 -->
-                <div class="bento-card carousel-card glass-card" data-category="enterprise ai" data-project="cert">
-                    <div class="bento-bg" style="background-image: url('assets/screenshots/cert_manager_studio.png');"></div>
-                    <div class="bento-overlay"></div>
-                    <span class="bento-top-badge">3 SQLite DBs · 4 Excel Formats</span>
-                    <div class="bento-content">
-                        <h3>Certificate Manager v3.0 (cert-slicer)</h3>
-                        <p>Interactive PDF page slicer, canvas crop/rotate studio, multi-engine OCR extractor, and 4-format corporate Excel generator.</p>
-                        <div class="tech-stack-mini">
-                            <span class="tech-tag">Flask</span>
-                            <span class="tech-tag">PDF.js Canvas</span>
-                            <span class="tech-tag">SQLite3</span>
-                            <span class="tech-tag">OpenPyXL</span>
-                        </div>
-                        <div class="bento-actions">
-                            <span class="bento-btn solid"><i class="fas fa-expand"></i> View Screenshots</span>
-                            <a href="https://github.com/DapppMC/certificate-manager-v3" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4: Hermes JobSeeker Bot -->
-                <div class="bento-card carousel-card glass-card" data-category="ai systems" data-project="hermes">
+                <!-- Card 3: Hermes JobSeeker Bot v2.0 -->
+                <div class="bento-card carousel-card" data-category="ai systems" data-project="hermes">
                     <div class="bento-bg" style="background-image: url('assets/screenshots/hermes_telegram_ui.png');"></div>
                     <div class="bento-overlay"></div>
-                    <span class="bento-top-badge">Streamlit + Telegram Bot</span>
+                    <span class="bento-top-badge">Hermes v2.0 · 85/85 Tests PASS</span>
                     <div class="bento-content">
-                        <h3>Hermes JobSeeker Bot</h3>
-                        <p>Autonomous multi-portal job scraper (LinkedIn, JobStreet, Glints, Kalibrr), weighted match scorer, Streamlit dashboard &amp; Telegram bot.</p>
+                        <h3>Hermes JobSeeker Bot v2.0 (ITS Career + AI)</h3>
+                        <p>Dedicated careers.its.ac.id &amp; @itscareercenter IG Flyer OCR scraper, myITS Entra ID 2-digit Authenticator bridge, Honest Auto-Apply &amp; Smart HR Inbox Tracker.</p>
                         <div class="tech-stack-mini">
-                            <span class="tech-tag">Streamlit</span>
-                            <span class="tech-tag">Telegram API</span>
-                            <span class="tech-tag">Playwright</span>
-                            <span class="tech-tag">SQLite WAL</span>
+                            <span class="tech-tag">Playwright CDP</span>
+                            <span class="tech-tag">Gemini Vision OCR</span>
+                            <span class="tech-tag">Telegram Bot</span>
+                            <span class="tech-tag">3NF SQLite WAL</span>
                         </div>
                         <div class="bento-actions">
-                            <span class="bento-btn solid"><i class="fas fa-expand"></i> View Screenshots</span>
+                            <span class="bento-btn solid"><i class="fas fa-expand"></i> Inspect v2.0</span>
                             <a href="https://github.com/DapppMC/hermes-jobseeker-bot" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 5: Freedom v2.0 Speed Edition -->
-                <div class="bento-card carousel-card glass-card" data-category="systems" data-project="freedom">
-                    <div class="bento-bg" style="background-image: url('assets/screenshots/freedom_speed_edition.png');"></div>
+                <!-- Card 4: Certificate Manager v3.0 -->
+                <div class="bento-card carousel-card" data-category="enterprise ai" data-project="cert">
+                    <div class="bento-bg" style="background-image: url('assets/screenshots/cert_manager_studio.png');"></div>
                     <div class="bento-overlay"></div>
-                    <span class="bento-top-badge">0.8ms Local DNS · DPI Bypass</span>
+                    <span class="bento-top-badge">cert-slicer · 3 DBs + 4 Excels</span>
                     <div class="bento-content">
-                        <h3>Freedom v2.0 — Speed Edition</h3>
-                        <p>One-click Windows network optimizer combining Acrylic local DNS caching, Windows 11 native DoH, and Green Tunnel DPI fragmentation.</p>
+                        <h3>Certificate Manager v3.0 (cert-slicer)</h3>
+                        <p>Offline-first PDF certificate slicer, interactive canvas crop/rotate studio, 3-database employee matcher, and 4-format Excel exporter.</p>
                         <div class="tech-stack-mini">
-                            <span class="tech-tag">Batch / CMD</span>
-                            <span class="tech-tag">PowerShell</span>
-                            <span class="tech-tag">Acrylic DNS</span>
-                            <span class="tech-tag">DoH / TLS</span>
+                            <span class="tech-tag">PyMuPDF</span>
+                            <span class="tech-tag">RapidOCR</span>
+                            <span class="tech-tag">SQLite3</span>
+                            <span class="tech-tag">OpenPyXL</span>
                         </div>
                         <div class="bento-actions">
-                            <span class="bento-btn solid"><i class="fas fa-expand"></i> View Screenshots</span>
-                            <a href="https://github.com/DapppMC/freedom-network-optimizer" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                            <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
+                            <a href="https://github.com/DapppMC/certificate-manager-v3" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5: SmartCoop Poultry Health & Biosecurity -->
+                <div class="bento-card carousel-card" data-category="systems ai" data-project="smartcoop">
+                    <div class="bento-bg" style="background-image: url('assets/screenshots/smartcoop_dashboard.jpg');"></div>
+                    <div class="bento-overlay"></div>
+                    <span class="bento-top-badge">Flutter + 3-Model ONNX + NFC</span>
+                    <div class="bento-content">
+                        <h3>SmartCoop: Poultry Health &amp; Biosecurity</h3>
+                        <p>Cross-platform Flutter mobile app detecting poultry diseases via a 3-model ONNX pipeline with 12-table Supabase RLS and NFC per-bird records.</p>
+                        <div class="tech-stack-mini">
+                            <span class="tech-tag">Flutter</span>
+                            <span class="tech-tag">Supabase RLS</span>
+                            <span class="tech-tag">ONNX Runtime</span>
+                            <span class="tech-tag">FastAPI</span>
+                        </div>
+                        <div class="bento-actions">
+                            <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
+                            <a href="https://github.com/DapppMC/smartcoop-ml-iot" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Card 6: Planner System 4.0 -->
-                <div class="bento-card carousel-card glass-card" data-category="ai systems" data-project="planner">
-                    <div class="bento-bg" style="background-image: url('assets/screenshots/planner_dag.png');"></div>
+                <div class="bento-card carousel-card" data-category="ai systems" data-project="planner">
+                    <div class="bento-bg" style="background-image: url('assets/screenshots/planner4_golden_swarm.png');"></div>
                     <div class="bento-overlay"></div>
                     <span class="bento-top-badge">8-Worker Swarm · HMAC Oracles</span>
                     <div class="bento-content">
                         <h3>Planner System 4.0 (Argon Swarm)</h3>
-                        <p>Contract-first multi-agent software planning &amp; execution engine with wave-partitioned DAGs, SQLite WAL blackboard, and AST mutation gates.</p>
+                        <p>Contract-first multi-agent orchestrator coordinating 8 parallel worker accounts with atomic SQLite WAL ticket leasing and AST mutation gates.</p>
                         <div class="tech-stack-mini">
-                            <span class="tech-tag">Multi-Agent DAG</span>
+                            <span class="tech-tag">Python AST</span>
                             <span class="tech-tag">SQLite WAL</span>
                             <span class="tech-tag">HMAC-SHA256</span>
-                            <span class="tech-tag">Python AST</span>
+                            <span class="tech-tag">7/7 Benchmarks</span>
                         </div>
                         <div class="bento-actions">
-                            <span class="bento-btn solid"><i class="fas fa-expand"></i> View Screenshots</span>
+                            <span class="bento-btn solid"><i class="fas fa-expand"></i> View Screenshot</span>
                             <a href="https://github.com/DapppMC/planner-system-4" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 7: SmartCoop ML & Embedded IoT -->
-                <div class="bento-card carousel-card glass-card" data-category="systems ai" data-project="smartcoop">
-                    <div class="bento-bg" style="background-image: url('assets/screenshots/smartcoop_architecture.png');"></div>
+                <!-- Card 7: Warung Madura Enterprise POS -->
+                <div class="bento-card carousel-card" data-category="enterprise" data-project="warung">
+                    <div class="bento-bg" style="background-image: url('assets/screenshots/warung_dashboard.png');"></div>
                     <div class="bento-overlay"></div>
-                    <span class="bento-top-badge">ESP32 + FastAPI · 94.6% F1</span>
+                    <span class="bento-top-badge">24-Hr FMCG ERP &amp; Express POS</span>
                     <div class="bento-content">
-                        <h3>SmartCoop IoT &amp; ML Telemetry</h3>
-                        <p>End-to-end poultry house environmental telemetry using ESP32 sensor nodes, FastAPI ML inference, and Flutter mobile alerts.</p>
+                        <h3>Warung Madura Enterprise POS</h3>
+                        <p>Keyboard-first Express POS supporting hierarchical packaging conversions (Eceran, Pak, Slop, Dus, Karung), 3-tier RBAC, and 58mm thermal receipts.</p>
                         <div class="tech-stack-mini">
-                            <span class="tech-tag">ESP32 C++</span>
-                            <span class="tech-tag">FastAPI</span>
-                            <span class="tech-tag">Scikit-Learn</span>
-                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">React 18</span>
+                            <span class="tech-tag">TypeScript</span>
+                            <span class="tech-tag">Node.js / Express</span>
+                            <span class="tech-tag">3-Tier RBAC</span>
                         </div>
                         <div class="bento-actions">
-                            <span class="bento-btn solid"><i class="fas fa-expand"></i> View Screenshots</span>
-                            <a href="https://github.com/DapppMC/smartcoop-ml-iot" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                            <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 8: Freedom v2.0 Speed Edition -->
+                <div class="bento-card carousel-card" data-category="systems" data-project="freedom">
+                    <div class="bento-bg" style="background-image: url('assets/screenshots/freedom_speed_edition.png');"></div>
+                    <div class="bento-overlay"></div>
+                    <span class="bento-top-badge">Sub-1ms Local DNS · DPI Bypass</span>
+                    <div class="bento-content">
+                        <h3>Freedom v2.0 — Speed Edition</h3>
+                        <p>1-click Windows network provisioning suite combining Acrylic local DNS caching, Windows 11 native DoH, and Green Tunnel DPI fragmentation.</p>
+                        <div class="tech-stack-mini">
+                            <span class="tech-tag">Batch CLI</span>
+                            <span class="tech-tag">PowerShell</span>
+                            <span class="tech-tag">Acrylic DNS</span>
+                            <span class="tech-tag">TLS 1.3 DoH</span>
+                        </div>
+                        <div class="bento-actions">
+                            <span class="bento-btn solid"><i class="fas fa-expand"></i> View Console</span>
+                            <a href="https://github.com/DapppMC/freedom-network-optimizer" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 9: Big Data Intelligence & RAG Chatbot -->
+                <div class="bento-card carousel-card" data-category="ai enterprise" data-project="bigdata">
+                    <div class="bento-bg" style="background-image: url('assets/screenshots/bigdata_dashboard.png');"></div>
+                    <div class="bento-overlay"></div>
+                    <span class="bento-top-badge">Llama 3.3 70B · n8n RAG Pipeline</span>
+                    <div class="bento-content">
+                        <h3>Big Data Intelligence &amp; RAG Chatbot</h3>
+                        <p>Automated web crawling to LLM sentiment/emotion extraction pipeline stored in Supabase PostgreSQL with a Telegram RAG chatbot and Chart.js dashboard.</p>
+                        <div class="tech-stack-mini">
+                            <span class="tech-tag">n8n Workflow</span>
+                            <span class="tech-tag">Groq Llama 3.3</span>
+                            <span class="tech-tag">Supabase</span>
+                            <span class="tech-tag">Chart.js</span>
+                        </div>
+                        <div class="bento-actions">
+                            <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
                         </div>
                     </div>
                 </div>
@@ -619,7 +784,7 @@
         </div>
     </section>
 
-    <!-- Contact & Monochrome Interactive Terminal Section -->
+    <!-- 8. Contact & Real Interactive Messenger Terminal Section -->
     <section id="contact" class="contact section-container">
         <div class="contact-layout">
             <div class="contact-info">
@@ -627,7 +792,7 @@
                     <span class="pixel-art pixel-envelope"></span>
                     Let's Build <br><span class="gradient-text">Something Together</span>
                 </h2>
-                <p>Currently open for Software Engineering, Full-Stack Web, and AI/Computer Vision internships or collaborative engineering projects.</p>
+                <p>Have a project, internship opportunity, or question? Send me a message directly through the interactive terminal on the right!</p>
 
                 <div class="contact-links">
                     <a href="mailto:Ahmaddafa1017@gmail.com" class="contact-item">
@@ -653,57 +818,56 @@
                 </div>
             </div>
 
-            <!-- Monochrome macOS/Linux Interactive Terminal Window -->
-            <div class="terminal-window glass-card" id="terminal-box">
+            <!-- Interactive Contact Messenger Terminal (Just Like Theo's + CLI Support) -->
+            <div class="terminal-window" id="terminal-box">
                 <div class="terminal-header">
                     <div class="terminal-buttons">
                         <span class="term-btn-red"></span>
                         <span class="term-btn-yellow"></span>
                         <span class="term-btn-green"></span>
                     </div>
-                    <div class="terminal-title">guest@dapppmc: ~ (bash)</div>
+                    <div class="terminal-title">direct-message@dafa-portfolio: ~ (interactive)</div>
                 </div>
                 <div class="terminal-body" id="terminal-body">
                     <div class="terminal-output" id="terminal-output">
-                        <div class="term-line">Welcome to <strong>DafaOS v4.0</strong> (ITS Computer Engineering — Semester 7).</div>
-                        <div class="term-line">Type <span class="term-cmd">help</span> to list commands, or click any shortcut below:</div>
+                        <div class="term-line" style="color:#94a3b8;">Initializing secure connection to <strong>Ahmad Dafa Salam</strong>...</div>
+                        <div class="term-line" style="color:#4ade80;">[OK] Connected! Send a direct message step-by-step below (or type <span class="term-cmd">/help</span> for CLI commands).</div>
+                        <div class="term-line" style="margin-top:6px;"><span class="term-prompt">? Step 1/3:</span> <strong>What is your name?</strong> (Type below &amp; press Enter)</div>
                     </div>
                     <div class="term-input-line">
-                        <span class="term-prompt">guest@dapppmc:~$</span>
-                        <input type="text" id="terminal-input" class="term-input" placeholder="type 'help', 'projects', 'pln', 'mmpi', 'cv'..." autocomplete="off">
+                        <span class="term-prompt" id="terminal-prompt-label">name@guest:~$</span>
+                        <input type="text" id="terminal-input" class="term-input" placeholder="Type your name and press Enter..." autocomplete="off">
                     </div>
                 </div>
                 <div class="term-quick-pills">
-                    <button class="term-pill" data-cmd="help">help</button>
-                    <button class="term-pill" data-cmd="whoami">whoami</button>
-                    <button class="term-pill" data-cmd="projects">projects</button>
-                    <button class="term-pill" data-cmd="pln">pln</button>
-                    <button class="term-pill" data-cmd="mmpi">mmpi</button>
-                    <button class="term-pill" data-cmd="hermes">hermes</button>
-                    <button class="term-pill" data-cmd="freedom">freedom</button>
-                    <button class="term-pill" data-cmd="cv">cv</button>
-                    <button class="term-pill" data-cmd="clear">clear</button>
+                    <button class="term-pill" data-cmd="/reset">✉️ New Message</button>
+                    <button class="term-pill" data-cmd="/help">/help</button>
+                    <button class="term-pill" data-cmd="/projects">/projects</button>
+                    <button class="term-pill" data-cmd="/hermes">/hermes</button>
+                    <button class="term-pill" data-cmd="/pln">/pln</button>
+                    <button class="term-pill" data-cmd="/mmpi">/mmpi</button>
+                    <button class="term-pill" data-cmd="/cv">/cv</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Case Study Modal -->
+    <!-- Case Study Modal with Multi-Screenshot Switcher -->
     <div class="modal-backdrop" id="project-modal">
         <div class="modal-window">
             <button class="modal-close" id="modal-close">&times;</button>
             <span id="modal-badge" class="cert-date-new" style="margin-bottom:10px;"></span>
             <h2 id="modal-title" style="font-size:1.85rem;margin-bottom:6px;"></h2>
-            <p id="modal-subtitle" style="color:var(--text-dim);margin-bottom:14px;"></p>
+            <p id="modal-subtitle" style="color:var(--accent-cyan);margin-bottom:14px;"></p>
             <img id="modal-img" class="modal-hero-img" src="" alt="Project Screenshot" />
-            <div id="modal-gallery" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;"></div>
+            <div id="modal-gallery" style="display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;"></div>
             <div class="modal-grid">
                 <div class="modal-box">
-                    <h4>Problem &amp; Engineering Architecture</h4>
+                    <h4>Engineering Architecture &amp; Solution</h4>
                     <p id="modal-arch"></p>
                 </div>
                 <div class="modal-box">
-                    <h4>Verified Impact &amp; Metrics</h4>
+                    <h4>Verified Production Impact</h4>
                     <p id="modal-impact"></p>
                 </div>
             </div>
@@ -716,7 +880,7 @@
     <footer>
         <div class="footer-content">
             <p>&copy; 2026 Ahmad Dafa Salam. All rights reserved.</p>
-            <p>Fourth-Year Computer Engineering Student @ ITS Surabaya</p>
+            <p>Fourth-Year Computer Engineering Student @ ITS Surabaya (NRP 5024231024)</p>
         </div>
     </footer>
 
