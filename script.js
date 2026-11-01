@@ -125,39 +125,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------------------------------------
-    // 3. INTERACTIVE ARCADE NPC ENGINE (ABOVE-CARD TRANSLUCENT OVERLAY,
-    //    BOX COLLISIONS/PATROLS & BOSS RAID ON DAFA'S AVATAR WITH HP REGEN)
+    // 3. SUBTLE INTERACTIVE ARCADE NPC ENGINE (CALM DRIFT, ABOVE-CARD
+    //    TRANSLUCENT PHASING, NPC-TO-NPC SOCIAL INTERACTIONS & SUBTLE
+    //    OCCASIONAL AVATAR MICRO-EASTER EGG WITH FRAMELESS +/-HP)
     // ------------------------------------------------------------------------
     const spriteEls = Array.from(document.querySelectorAll(".roaming-sprite"));
-    const attackBeamSvg = document.getElementById("npc-attack-beam-svg");
-    const charCardEl = document.getElementById("character-card");
     const portraitStageEl = document.getElementById("id-portrait-stage");
     const portraitImgEl = document.getElementById("dafa-portrait-img");
     const avatarFxLayer = document.getElementById("avatar-fx-layer");
-    const hpFillEl = document.getElementById("dafa-hp-fill");
     const hpTextEl = document.getElementById("dafa-hp-text");
-    const combatStatusEl = document.getElementById("dafa-combat-status");
-    const raidTriggerBtn = document.getElementById("trigger-npc-raid");
 
     let dafaHp = 100;
     let isUnderRaid = false;
     let isRegenerating = false;
     let regenTimer = null;
-    let lastAutoRaidTime = Date.now() - 2500;
+    let lastAutoRaidTime = Date.now() - 8000;
 
-    function updateHpUI() {
-        const clamped = Math.max(15, Math.min(100, Math.round(dafaHp)));
-        if (hpFillEl) {
-            hpFillEl.style.width = `${clamped}%`;
-            hpFillEl.classList.remove("hp-warn", "hp-crit");
-            if (clamped <= 40) {
-                hpFillEl.classList.add("hp-crit");
-            } else if (clamped <= 70) {
-                hpFillEl.classList.add("hp-warn");
-            }
-        }
+    function updateHpUI(state = "normal") {
+        const clamped = Math.max(70, Math.min(100, Math.round(dafaHp)));
         if (hpTextEl) {
-            hpTextEl.textContent = `${clamped}/100`;
+            hpTextEl.textContent = `${clamped} HP`;
+            hpTextEl.classList.remove("is-damaged", "is-healing");
+            if (state === "damaged" || clamped < 100) {
+                hpTextEl.classList.add(state === "healing" ? "is-healing" : "is-damaged");
+            }
         }
     }
 
@@ -166,40 +157,32 @@ document.addEventListener("DOMContentLoaded", () => {
         const pop = document.createElement("div");
         pop.className = `avatar-dmg-pop ${kind}`;
         pop.textContent = text;
-        const jitterX = 38 + Math.random() * 24;
-        const jitterY = 18 + Math.random() * 20;
+        const jitterX = 44 + Math.random() * 14;
+        const jitterY = 18 + Math.random() * 12;
         pop.style.left = `${jitterX}%`;
         pop.style.top = `${jitterY}%`;
         avatarFxLayer.appendChild(pop);
-        setTimeout(() => pop.remove(), 950);
+        setTimeout(() => pop.remove(), 1050);
     }
 
     function spawnAvatarHeadSparks(color = "#fbbf24") {
         if (!avatarFxLayer) return;
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 2; i++) {
             const sp = document.createElement("div");
             sp.className = "avatar-flame-spark";
             sp.style.background = i % 2 === 0 ? color : "#ef4444";
-            sp.style.left = `${44 + (Math.random() - 0.5) * 18}%`;
-            sp.style.top = `${20 + (Math.random() - 0.5) * 16}%`;
-            sp.style.setProperty("--tx", `${(Math.random() - 0.5) * 65}px`);
-            sp.style.setProperty("--ty", `${-15 - Math.random() * 40}px`);
+            sp.style.left = `${46 + (Math.random() - 0.5) * 12}%`;
+            sp.style.top = `${20 + (Math.random() - 0.5) * 10}%`;
+            sp.style.setProperty("--tx", `${(Math.random() - 0.5) * 28}px`);
+            sp.style.setProperty("--ty", `${-8 - Math.random() * 16}px`);
             avatarFxLayer.appendChild(sp);
-            setTimeout(() => sp.remove(), 520);
+            setTimeout(() => sp.remove(), 480);
         }
     }
 
     function startHpRegenSequence() {
         if (regenTimer) clearInterval(regenTimer);
         isRegenerating = true;
-        if (charCardEl) {
-            charCardEl.classList.remove("is-under-attack");
-            charCardEl.classList.add("is-regenerating");
-        }
-        if (combatStatusEl) {
-            combatStatusEl.textContent = "💚 REGEN +HP";
-            combatStatusEl.className = "hp-status-tag status-regen";
-        }
 
         regenTimer = setInterval(() => {
             if (isUnderRaid) {
@@ -207,115 +190,96 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             if (dafaHp < 100) {
-                const healAmt = Math.min(100 - dafaHp, 14);
+                const healAmt = Math.min(100 - dafaHp, 5);
                 dafaHp += healAmt;
-                updateHpUI();
-                spawnAvatarFloatingText(`+${healAmt} HP 💚`, "is-heal");
+                updateHpUI("healing");
+                spawnAvatarFloatingText(`+${healAmt} HP`, "is-heal");
                 if (portraitImgEl) {
                     portraitImgEl.classList.add("heal-flash");
-                    setTimeout(() => portraitImgEl.classList.remove("heal-flash"), 220);
+                    setTimeout(() => portraitImgEl.classList.remove("heal-flash"), 200);
                 }
             } else {
                 clearInterval(regenTimer);
                 regenTimer = null;
                 isRegenerating = false;
-                if (charCardEl) charCardEl.classList.remove("is-regenerating");
-                if (combatStatusEl) {
-                    combatStatusEl.textContent = "SHIELD: READY";
-                    combatStatusEl.className = "hp-status-tag";
-                }
+                updateHpUI("normal");
             }
-        }, 420);
+        }, 680);
     }
 
     if (spriteEls.length > 0) {
-        const BONK_QUIPS = [
-            "BONK! 💥",
-            "OOF! SOLID BOX",
-            "GPA 3.93?! 🔥",
-            "NICE STACK 👀",
-            "404 WALL!",
-            "FULL-STACK ⚡",
-            "PLN 82K FILES!",
-            "100% MMPI!",
-            "BOING! 🧱"
+        const BONK_QUIPS = ["bonk", "hmm..", "boop", "oop~", "..."];
+        const PATROL_QUIPS = ["~", "...", "hmm~", "★"];
+        const GREET_PAIRS = [
+            ["hi~", "hey~"],
+            ["beep", "boop"],
+            ["yo~", "hi~"],
+            ["~", "♫"],
+            ["hmm?", "ok~"]
         ];
-        const PATROL_QUIPS = [
-            "PATROLLING 🛡️",
-            "SCANNING BOX 🔍",
-            "LOOT FOUND ★",
-            "GUARDING UI 🤖",
-            "INSPECTING..."
-        ];
-        const PHASE_QUIPS = [
-            "👻 PHASING...",
-            "~STEALTH MODE~",
-            "GHOST PASS 👻",
-            "TRANSLUCENT!"
-        ];
-        const RAID_QUIPS = [
-            "🔥 SEMBURAN API!!",
-            "⚡ PLASMA BEAM!",
-            "👾 RAID DAFA!",
-            "🔥 BURN HEAD!!",
-            "🚀 LASER ATTACK!"
-        ];
+        const RAID_QUIPS = ["pew~", "zap~", "nyam~", "fwoosh~"];
 
+        // Calm, unhurried initial velocities (~0.18 - 0.24 px/frame before viewport scaling)
         const initialZones = [
-            { xPct: 0.08, yPct: 0.18, vx: 1.05, vy: 0.58 },
-            { xPct: 0.84, yPct: 0.22, vx: -0.95, vy: 0.64 },
-            { xPct: 0.15, yPct: 0.62, vx: 1.12, vy: -0.54 },
-            { xPct: 0.76, yPct: 0.68, vx: -0.92, vy: -0.60 },
-            { xPct: 0.46, yPct: 0.26, vx: 0.98, vy: 0.66 },
-            { xPct: 0.34, yPct: 0.78, vx: -1.04, vy: -0.56 }
+            { xPct: 0.08, yPct: 0.18, vx: 0.21, vy: 0.12 },
+            { xPct: 0.84, yPct: 0.22, vx: -0.19, vy: 0.13 },
+            { xPct: 0.14, yPct: 0.62, vx: 0.22, vy: -0.11 },
+            { xPct: 0.78, yPct: 0.68, vx: -0.18, vy: -0.12 },
+            { xPct: 0.46, yPct: 0.26, vx: 0.20, vy: 0.13 },
+            { xPct: 0.34, yPct: 0.78, vx: -0.21, vy: -0.11 }
         ];
 
         const roamers = spriteEls.map((el, idx) => {
             const z = initialZones[idx % initialZones.length];
-            const speedMult = parseFloat(el.getAttribute("data-speed") || "0.6");
+            const speedMult = parseFloat(el.getAttribute("data-speed") || "0.55");
             const vw = window.innerWidth;
             const vh = window.innerHeight;
             const isMobile = vw <= 768;
-            const scale = isMobile ? 0.74 : 1.0;
+            const scale = isMobile ? 0.76 : 1.0;
             const bubbleEl = el.querySelector(".npc-bubble");
+            const baseVx = z.vx * (0.85 + speedMult * 0.3);
+            const baseVy = z.vy * (0.85 + speedMult * 0.3);
             return {
                 el,
                 bubbleEl,
-                name: el.getAttribute("data-npc-name") || `NPC-${idx + 1}`,
+                name: el.getAttribute("data-npc-name") || `npc-${idx + 1}`,
                 attackType: el.getAttribute("data-attack") || "fire",
-                w: parseFloat(el.style.width) || 74,
-                h: parseFloat(el.style.height) || 68,
-                x: z.xPct * Math.max(220, vw - 120),
-                y: z.yPct * Math.max(220, vh - 120),
-                vx: z.vx * (0.85 + speedMult * 0.45),
-                vy: z.vy * (0.85 + speedMult * 0.45),
-                phase: idx * 1.35,
+                w: parseFloat(el.style.width) || 48,
+                h: parseFloat(el.style.height) || 44,
+                x: z.xPct * Math.max(180, vw - 90),
+                y: z.yPct * Math.max(180, vh - 90),
+                baseSpeedX: Math.abs(baseVx),
+                baseSpeedY: Math.abs(baseVy),
+                vx: baseVx,
+                vy: baseVy,
+                phase: idx * 1.4,
                 scale,
                 squishX: 1,
                 squishY: 1,
-                facing: z.vx >= 0 ? 1 : -1,
-                state: "ROAM", // "ROAM" | "PATROL" | "RAID"
+                facing: baseVx >= 0 ? 1 : -1,
+                state: "ROAM", // "ROAM" | "PATROL" | "GREET" | "RAID"
                 stateUntil: 0,
                 patrolBox: null,
-                lastBoxInteract: 0,
+                lastBoxInteract: Date.now() - idx * 1400,
+                lastNpcInteract: Date.now() - idx * 1200,
                 bubbleUntil: 0,
                 nextDamageTick: 0
             };
         });
 
-        function showNpcBubble(r, text, durationMs = 1500) {
+        function showNpcBubble(r, text, durationMs = 1350) {
             if (!r.bubbleEl) return;
             r.bubbleEl.textContent = text;
             r.el.classList.add("show-bubble");
             r.bubbleUntil = Date.now() + durationMs;
         }
 
-        // Cache interactive UI boxes on the screen ("tabel-tabel / kotak-kotaknya aku")
+        // Cache interactive UI boxes on the screen
         let cachedBoxes = [];
         let lastBoxScan = 0;
 
         function refreshInteractiveBoxes(now) {
-            if (now - lastBoxScan < 220) return;
+            if (now - lastBoxScan < 320) return;
             lastBoxScan = now;
             const selectors = [
                 ".hero-stat-box",
@@ -324,7 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 ".cert-card-new",
                 ".timeline-card",
                 ".selector-tabs",
-                ".selector-tab.active",
                 ".selector-content-area",
                 ".bento-card.carousel-card",
                 ".terminal-window"
@@ -343,17 +306,15 @@ document.addEventListener("DOMContentLoaded", () => {
             cachedBoxes = list;
         }
 
-        // Trigger a playful NPC Raid ("Semburan") targeting Dafa's Head on the Engineer ID Card!
+        // Subtle, occasional NPC micro-attack easter egg near Dafa's portrait head
         function triggerNpcRaidOnDafa(forcedRoamer = null, isManual = false) {
             if (!portraitStageEl) return false;
             if (isUnderRaid && !isManual) return false;
-            if (!isManual && (isRegenerating || Date.now() - lastAutoRaidTime < 5500)) return false;
+            if (!isManual && (isRegenerating || Date.now() - lastAutoRaidTime < 22000)) return false;
 
             const stageRect = portraitStageEl.getBoundingClientRect();
-            // Ensure Dafa's portrait card is currently visible in the viewport
             if (stageRect.bottom < 80 || stageRect.top > window.innerHeight - 60) return false;
 
-            // Ensure no other NPC remains in RAID state
             roamers.forEach((other) => {
                 if (other.state === "RAID") {
                     other.state = "ROAM";
@@ -361,7 +322,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            const attacker = forcedRoamer || roamers[Math.floor(Math.random() * roamers.length)];
+            // Pick the NPC closest to the portrait stage so it doesn't fly across the whole screen
+            let attacker = forcedRoamer;
+            if (!attacker) {
+                const targetCx = stageRect.left + stageRect.width * 0.5;
+                const targetCy = stageRect.top + stageRect.height * 0.35;
+                let bestDist = Infinity;
+                for (let i = 0; i < roamers.length; i++) {
+                    const cand = roamers[i];
+                    const d = Math.hypot(cand.x - targetCx, cand.y - targetCy);
+                    if (d < bestDist) {
+                        bestDist = d;
+                        attacker = cand;
+                    }
+                }
+            }
             if (!attacker) return false;
 
             isUnderRaid = true;
@@ -373,33 +348,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             attacker.state = "RAID";
-            attacker.stateUntil = Date.now() + 2600;
-            attacker.nextDamageTick = Date.now() + 350;
-            attacker.el.classList.remove("is-overlapping-box", "is-patrolling");
+            attacker.stateUntil = Date.now() + 1500;
+            attacker.nextDamageTick = Date.now() + 340;
+            attacker.el.classList.remove("is-overlapping-box", "is-patrolling", "is-greeting");
             attacker.el.classList.add("is-attacking");
 
-            // Position the NPC on either the left or right flank of Dafa's head
             const fromLeft = attacker.x < stageRect.left + stageRect.width * 0.5;
             attacker.raidSide = fromLeft ? -1 : 1;
-            showNpcBubble(attacker, RAID_QUIPS[Math.floor(Math.random() * RAID_QUIPS.length)], 2500);
-
-            if (charCardEl) {
-                charCardEl.classList.remove("is-regenerating");
-                charCardEl.classList.add("is-under-attack");
-            }
-            if (combatStatusEl) {
-                combatStatusEl.textContent = `🔥 ${attacker.name} ATTACK!`;
-                combatStatusEl.className = "hp-status-tag status-danger";
-            }
+            showNpcBubble(attacker, RAID_QUIPS[Math.floor(Math.random() * RAID_QUIPS.length)], 1400);
             return true;
         }
 
-        if (raidTriggerBtn) {
-            raidTriggerBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                triggerNpcRaidOnDafa(null, true);
-            });
-        }
         if (portraitStageEl) {
             portraitStageEl.addEventListener("click", () => {
                 triggerNpcRaidOnDafa(null, true);
@@ -409,58 +368,96 @@ document.addEventListener("DOMContentLoaded", () => {
         roamers.forEach((r) => {
             r.el.addEventListener("click", (e) => {
                 e.stopPropagation();
-                // If Dafa's portrait is visible and not currently under raid, clicking an NPC commands it to raid or scatter!
                 if (!isUnderRaid && portraitStageEl) {
                     const sr = portraitStageEl.getBoundingClientRect();
-                    if (sr.top >= 0 && sr.bottom <= window.innerHeight && Math.random() < 0.55) {
-                        triggerNpcRaidOnDafa(r);
+                    if (sr.top >= 0 && sr.bottom <= window.innerHeight && Math.random() < 0.45) {
+                        triggerNpcRaidOnDafa(r, true);
                         return;
                     }
                 }
                 r.state = "ROAM";
-                r.el.classList.remove("is-attacking", "is-patrolling");
+                r.el.classList.remove("is-attacking", "is-patrolling", "is-greeting");
                 r.el.classList.add("scared-mode");
-                r.vx = (Math.random() < 0.5 ? -1 : 1) * 2.2;
-                r.vy = -1.8;
+                r.vx = (Math.random() < 0.5 ? -1 : 1) * 0.55;
+                r.vy = -0.42;
                 r.facing = r.vx >= 0 ? 1 : -1;
-                showNpcBubble(r, "😱 +200 PTS!", 1400);
+                showNpcBubble(r, "eep~", 1100);
 
                 const pop = document.createElement("div");
                 pop.className = "arcade-score-pop";
-                pop.textContent = "+200 PTS";
-                pop.style.left = `${e.clientX - 24}px`;
-                pop.style.top = `${e.clientY - 16}px`;
+                pop.textContent = "+100";
+                pop.style.left = `${e.clientX - 14}px`;
+                pop.style.top = `${e.clientY - 12}px`;
                 document.body.appendChild(pop);
                 setTimeout(() => pop.remove(), 900);
                 setTimeout(() => {
                     r.el.classList.remove("scared-mode");
-                    r.vx = Math.sign(r.vx) * 1.05;
-                    r.vy = Math.sign(r.vy) * 0.65;
-                }, 1500);
+                    r.vx = Math.sign(r.vx || 1) * r.baseSpeedX;
+                    r.vy = Math.sign(r.vy || 1) * r.baseSpeedY;
+                }, 1100);
             });
         });
 
-        function renderAttackStream(attacker, headX, headY, now) {
-            if (!attackBeamSvg) return;
-            const mouthX = attacker.x + (attacker.facing >= 0 ? attacker.w * attacker.scale * 0.88 : attacker.w * attacker.scale * 0.12);
-            const mouthY = attacker.y + attacker.h * attacker.scale * 0.45;
-            const jitter1 = Math.sin(now * 0.045) * 9;
-            const jitter2 = Math.cos(now * 0.055) * 9;
-            const midX = (mouthX + headX) * 0.5;
-            const midY = (mouthY + headY) * 0.5 + jitter1;
+        // Subtle NPC-to-NPC background social interactions when two NPCs drift near each other
+        function checkNpcToNpcInteractions(nowMs) {
+            for (let i = 0; i < roamers.length; i++) {
+                const a = roamers[i];
+                if (a.state !== "ROAM" || nowMs - a.lastNpcInteract < 9500) continue;
 
-            const isPlasma = attacker.attackType === "plasma" || attacker.attackType === "laser";
-            const outerColor = isPlasma ? "#fbbf24" : "#ef4444";
-            const innerColor = isPlasma ? "#10b981" : "#fbbf24";
+                for (let j = i + 1; j < roamers.length; j++) {
+                    const b = roamers[j];
+                    if (b.state !== "ROAM" || nowMs - b.lastNpcInteract < 9500) continue;
 
-            attackBeamSvg.innerHTML = `
-                <path d="M ${mouthX.toFixed(1)} ${mouthY.toFixed(1)} Q ${midX.toFixed(1)} ${midY.toFixed(1)} ${(headX + jitter2 * 0.5).toFixed(1)} ${(headY + jitter1 * 0.4).toFixed(1)}"
-                      stroke="${outerColor}" stroke-width="14" stroke-linecap="round" fill="none" opacity="0.65" stroke-dasharray="10 6" />
-                <path d="M ${mouthX.toFixed(1)} ${mouthY.toFixed(1)} Q ${midX.toFixed(1)} ${(midY - jitter2 * 0.6).toFixed(1)} ${headX.toFixed(1)} ${headY.toFixed(1)}"
-                      stroke="${innerColor}" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.95" />
-                <circle cx="${headX.toFixed(1)}" cy="${headY.toFixed(1)}" r="${12 + Math.abs(jitter1)}" fill="${outerColor}" opacity="0.75" />
-                <circle cx="${headX.toFixed(1)}" cy="${headY.toFixed(1)}" r="7" fill="#f4f0ea" opacity="0.95" />
-            `;
+                    const dx = (b.x + b.w * 0.5) - (a.x + a.w * 0.5);
+                    const dy = (b.y + b.h * 0.5) - (a.y + a.h * 0.5);
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist > 18 && dist < 66) {
+                        a.lastNpcInteract = nowMs;
+                        b.lastNpcInteract = nowMs;
+                        const roll = Math.random();
+                        const pair = GREET_PAIRS[Math.floor(Math.random() * GREET_PAIRS.length)];
+
+                        // Interaction 1 (48%): Pause & gentle pixel nod greeting ("hi~" / "beep")
+                        if (roll < 0.48) {
+                            a.state = "GREET";
+                            b.state = "GREET";
+                            a.stateUntil = nowMs + 1150;
+                            b.stateUntil = nowMs + 1150;
+                            a.facing = dx >= 0 ? 1 : -1;
+                            b.facing = dx >= 0 ? -1 : 1;
+                            a.squishY = 0.86;
+                            b.squishY = 0.86;
+                            a.el.classList.add("is-greeting");
+                            b.el.classList.add("is-greeting");
+                            showNpcBubble(a, pair[0], 1100);
+                            setTimeout(() => showNpcBubble(b, pair[1], 1050), 220);
+                        }
+                        // Interaction 2 (28%): Polite soft turn-away ("oops" / "boop")
+                        else if (roll < 0.76) {
+                            a.vx = dx >= 0 ? -a.baseSpeedX : a.baseSpeedX;
+                            b.vx = dx >= 0 ? b.baseSpeedX : -b.baseSpeedX;
+                            a.facing = a.vx >= 0 ? 1 : -1;
+                            b.facing = b.vx >= 0 ? 1 : -1;
+                            a.squishX = 1.12;
+                            b.squishX = 1.12;
+                            showNpcBubble(a, "boop", 950);
+                        }
+                        // Interaction 3 (24%): Calm side-by-side buddy drift ("♫")
+                        else {
+                            const dir = a.vx >= 0 ? 1 : -1;
+                            a.vx = dir * a.baseSpeedX;
+                            b.vx = dir * a.baseSpeedX;
+                            b.vy = a.vy;
+                            a.facing = dir;
+                            b.facing = dir;
+                            showNpcBubble(a, "♫", 1200);
+                            showNpcBubble(b, "~", 1200);
+                        }
+                        break;
+                    }
+                }
+            }
         }
 
         function tickRoamingArcade(now) {
@@ -468,20 +465,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const vw = window.innerWidth;
             const vh = window.innerHeight;
             const isMobile = vw <= 768;
-            const padX = isMobile ? 75 : 95;
-            const padY = isMobile ? 75 : 90;
+            // Scale speed down on smaller windows so movement never feels fast or dizzying
+            const speedScale = Math.min(1, Math.max(0.45, vw / 1440));
+            const padX = isMobile ? 54 : 68;
+            const padY = isMobile ? 58 : 70;
             const nowMs = Date.now();
 
-            // Periodically trigger an automatic NPC raid on Dafa's avatar every ~7.5s when Hero is in view
-            if (!isUnderRaid && nowMs - lastAutoRaidTime > 7200) {
+            // Occasionally trigger a subtle micro-attack on Dafa's avatar (~every 24s when in view)
+            if (!isUnderRaid && nowMs - lastAutoRaidTime > 24000) {
                 triggerNpcRaidOnDafa();
             }
 
-            let activeBeamRendered = false;
+            // Check subtle NPC-to-NPC interactions in the background
+            checkNpcToNpcInteractions(nowMs);
 
             for (let i = 0; i < roamers.length; i++) {
                 const r = roamers[i];
-                r.scale = isMobile ? 0.72 : 1.0;
+                r.scale = isMobile ? 0.76 : 1.0;
                 const rw = r.w * r.scale;
                 const rh = r.h * r.scale;
 
@@ -490,73 +490,73 @@ document.addEventListener("DOMContentLoaded", () => {
                     r.bubbleUntil = 0;
                 }
 
-                // Recover squish back to 1
-                r.squishX += (1 - r.squishX) * 0.18;
-                r.squishY += (1 - r.squishY) * 0.18;
+                // Smoothly recover pixel squish back to 1
+                r.squishX += (1 - r.squishX) * 0.14;
+                r.squishY += (1 - r.squishY) * 0.14;
 
-                // STATE 1: RAIDING DAFA'S AVATAR ("Semburan" Flame/Laser Attack!)
+                // STATE 1: SUBTLE MICRO-ATTACK NEAR DAFA'S PORTRAIT HEAD
                 if (r.state === "RAID" && portraitStageEl) {
                     const stageRect = portraitStageEl.getBoundingClientRect();
                     const headX = stageRect.left + stageRect.width * 0.5;
-                    const headY = stageRect.top + stageRect.height * 0.34;
+                    const headY = stageRect.top + stageRect.height * 0.28;
 
-                    // Hover on the flank of Dafa's head and face toward Dafa
-                    const targetX = r.raidSide < 0 ? stageRect.left - rw * 0.55 : stageRect.right - rw * 0.45;
-                    const targetY = headY - rh * 0.48 + Math.sin(now * 0.008) * 10;
+                    // Drift gently beside the top corner of Dafa's head (close range, no screen-spanning laser)
+                    const targetX = r.raidSide < 0
+                        ? headX - stageRect.width * 0.28 - rw * 0.65
+                        : headX + stageRect.width * 0.28 - rw * 0.35;
+                    const targetY = headY - rh * 0.35 + Math.sin(now * 0.005) * 4;
 
-                    r.x += (targetX - r.x) * 0.14;
-                    r.y += (targetY - r.y) * 0.14;
+                    r.x += (targetX - r.x) * 0.065;
+                    r.y += (targetY - r.y) * 0.065;
                     r.facing = r.x + rw * 0.5 < headX ? 1 : -1;
 
-                    // Draw live semburan flame/laser stream to Dafa's head
-                    renderAttackStream(r, headX, headY, now);
-                    activeBeamRendered = true;
-
-                    // Inflict periodic HP damage ticks + sparks on Dafa's head
+                    // Inflict 2 subtle frameless "-5 HP" ticks while close to the head
                     if (nowMs >= r.nextDamageTick) {
-                        r.nextDamageTick = nowMs + 460;
-                        const dmg = 11 + Math.floor(Math.random() * 7);
-                        dafaHp = Math.max(22, dafaHp - dmg);
-                        updateHpUI();
-                        spawnAvatarFloatingText(`-${dmg} HP 🔥`, "is-dmg");
+                        r.nextDamageTick = nowMs + 620;
+                        const dmg = 5;
+                        dafaHp = Math.max(85, dafaHp - dmg);
+                        updateHpUI("damaged");
+                        spawnAvatarFloatingText(`-${dmg} HP`, "is-dmg");
                         spawnAvatarHeadSparks(r.attackType === "fire" ? "#fbbf24" : "#10b981");
                         if (portraitImgEl) {
                             portraitImgEl.classList.add("hit-flash");
-                            setTimeout(() => portraitImgEl.classList.remove("hit-flash"), 190);
+                            setTimeout(() => portraitImgEl.classList.remove("hit-flash"), 160);
                         }
                     }
 
-                    // End of raid -> Dafa activates Counter-Shield & starts HP Regen!
+                    // End of subtle micro-attack -> NPC calmly drifts off and Dafa's HP gently regenerates
                     if (nowMs >= r.stateUntil) {
                         r.state = "ROAM";
                         r.el.classList.remove("is-attacking");
-                        r.el.classList.add("scared-mode");
-                        r.vx = r.raidSide * 2.1;
-                        r.vy = -1.35;
+                        r.vx = r.raidSide * r.baseSpeedX * 1.15;
+                        r.vy = -r.baseSpeedY;
                         r.facing = r.vx >= 0 ? 1 : -1;
-                        showNpcBubble(r, "😱 SHIELD ZAP!!", 1400);
-                        setTimeout(() => {
-                            r.el.classList.remove("scared-mode");
-                            r.vx = Math.sign(r.vx) * 1.0;
-                            r.vy = 0.6;
-                        }, 1400);
 
-                        spawnAvatarFloatingText("🛡️ COUNTER-SHIELD!", "is-shield");
                         isUnderRaid = false;
                         lastAutoRaidTime = nowMs;
-                        setTimeout(startHpRegenSequence, 650);
+                        setTimeout(startHpRegenSequence, 750);
                     }
                 }
-                // STATE 2: PATROLLING ALONG TOP BORDER OF A UI BOX
+                // STATE 2: NPC-TO-NPC GREETING PAUSE
+                else if (r.state === "GREET") {
+                    r.y += Math.sin(now * 0.006 + r.phase) * 0.08;
+                    if (nowMs >= r.stateUntil) {
+                        r.state = "ROAM";
+                        r.el.classList.remove("is-greeting");
+                        r.vx = -r.facing * r.baseSpeedX;
+                        r.facing = r.vx >= 0 ? 1 : -1;
+                    }
+                }
+                // STATE 3: QUIET STROLL ALONG TOP EDGE OF A UI BOX
                 else if (r.state === "PATROL" && r.patrolBox) {
                     const rect = r.patrolBox.el.getBoundingClientRect();
                     if (nowMs >= r.stateUntil || rect.bottom < 40 || rect.top > vh - 40) {
                         r.state = "ROAM";
                         r.el.classList.remove("is-patrolling");
-                        r.vy = -0.85;
+                        r.vy = -r.baseSpeedY;
                     } else {
-                        r.y = rect.top - rh + 6;
-                        r.x += r.vx * 1.15;
+                        r.y = rect.top - rh + 4;
+                        r.x += r.vx * speedScale;
                         if (r.x <= rect.left) {
                             r.x = rect.left;
                             r.vx = Math.abs(r.vx);
@@ -568,18 +568,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
                 }
-                // STATE 3: FREE ROAMING + BOX COLLISIONS ("BONK"), PATROLS & TRANSLUCENT PHASING
+                // STATE 4: CALM FREE ROAMING + TRANSLUCENT OVER-BOX PHASING & SOFT BOX INTERACTIONS
                 else {
-                    const waveY = Math.sin(now * 0.0022 + r.phase) * 0.28;
-                    r.x += r.vx;
-                    r.y += r.vy + waveY;
+                    const waveY = Math.sin(now * 0.0014 + r.phase) * 0.07;
+                    r.x += r.vx * speedScale;
+                    r.y += r.vy * speedScale + waveY;
 
-                    if (r.x < 10) {
-                        r.x = 10;
+                    if (r.x < 12) {
+                        r.x = 12;
                         r.vx = Math.abs(r.vx);
                         r.facing = 1;
                     } else if (r.x > vw - padX) {
-                        r.x = Math.max(10, vw - padX);
+                        r.x = Math.max(12, vw - padX);
                         r.vx = -Math.abs(r.vx);
                         r.facing = -1;
                     }
@@ -592,7 +592,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         r.vy = -Math.abs(r.vy);
                     }
 
-                    // Check overlap with all visible UI boxes ("tabel-tabel / kotak-kotaknya aku")
+                    // Check overlap with visible UI boxes
                     const cx = r.x + rw * 0.5;
                     const cy = r.y + rh * 0.5;
                     let overlappingBox = null;
@@ -600,7 +600,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     for (let b = 0; b < cachedBoxes.length; b++) {
                         const box = cachedBoxes[b];
                         const br = box.rect;
-                        if (cx >= br.left - 8 && cx <= br.right + 8 && cy >= br.top - 8 && cy <= br.bottom + 8) {
+                        if (cx >= br.left - 4 && cx <= br.right + 4 && cy >= br.top - 4 && cy <= br.bottom + 4) {
                             overlappingBox = box;
                             break;
                         }
@@ -608,17 +608,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     if (overlappingBox) {
                         const br = overlappingBox.rect;
-                        // If this NPC just entered the box boundary and cooldown elapsed, pick a playful interaction!
-                        if (nowMs - r.lastBoxInteract > 2600) {
+                        // Gentle, infrequent box interaction (11s cooldown per NPC)
+                        if (nowMs - r.lastBoxInteract > 11000) {
                             r.lastBoxInteract = nowMs;
 
-                            // Special case: if the box is Dafa's Engineer ID Card, 65% chance to trigger a Boss Raid!
-                            if (overlappingBox.el.id === "character-card" && !isUnderRaid && Math.random() < 0.65) {
+                            // If drifting onto Dafa's ID card and auto-raid cooldown is ready, 25% chance for a subtle nibble
+                            if (overlappingBox.el.id === "character-card" && !isUnderRaid && nowMs - lastAutoRaidTime > 18000 && Math.random() < 0.25) {
                                 triggerNpcRaidOnDafa(r);
                             } else {
                                 const roll = Math.random();
-                                // Interaction A (42%): BONK off the box edge & flash the box border!
-                                if (roll < 0.42) {
+                                // Interaction A (22%): Soft bounce off the box edge
+                                if (roll < 0.22) {
                                     const distLeft = Math.abs(cx - br.left);
                                     const distRight = Math.abs(cx - br.right);
                                     const distTop = Math.abs(cy - br.top);
@@ -628,42 +628,33 @@ document.addEventListener("DOMContentLoaded", () => {
                                     if (minDist === distLeft || minDist === distRight) {
                                         r.vx = -r.vx;
                                         r.facing = r.vx >= 0 ? 1 : -1;
-                                        r.x += r.vx * 6;
+                                        r.x += Math.sign(r.vx) * 3;
                                     } else {
                                         r.vy = -r.vy;
-                                        r.y += r.vy * 6;
+                                        r.y += Math.sign(r.vy) * 3;
                                     }
-                                    r.squishX = 1.28;
-                                    r.squishY = 0.74;
+                                    r.squishX = 1.12;
+                                    r.squishY = 0.88;
                                     r.el.classList.add("is-bonking");
-                                    setTimeout(() => r.el.classList.remove("is-bonking"), 380);
-
-                                    overlappingBox.el.classList.add("npc-bonked-box");
-                                    setTimeout(() => overlappingBox.el.classList.remove("npc-bonked-box"), 420);
-
-                                    showNpcBubble(r, BONK_QUIPS[Math.floor(Math.random() * BONK_QUIPS.length)], 1350);
+                                    setTimeout(() => r.el.classList.remove("is-bonking"), 320);
+                                    showNpcBubble(r, BONK_QUIPS[Math.floor(Math.random() * BONK_QUIPS.length)], 1050);
                                 }
-                                // Interaction B (26%): Land on top edge of the box and PATROL along its border!
-                                else if (roll < 0.68 && br.top > 95 && br.width > 140) {
+                                // Interaction B (16%): Quietly stroll along the top edge of the box for a moment
+                                else if (roll < 0.38 && br.top > 90 && br.width > 140 && Math.abs(cy - br.top) < 28) {
                                     r.state = "PATROL";
                                     r.patrolBox = overlappingBox;
-                                    r.stateUntil = nowMs + 2100;
+                                    r.stateUntil = nowMs + 1800;
                                     r.el.classList.remove("is-overlapping-box");
                                     r.el.classList.add("is-patrolling");
-                                    overlappingBox.el.classList.add("npc-bonked-box");
-                                    setTimeout(() => overlappingBox.el.classList.remove("npc-bonked-box"), 360);
-                                    showNpcBubble(r, PATROL_QUIPS[Math.floor(Math.random() * PATROL_QUIPS.length)], 1900);
+                                    showNpcBubble(r, PATROL_QUIPS[Math.floor(Math.random() * PATROL_QUIPS.length)], 1250);
                                 }
-                                // Interaction C (32%): Phase through the box translucently (opacity drops slightly)!
+                                // Interaction C (62%): Simply phase through the box translucently (opacity drops from 0.28 -> 0.14)
                                 else {
                                     r.el.classList.add("is-overlapping-box");
-                                    if (Math.random() < 0.55) {
-                                        showNpcBubble(r, PHASE_QUIPS[Math.floor(Math.random() * PHASE_QUIPS.length)], 1300);
-                                    }
                                 }
                             }
                         } else {
-                            // Currently walking over/through the box -> maintain translucent lowered opacity
+                            // Maintain translucent lowered opacity while drifting over/through any UI box
                             r.el.classList.add("is-overlapping-box");
                         }
                     } else {
@@ -675,10 +666,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const flipX = r.facing * r.scale * r.squishX;
                 const scaleY = r.scale * r.squishY;
                 r.el.style.transform = `translate3d(${r.x.toFixed(1)}px, ${r.y.toFixed(1)}px, 0) scale(${flipX.toFixed(3)}, ${scaleY.toFixed(3)})`;
-            }
-
-            if (!activeBeamRendered && attackBeamSvg && attackBeamSvg.innerHTML !== "") {
-                attackBeamSvg.innerHTML = "";
             }
 
             requestAnimationFrame(tickRoamingArcade);

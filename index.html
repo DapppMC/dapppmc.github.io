@@ -44,14 +44,11 @@
         <div class="cyber-grid-overlay"></div>
     </div>
 
-    <!-- Roaming Interactive Arcade NPCs (Above-Card Translucent Overlay, Box Collisions & Boss Raid on Dafa's Avatar!) -->
+    <!-- Roaming Ambient Arcade NPCs (Calm Translucent Overlay, Gentle Box/NPC Interactions & Subtle Avatar Easter Egg) -->
     <div class="roaming-arcade-layer" id="roaming-arcade-layer" aria-hidden="true">
-        <!-- SVG Laser/Flame Beam Overlay for NPC -> Avatar Semburan Attacks -->
-        <svg class="npc-attack-beam-svg" id="npc-attack-beam-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-
         <!-- NPC 1: Classic 14x13 Pac-Man Ghost (Blinky Coral-White) -->
-        <div class="roaming-sprite" data-npc-name="BLINKY" data-attack="fire" data-speed="0.65" style="width: 76px; height: 70px;" title="Blinky NPC (Click to interact!)">
-            <div class="npc-bubble">BONK!</div>
+        <div class="roaming-sprite" data-npc-name="BLINKY" data-attack="fire" data-speed="0.45" style="width: 50px; height: 46px;" title="Blinky">
+            <div class="npc-bubble">hi~</div>
             <div class="npc-breath-fx"></div>
             <svg viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
                 <g class="frame-1">
@@ -66,8 +63,8 @@
         </div>
 
         <!-- NPC 2: Classic 14x13 Pac-Man Ghost (Clyde Phosphor Amber) -->
-        <div class="roaming-sprite" data-npc-name="CLYDE" data-attack="fire" data-speed="0.58" style="width: 72px; height: 67px;" title="Clyde NPC (Click to interact!)">
-            <div class="npc-bubble">SCANNING...</div>
+        <div class="roaming-sprite" data-npc-name="CLYDE" data-attack="fire" data-speed="0.38" style="width: 48px; height: 44px;" title="Clyde">
+            <div class="npc-bubble">hmm..</div>
             <div class="npc-breath-fx"></div>
             <svg viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
                 <g class="frame-1">
@@ -82,8 +79,8 @@
         </div>
 
         <!-- NPC 3: Classic 11x8 Space Invader (Bone White) -->
-        <div class="roaming-sprite" data-npc-name="INVADER-X" data-attack="plasma" data-speed="0.72" style="width: 78px; height: 58px;" title="Space Invader NPC (Click to interact!)">
-            <div class="npc-bubble">PEW PEW!</div>
+        <div class="roaming-sprite" data-npc-name="INVADER-X" data-attack="plasma" data-speed="0.48" style="width: 52px; height: 38px;" title="Space Invader">
+            <div class="npc-bubble">pew~</div>
             <div class="npc-breath-fx"></div>
             <svg viewBox="0 0 11 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
                 <g class="frame-1" fill="#f4f0ea">
@@ -96,8 +93,8 @@
         </div>
 
         <!-- NPC 4: Pixel Helper Mecha-Bot / Drone (Sage Emerald) -->
-        <div class="roaming-sprite" data-npc-name="HERMES-BOT" data-attack="laser" data-speed="0.54" style="width: 72px; height: 66px;" title="Hermes Bot Drone NPC (Click to interact!)">
-            <div class="npc-bubble">BEEP BOOP!</div>
+        <div class="roaming-sprite" data-npc-name="HERMES-BOT" data-attack="laser" data-speed="0.40" style="width: 48px; height: 44px;" title="Hermes Bot">
+            <div class="npc-bubble">beep</div>
             <div class="npc-breath-fx"></div>
             <svg viewBox="0 0 12 11" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
                 <g class="frame-1">
@@ -114,8 +111,8 @@
         </div>
 
         <!-- NPC 5: Mini Pac-Man Ghost (Coral Vermilion) -->
-        <div class="roaming-sprite" data-npc-name="INKY-RED" data-attack="fire" data-speed="0.62" style="width: 68px; height: 63px;" title="Inky Red NPC (Click to interact!)">
-            <div class="npc-bubble">BOO!!</div>
+        <div class="roaming-sprite" data-npc-name="INKY-RED" data-attack="fire" data-speed="0.42" style="width: 46px; height: 42px;" title="Inky">
+            <div class="npc-bubble">boo~</div>
             <div class="npc-breath-fx"></div>
             <svg viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
                 <g class="frame-1">
@@ -130,8 +127,8 @@
         </div>
 
         <!-- NPC 6: Retro Arcade Squid Invader (Warm Gold) -->
-        <div class="roaming-sprite" data-npc-name="SQUID-8BIT" data-attack="plasma" data-speed="0.68" style="width: 66px; height: 66px;" title="Arcade Squid NPC (Click to interact!)">
-            <div class="npc-bubble">RAID!</div>
+        <div class="roaming-sprite" data-npc-name="SQUID-8BIT" data-attack="plasma" data-speed="0.44" style="width: 44px; height: 44px;" title="Arcade Squid">
+            <div class="npc-bubble">~</div>
             <div class="npc-breath-fx"></div>
             <svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
                 <g class="frame-1" fill="#fbbf24">
@@ -232,23 +229,13 @@
                 <div class="character-id-card" id="character-card">
                     <div class="id-card-topbar">
                         <span>★ PLAYER 01 // ENGINEER ID</span>
-                        <button type="button" class="id-raid-trigger" id="trigger-npc-raid" title="Summon NPC Boss Attack on Dafa!">⚔️ RAID ME</button>
+                        <span>NRP 5024231024</span>
                     </div>
 
-                    <!-- Retro Arcade HP Bar & Shield Status HUD (Reacts when NPCs attack Dafa's avatar!) -->
-                    <div class="id-hp-hud" id="dafa-hp-hud">
-                        <div class="hp-hud-top">
-                            <span class="hp-label"><i class="fas fa-heart"></i> HP <strong id="dafa-hp-text">100/100</strong></span>
-                            <span class="hp-status-tag" id="dafa-combat-status">SHIELD: STANDBY</span>
-                        </div>
-                        <div class="hp-bar-track">
-                            <div class="hp-bar-fill" id="dafa-hp-fill" style="width: 100%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="id-portrait-stage" id="id-portrait-stage">
-                        <div class="stage-floating-sprite" style="top:14px;left:14px;">
+                    <div class="id-portrait-stage" id="id-portrait-stage" title="Click for subtle NPC easter egg">
+                        <div class="stage-floating-sprite stage-hp-indicator" style="top:12px;left:14px;">
                             <span class="pixel-art pixel-heart"></span>
+                            <span class="subtle-hp-readout" id="dafa-hp-text">100 HP</span>
                         </div>
                         <div class="stage-floating-sprite" style="top:14px;right:18px;">
                             <span class="pixel-art pixel-star"></span>
@@ -256,7 +243,7 @@
                         <div class="stage-floating-sprite" style="bottom:18px;left:16px;">
                             <span class="pixel-art pixel-sword"></span>
                         </div>
-                        <!-- Dynamic Flame / Laser / Heal FX Layer over Dafa's Head -->
+                        <!-- Subtle Frameless Floating +/-HP & Micro-Spark Layer -->
                         <div class="avatar-fx-layer" id="avatar-fx-layer"></div>
                         <img src="assets/hero/dafa-clean.png" alt="Ahmad Dafa Salam" class="id-portrait-img" id="dafa-portrait-img" />
                     </div>

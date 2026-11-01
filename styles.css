@@ -193,7 +193,7 @@ body {
     -webkit-mask-image: radial-gradient(circle at 50% 45%, black 35%, transparent 88%);
 }
 
-/* Roaming Interactive Arcade NPCs Layer (Above Cards, Translucent Over-Box Phasing & Boss Raids) */
+/* Roaming Interactive Arcade NPCs Layer (Subtle Above-Card Translucent Phasing & Micro-Easter Eggs) */
 .roaming-arcade-layer {
     position: fixed;
     inset: 0;
@@ -204,143 +204,112 @@ body {
     overflow: hidden;
 }
 
-.npc-attack-beam-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 46;
-    overflow: visible;
-}
-
 .roaming-sprite {
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0.64;
+    opacity: 0.28;
     pointer-events: auto;
     cursor: pointer;
     image-rendering: pixelated;
     will-change: transform, opacity;
-    transition: opacity 0.22s ease, filter 0.22s ease;
-    filter: drop-shadow(0 4px 12px rgba(11, 11, 10, 0.72)) drop-shadow(0 0 10px rgba(245, 158, 11, 0.22));
+    transition: opacity 0.45s ease, filter 0.45s ease;
+    filter: drop-shadow(0 2px 6px rgba(11, 11, 10, 0.55));
     --npc-flip: 1;
 }
 
-/* When an NPC passes over/through any box or card, keep it visible above the box with slightly lowered translucent opacity */
+/* When an NPC passes over/through any box or card, keep it subtly visible above the box with lowered translucent opacity */
 .roaming-sprite.is-overlapping-box {
-    opacity: 0.36;
-    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.35)) contrast(0.95);
+    opacity: 0.14;
+    filter: drop-shadow(0 1px 3px rgba(11, 11, 10, 0.35));
     pointer-events: none;
 }
 
-.roaming-sprite.is-patrolling {
-    opacity: 0.78 !important;
-    filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.52));
+.roaming-sprite.is-patrolling,
+.roaming-sprite.is-greeting {
+    opacity: 0.36;
 }
 
 .roaming-sprite.is-bonking {
-    opacity: 0.88 !important;
-    filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.75));
+    opacity: 0.38;
 }
 
 .roaming-sprite.is-attacking {
-    opacity: 0.94 !important;
-    filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.92)) drop-shadow(0 0 28px rgba(245, 158, 11, 0.75));
-    z-index: 48;
+    opacity: 0.48;
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.45));
+    z-index: 47;
 }
 
 .roaming-sprite:hover {
-    opacity: 0.92 !important;
-    filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.75));
+    opacity: 0.65 !important;
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
 }
 
 .roaming-sprite.scared-mode {
-    opacity: 0.88 !important;
-    filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.95));
+    opacity: 0.52 !important;
+    filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.65));
 }
 
 .roaming-sprite.scared-mode svg path {
     fill: #fbbf24 !important;
 }
 
-/* Pixel Speech Bubble above NPCs */
+/* Frameless Floating Pixel Micro-Text above NPCs (No Box, No Border) */
 .npc-bubble {
     position: absolute;
-    bottom: calc(100% + 7px);
+    bottom: calc(100% + 3px);
     left: 50%;
-    transform: translateX(-50%) scaleX(var(--npc-flip, 1)) scale(0.85);
-    background: rgba(11, 11, 10, 0.94);
-    border: 1.5px solid var(--accent-gold);
-    color: var(--text-main);
+    transform: translateX(-50%) scaleX(var(--npc-flip, 1)) translateY(2px);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--accent-gold);
     font-family: var(--font-pixel);
-    font-size: 0.72rem;
+    font-size: 0.66rem;
     font-weight: 700;
-    line-height: 1.15;
-    padding: 3px 8px;
-    border-radius: 5px;
+    line-height: 1;
+    padding: 0;
     white-space: nowrap;
-    box-shadow: 2px 2px 0px var(--accent-amber);
+    text-shadow: 1px 1px 0px #0b0b0a, -1px -1px 0px #0b0b0a, 0 0 6px rgba(11, 11, 10, 0.95);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.16s ease, transform 0.16s ease;
+    transition: opacity 0.25s ease, transform 0.25s ease;
     z-index: 50;
 }
 
-.npc-bubble::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 4px;
-    border-style: solid;
-    border-color: var(--accent-gold) transparent transparent transparent;
-}
-
 .roaming-sprite.show-bubble .npc-bubble {
-    opacity: 1;
-    transform: translateX(-50%) scaleX(var(--npc-flip, 1)) scale(1);
+    opacity: 0.88;
+    transform: translateX(-50%) scaleX(var(--npc-flip, 1)) translateY(0);
 }
 
 .roaming-sprite.is-attacking .npc-bubble {
-    border-color: var(--accent-coral);
-    box-shadow: 2px 2px 0px var(--accent-coral);
-    color: #fecaca;
+    color: #fca5a5;
 }
 
-/* Mouth / Cannon Flame-Stream ("Semburan") Cone when Attacking Dafa's Avatar */
+/* Subtle Tiny Pixel Puff ("Semburan Kecil") when an NPC nibbles/zaps Dafa's Avatar */
 .npc-breath-fx {
     position: absolute;
-    top: 38%;
-    left: 92%;
+    top: 42%;
+    left: 94%;
     width: 0;
-    height: 18px;
+    height: 9px;
     opacity: 0;
     pointer-events: none;
-    background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 45%, #ef4444 85%, transparent 100%);
-    clip-path: polygon(0 35%, 100% 0, 92% 50%, 100% 100%, 0 65%);
-    filter: drop-shadow(0 0 10px #f59e0b);
-    transition: width 0.15s ease, opacity 0.15s ease;
+    background: radial-gradient(circle at 30% 50%, #fbbf24 0%, #ef4444 65%, transparent 100%);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.65));
+    transition: width 0.2s ease, opacity 0.2s ease;
 }
 
 .roaming-sprite.is-attacking .npc-breath-fx {
-    width: 68px;
-    opacity: 0.95;
-    animation: flameFlicker 0.12s infinite alternate;
+    width: 22px;
+    opacity: 0.78;
+    animation: flameFlicker 0.18s infinite alternate;
 }
 
 @keyframes flameFlicker {
-    0% { transform: scaleY(0.85) rotate(-3deg); filter: drop-shadow(0 0 8px #fbbf24); }
-    100% { transform: scaleY(1.22) rotate(3deg); filter: drop-shadow(0 0 14px #ef4444); }
-}
-
-/* UI Box Reaction when an NPC Bonks or Patrols It */
-.npc-bonked-box {
-    border-color: var(--accent-gold) !important;
-    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.55), 5px 5px 0px var(--accent-coral) !important;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+    0% { transform: scale(0.85) translateX(0); opacity: 0.62; }
+    100% { transform: scale(1.12) translateX(3px); opacity: 0.88; }
 }
 
 .roaming-sprite svg {
@@ -351,11 +320,11 @@ body {
 }
 
 .roaming-sprite .frame-1 {
-    animation: toggle-frame-1 0.85s steps(1, end) infinite;
+    animation: toggle-frame-1 1.15s steps(1, end) infinite;
 }
 
 .roaming-sprite .frame-2 {
-    animation: toggle-frame-2 0.85s steps(1, end) infinite;
+    animation: toggle-frame-2 1.15s steps(1, end) infinite;
 }
 
 @keyframes toggle-frame-1 {
@@ -372,17 +341,19 @@ body {
     position: fixed;
     z-index: 9000;
     font-family: var(--font-pixel);
-    font-size: 0.92rem;
+    font-size: 0.74rem;
     font-weight: 700;
     color: var(--accent-gold);
-    text-shadow: 2px 2px 0px #0b0b0a;
+    background: transparent !important;
+    border: none !important;
+    text-shadow: 1px 1px 0px #0b0b0a, 0 0 6px rgba(11, 11, 10, 0.95);
     pointer-events: none;
     animation: popScoreUp 0.95s ease-out forwards;
 }
 
 @keyframes popScoreUp {
-    0% { opacity: 1; transform: translateY(0) scale(0.9); }
-    100% { opacity: 0; transform: translateY(-36px) scale(1.12); }
+    0% { opacity: 0.9; transform: translateY(0) scale(0.92); }
+    100% { opacity: 0; transform: translateY(-24px) scale(1); }
 }
 
 /* Colorful Inline Pixel Art Icons (Tactile Arcade Accents) */
@@ -916,131 +887,42 @@ p, li, span, td, input {
     box-shadow: 8px 8px 0px var(--accent-coral), 0 28px 70px rgba(245, 158, 11, 0.16);
 }
 
-.character-id-card.is-under-attack {
-    border-color: var(--accent-coral) !important;
-    box-shadow: 0 0 25px rgba(239, 68, 68, 0.65), 6px 6px 0px var(--accent-coral) !important;
-    animation: cardHitShake 0.22s infinite;
-}
-
-.character-id-card.is-regenerating {
-    border-color: var(--accent-emerald) !important;
-    box-shadow: 0 0 22px rgba(16, 185, 129, 0.45), 6px 6px 0px var(--accent-emerald) !important;
-}
-
-@keyframes cardHitShake {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    25% { transform: translate(-3px, 2px) rotate(-0.8deg); }
-    50% { transform: translate(3px, -2px) rotate(0.8deg); }
-    75% { transform: translate(-2px, -1px) rotate(-0.4deg); }
-}
-
 .id-card-topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 8px;
-    margin-bottom: 8px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
     border-bottom: 1.5px dashed rgba(244, 240, 234, 0.22);
     font-size: 0.8rem;
     color: var(--accent-gold);
     gap: 8px;
 }
 
-.id-raid-trigger {
-    background: rgba(239, 68, 68, 0.14);
-    border: 1.5px solid var(--accent-coral);
-    color: #fecaca;
+.stage-hp-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subtle-hp-readout {
     font-family: var(--font-pixel);
     font-size: 0.72rem;
     font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.18s ease;
-    box-shadow: 2px 2px 0px rgba(239, 68, 68, 0.4);
+    color: rgba(244, 240, 234, 0.75);
+    text-shadow: 1px 1px 0px #0b0b0a;
+    letter-spacing: 0.03em;
+    transition: color 0.25s ease;
+    margin-left: 16px;
+    margin-top: -12px;
 }
 
-.id-raid-trigger:hover {
-    background: var(--accent-coral);
-    color: #0b0b0a;
-    transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0px #ffffff;
+.subtle-hp-readout.is-damaged {
+    color: #fca5a5;
 }
 
-/* Retro Arcade HP Bar & Shield Status HUD */
-.id-hp-hud {
-    background: #0d0d0b;
-    border: 1.5px solid rgba(244, 240, 234, 0.2);
-    border-radius: 7px;
-    padding: 6px 10px;
-    margin-bottom: 10px;
-}
-
-.hp-hud-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: var(--font-pixel);
-    font-size: 0.74rem;
-    margin-bottom: 5px;
-}
-
-.hp-label {
-    color: var(--text-main);
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.hp-label i {
-    color: var(--accent-coral);
-    animation: pixel-pulse 1.2s infinite;
-}
-
-.hp-status-tag {
-    font-size: 0.68rem;
-    padding: 1px 6px;
-    border-radius: 4px;
-    background: rgba(16, 185, 129, 0.14);
-    border: 1px solid rgba(16, 185, 129, 0.45);
+.subtle-hp-readout.is-healing {
     color: #6ee7b7;
-}
-
-.hp-status-tag.status-danger {
-    background: rgba(239, 68, 68, 0.22);
-    border-color: var(--accent-coral);
-    color: #fecaca;
-}
-
-.hp-status-tag.status-regen {
-    background: rgba(16, 185, 129, 0.24);
-    border-color: #10b981;
-    color: #a7f3d0;
-}
-
-.hp-bar-track {
-    width: 100%;
-    height: 9px;
-    background: rgba(244, 240, 234, 0.08);
-    border: 1px solid rgba(244, 240, 234, 0.24);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-}
-
-.hp-bar-fill {
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(90deg, #059669, #10b981, #34d399);
-    transition: width 0.22s ease, background 0.22s ease;
-}
-
-.hp-bar-fill.hp-warn {
-    background: linear-gradient(90deg, #d97706, #f59e0b, #fbbf24);
-}
-
-.hp-bar-fill.hp-crit {
-    background: linear-gradient(90deg, #b91c1c, #ef4444, #f87171);
 }
 
 .id-portrait-stage {
@@ -1056,6 +938,7 @@ p, li, span, td, input {
     display: flex;
     align-items: flex-end;
     justify-content: center;
+    cursor: pointer;
 }
 
 .id-portrait-stage::before {
@@ -1077,58 +960,50 @@ p, li, span, td, input {
     overflow: hidden;
 }
 
+/* Frameless Floating +HP / -HP Pixel Text (Zero Box, Zero Border) */
 .avatar-dmg-pop {
     position: absolute;
     font-family: var(--font-pixel);
-    font-size: 0.88rem;
+    font-size: 0.78rem;
     font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    text-shadow: 2px 2px 0px #0b0b0a;
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-shadow: 1px 1px 0px #0b0b0a, -1px -1px 0px #0b0b0a, 0 0 6px rgba(11, 11, 10, 0.95);
     pointer-events: none;
-    animation: popDmgFloat 0.95s ease-out forwards;
+    animation: popDmgFloat 1.05s ease-out forwards;
     z-index: 8;
+    white-space: nowrap;
 }
 
 .avatar-dmg-pop.is-dmg {
-    color: #fecaca;
-    background: rgba(239, 68, 68, 0.88);
-    border: 1px solid #fbbf24;
+    color: #fca5a5;
 }
 
 .avatar-dmg-pop.is-heal {
-    color: #0b0b0a;
-    background: rgba(52, 211, 153, 0.92);
-    border: 1px solid #ffffff;
-    text-shadow: none;
-}
-
-.avatar-dmg-pop.is-shield {
-    color: #0b0b0a;
-    background: #fbbf24;
-    border: 1.5px solid #ffffff;
-    text-shadow: none;
+    color: #6ee7b7;
 }
 
 @keyframes popDmgFloat {
-    0% { opacity: 1; transform: translate(-50%, 0) scale(0.85); }
-    40% { opacity: 1; transform: translate(-50%, -18px) scale(1.08); }
-    100% { opacity: 0; transform: translate(-50%, -38px) scale(0.95); }
+    0% { opacity: 0.92; transform: translate(-50%, 0) scale(0.92); }
+    50% { opacity: 0.95; transform: translate(-50%, -14px) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -26px) scale(0.96); }
 }
 
 .avatar-flame-spark {
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 5px;
+    height: 5px;
     background: #fbbf24;
-    box-shadow: 0 0 8px #ef4444, 4px 4px 0 #ef4444;
+    box-shadow: 0 0 4px rgba(239, 68, 68, 0.65);
     pointer-events: none;
-    animation: sparkBurst 0.52s ease-out forwards;
+    animation: sparkBurst 0.48s ease-out forwards;
 }
 
 @keyframes sparkBurst {
-    0% { opacity: 1; transform: translate(0, 0) scale(1.1); }
-    100% { opacity: 0; transform: translate(var(--tx, 16px), var(--ty, -22px)) scale(0.3); }
+    0% { opacity: 0.85; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx, 10px), var(--ty, -14px)) scale(0.3); }
 }
 
 .id-portrait-img {
@@ -1140,16 +1015,16 @@ p, li, span, td, input {
     position: relative;
     z-index: 2;
     filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.85));
-    transition: transform 0.25s ease, filter 0.2s ease;
+    transition: transform 0.25s ease, filter 0.25s ease;
 }
 
 .id-portrait-img.hit-flash {
-    filter: drop-shadow(0 0 18px #ef4444) brightness(1.22) sepia(0.35) saturate(2.2);
-    transform: translateY(3px) scale(0.98);
+    filter: drop-shadow(0 6px 16px rgba(239, 68, 68, 0.45)) brightness(1.06);
+    transform: translateY(1px);
 }
 
 .id-portrait-img.heal-flash {
-    filter: drop-shadow(0 0 16px #10b981) brightness(1.12);
+    filter: drop-shadow(0 6px 16px rgba(16, 185, 129, 0.4)) brightness(1.04);
 }
 
 .character-id-card:hover .id-portrait-img {
@@ -2428,11 +2303,11 @@ footer {
         padding: 18px;
     }
     .roaming-sprite {
-        opacity: 0.58;
+        opacity: 0.22;
         transform-origin: center;
     }
     .roaming-sprite.is-overlapping-box {
-        opacity: 0.34;
+        opacity: 0.11;
     }
     .modal-window {
         padding: 18px 14px;
