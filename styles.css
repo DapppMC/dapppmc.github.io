@@ -193,42 +193,154 @@ body {
     -webkit-mask-image: radial-gradient(circle at 50% 45%, black 35%, transparent 88%);
 }
 
-/* Roaming Semi-Transparent Arcade Ghosts, Invaders & Bots Layer */
+/* Roaming Interactive Arcade NPCs Layer (Above Cards, Translucent Over-Box Phasing & Boss Raids) */
 .roaming-arcade-layer {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100dvh;
-    z-index: 1;
+    z-index: 45;
     pointer-events: none;
     overflow: hidden;
+}
+
+.npc-attack-beam-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 46;
+    overflow: visible;
 }
 
 .roaming-sprite {
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0.095;
+    opacity: 0.64;
     pointer-events: auto;
     cursor: pointer;
     image-rendering: pixelated;
     will-change: transform, opacity;
-    transition: opacity 0.25s ease, filter 0.25s ease;
-    filter: drop-shadow(0 0 12px rgba(244, 240, 234, 0.08));
+    transition: opacity 0.22s ease, filter 0.22s ease;
+    filter: drop-shadow(0 4px 12px rgba(11, 11, 10, 0.72)) drop-shadow(0 0 10px rgba(245, 158, 11, 0.22));
+    --npc-flip: 1;
+}
+
+/* When an NPC passes over/through any box or card, keep it visible above the box with slightly lowered translucent opacity */
+.roaming-sprite.is-overlapping-box {
+    opacity: 0.36;
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.35)) contrast(0.95);
+    pointer-events: none;
+}
+
+.roaming-sprite.is-patrolling {
+    opacity: 0.78 !important;
+    filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.52));
+}
+
+.roaming-sprite.is-bonking {
+    opacity: 0.88 !important;
+    filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.75));
+}
+
+.roaming-sprite.is-attacking {
+    opacity: 0.94 !important;
+    filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.92)) drop-shadow(0 0 28px rgba(245, 158, 11, 0.75));
+    z-index: 48;
 }
 
 .roaming-sprite:hover {
-    opacity: 0.28 !important;
-    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.45));
+    opacity: 0.92 !important;
+    filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.75));
 }
 
 .roaming-sprite.scared-mode {
-    opacity: 0.38 !important;
-    filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.8));
+    opacity: 0.88 !important;
+    filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.95));
 }
 
 .roaming-sprite.scared-mode svg path {
     fill: #fbbf24 !important;
+}
+
+/* Pixel Speech Bubble above NPCs */
+.npc-bubble {
+    position: absolute;
+    bottom: calc(100% + 7px);
+    left: 50%;
+    transform: translateX(-50%) scaleX(var(--npc-flip, 1)) scale(0.85);
+    background: rgba(11, 11, 10, 0.94);
+    border: 1.5px solid var(--accent-gold);
+    color: var(--text-main);
+    font-family: var(--font-pixel);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.15;
+    padding: 3px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    box-shadow: 2px 2px 0px var(--accent-amber);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.16s ease, transform 0.16s ease;
+    z-index: 50;
+}
+
+.npc-bubble::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 4px;
+    border-style: solid;
+    border-color: var(--accent-gold) transparent transparent transparent;
+}
+
+.roaming-sprite.show-bubble .npc-bubble {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(var(--npc-flip, 1)) scale(1);
+}
+
+.roaming-sprite.is-attacking .npc-bubble {
+    border-color: var(--accent-coral);
+    box-shadow: 2px 2px 0px var(--accent-coral);
+    color: #fecaca;
+}
+
+/* Mouth / Cannon Flame-Stream ("Semburan") Cone when Attacking Dafa's Avatar */
+.npc-breath-fx {
+    position: absolute;
+    top: 38%;
+    left: 92%;
+    width: 0;
+    height: 18px;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 45%, #ef4444 85%, transparent 100%);
+    clip-path: polygon(0 35%, 100% 0, 92% 50%, 100% 100%, 0 65%);
+    filter: drop-shadow(0 0 10px #f59e0b);
+    transition: width 0.15s ease, opacity 0.15s ease;
+}
+
+.roaming-sprite.is-attacking .npc-breath-fx {
+    width: 68px;
+    opacity: 0.95;
+    animation: flameFlicker 0.12s infinite alternate;
+}
+
+@keyframes flameFlicker {
+    0% { transform: scaleY(0.85) rotate(-3deg); filter: drop-shadow(0 0 8px #fbbf24); }
+    100% { transform: scaleY(1.22) rotate(3deg); filter: drop-shadow(0 0 14px #ef4444); }
+}
+
+/* UI Box Reaction when an NPC Bonks or Patrols It */
+.npc-bonked-box {
+    border-color: var(--accent-gold) !important;
+    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.55), 5px 5px 0px var(--accent-coral) !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
 }
 
 .roaming-sprite svg {
@@ -239,11 +351,11 @@ body {
 }
 
 .roaming-sprite .frame-1 {
-    animation: toggle-frame-1 1.15s steps(1, end) infinite;
+    animation: toggle-frame-1 0.85s steps(1, end) infinite;
 }
 
 .roaming-sprite .frame-2 {
-    animation: toggle-frame-2 1.15s steps(1, end) infinite;
+    animation: toggle-frame-2 0.85s steps(1, end) infinite;
 }
 
 @keyframes toggle-frame-1 {
@@ -260,17 +372,17 @@ body {
     position: fixed;
     z-index: 9000;
     font-family: var(--font-pixel);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 700;
     color: var(--accent-gold);
     text-shadow: 2px 2px 0px #0b0b0a;
     pointer-events: none;
-    animation: popScoreUp 0.9s ease-out forwards;
+    animation: popScoreUp 0.95s ease-out forwards;
 }
 
 @keyframes popScoreUp {
     0% { opacity: 1; transform: translateY(0) scale(0.9); }
-    100% { opacity: 0; transform: translateY(-34px) scale(1.15); }
+    100% { opacity: 0; transform: translateY(-36px) scale(1.12); }
 }
 
 /* Colorful Inline Pixel Art Icons (Tactile Arcade Accents) */
@@ -796,7 +908,7 @@ p, li, span, td, input {
     border-radius: 12px;
     padding: 18px;
     position: relative;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s ease;
 }
 
 .character-id-card:hover {
@@ -804,21 +916,136 @@ p, li, span, td, input {
     box-shadow: 8px 8px 0px var(--accent-coral), 0 28px 70px rgba(245, 158, 11, 0.16);
 }
 
+.character-id-card.is-under-attack {
+    border-color: var(--accent-coral) !important;
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.65), 6px 6px 0px var(--accent-coral) !important;
+    animation: cardHitShake 0.22s infinite;
+}
+
+.character-id-card.is-regenerating {
+    border-color: var(--accent-emerald) !important;
+    box-shadow: 0 0 22px rgba(16, 185, 129, 0.45), 6px 6px 0px var(--accent-emerald) !important;
+}
+
+@keyframes cardHitShake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-3px, 2px) rotate(-0.8deg); }
+    50% { transform: translate(3px, -2px) rotate(0.8deg); }
+    75% { transform: translate(-2px, -1px) rotate(-0.4deg); }
+}
+
 .id-card-topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
-    margin-bottom: 12px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
     border-bottom: 1.5px dashed rgba(244, 240, 234, 0.22);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: var(--accent-gold);
     gap: 8px;
 }
 
+.id-raid-trigger {
+    background: rgba(239, 68, 68, 0.14);
+    border: 1.5px solid var(--accent-coral);
+    color: #fecaca;
+    font-family: var(--font-pixel);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    box-shadow: 2px 2px 0px rgba(239, 68, 68, 0.4);
+}
+
+.id-raid-trigger:hover {
+    background: var(--accent-coral);
+    color: #0b0b0a;
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px #ffffff;
+}
+
+/* Retro Arcade HP Bar & Shield Status HUD */
+.id-hp-hud {
+    background: #0d0d0b;
+    border: 1.5px solid rgba(244, 240, 234, 0.2);
+    border-radius: 7px;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+}
+
+.hp-hud-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-pixel);
+    font-size: 0.74rem;
+    margin-bottom: 5px;
+}
+
+.hp-label {
+    color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.hp-label i {
+    color: var(--accent-coral);
+    animation: pixel-pulse 1.2s infinite;
+}
+
+.hp-status-tag {
+    font-size: 0.68rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(16, 185, 129, 0.14);
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    color: #6ee7b7;
+}
+
+.hp-status-tag.status-danger {
+    background: rgba(239, 68, 68, 0.22);
+    border-color: var(--accent-coral);
+    color: #fecaca;
+}
+
+.hp-status-tag.status-regen {
+    background: rgba(16, 185, 129, 0.24);
+    border-color: #10b981;
+    color: #a7f3d0;
+}
+
+.hp-bar-track {
+    width: 100%;
+    height: 9px;
+    background: rgba(244, 240, 234, 0.08);
+    border: 1px solid rgba(244, 240, 234, 0.24);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #059669, #10b981, #34d399);
+    transition: width 0.22s ease, background 0.22s ease;
+}
+
+.hp-bar-fill.hp-warn {
+    background: linear-gradient(90deg, #d97706, #f59e0b, #fbbf24);
+}
+
+.hp-bar-fill.hp-crit {
+    background: linear-gradient(90deg, #b91c1c, #ef4444, #f87171);
+}
+
 .id-portrait-stage {
     width: 100%;
-    height: 255px;
+    height: 245px;
     aspect-ratio: 4 / 3;
     background:
         radial-gradient(circle at 50% 45%, rgba(245, 158, 11, 0.22) 0%, rgba(239, 68, 68, 0.08) 52%, #0c0c0a 100%);
@@ -842,8 +1069,70 @@ p, li, span, td, input {
     pointer-events: none;
 }
 
+.avatar-fx-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.avatar-dmg-pop {
+    position: absolute;
+    font-family: var(--font-pixel);
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-shadow: 2px 2px 0px #0b0b0a;
+    pointer-events: none;
+    animation: popDmgFloat 0.95s ease-out forwards;
+    z-index: 8;
+}
+
+.avatar-dmg-pop.is-dmg {
+    color: #fecaca;
+    background: rgba(239, 68, 68, 0.88);
+    border: 1px solid #fbbf24;
+}
+
+.avatar-dmg-pop.is-heal {
+    color: #0b0b0a;
+    background: rgba(52, 211, 153, 0.92);
+    border: 1px solid #ffffff;
+    text-shadow: none;
+}
+
+.avatar-dmg-pop.is-shield {
+    color: #0b0b0a;
+    background: #fbbf24;
+    border: 1.5px solid #ffffff;
+    text-shadow: none;
+}
+
+@keyframes popDmgFloat {
+    0% { opacity: 1; transform: translate(-50%, 0) scale(0.85); }
+    40% { opacity: 1; transform: translate(-50%, -18px) scale(1.08); }
+    100% { opacity: 0; transform: translate(-50%, -38px) scale(0.95); }
+}
+
+.avatar-flame-spark {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #fbbf24;
+    box-shadow: 0 0 8px #ef4444, 4px 4px 0 #ef4444;
+    pointer-events: none;
+    animation: sparkBurst 0.52s ease-out forwards;
+}
+
+@keyframes sparkBurst {
+    0% { opacity: 1; transform: translate(0, 0) scale(1.1); }
+    100% { opacity: 0; transform: translate(var(--tx, 16px), var(--ty, -22px)) scale(0.3); }
+}
+
 .id-portrait-img {
-    height: 235px;
+    height: 228px;
     width: auto;
     max-width: 100%;
     object-fit: contain;
@@ -851,7 +1140,16 @@ p, li, span, td, input {
     position: relative;
     z-index: 2;
     filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.85));
-    transition: transform 0.35s ease;
+    transition: transform 0.25s ease, filter 0.2s ease;
+}
+
+.id-portrait-img.hit-flash {
+    filter: drop-shadow(0 0 18px #ef4444) brightness(1.22) sepia(0.35) saturate(2.2);
+    transform: translateY(3px) scale(0.98);
+}
+
+.id-portrait-img.heal-flash {
+    filter: drop-shadow(0 0 16px #10b981) brightness(1.12);
 }
 
 .character-id-card:hover .id-portrait-img {
@@ -2130,8 +2428,11 @@ footer {
         padding: 18px;
     }
     .roaming-sprite {
-        opacity: 0.055;
+        opacity: 0.58;
         transform-origin: center;
+    }
+    .roaming-sprite.is-overlapping-box {
+        opacity: 0.34;
     }
     .modal-window {
         padding: 18px 14px;
