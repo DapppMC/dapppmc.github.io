@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmad Dafa Salam | Portfolio</title>
+    <title>Ahmad Dafa Salam | Portfolio (Dafa.OS)</title>
     <meta name="description"
         content="Portfolio of Ahmad Dafa Salam — Fourth-Year Computer Engineering Student at Sepuluh Nopember Institute of Technology (ITS) specializing in Full-Stack Systems, Computer Vision & OCR, and Embedded IoT.">
+    <link rel="canonical" href="https://dafa-os.vercel.app/">
     <!-- Google Fonts: Pixelify Sans + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,72 +34,96 @@
         <div class="intro-bar-wrap">
             <div class="intro-bar-fill" id="intro-bar-fill"></div>
         </div>
-        <div class="intro-sub" id="intro-sub">Loading modules: PLN-OCR · MMPI-2 · HERMES-v2 · SMARTCOOP...</div>
+        <div class="intro-sub" id="intro-sub">Loading modules: PLN-NPS · MMPI-2 · HERMES-v2.5 · SMARTCOOP...</div>
         <button class="intro-skip" id="intro-skip">Skip Intro [ESC]</button>
     </div>
 
-    <!-- 2. Interactive Ambient Background + Colorful Floating Pixel Art -->
+    <!-- 2. Ambient Hardware Canvas + Roaming Semi-Transparent Arcade Ghosts & Pixel Bots -->
     <div class="ambient-bg">
         <canvas id="bg-canvas"></canvas>
         <div class="cyber-grid-overlay"></div>
-        <div class="glow-orb orb-1"></div>
-        <div class="glow-orb orb-2"></div>
-        <div class="glow-orb orb-3"></div>
+    </div>
 
-        <!-- Colorful Pixel Sprite 1: Cyan Space Invader (Top Left) -->
-        <div class="bg-pixel-item" style="top: 13%; left: 4%; width: 170px; height: 130px;">
-            <svg viewBox="0 0 11 8">
-                <g class="frame-1" fill="#38bdf8">
-                    <path d="M2,0 h1 v1 h-1 z M8,0 h1 v1 h-1 z M3,1 h1 v1 h-1 z M7,1 h1 v1 h-1 z M2,2 h7 v1 h-7 z M1,3 h2 v1 h-2 z M4,3 h3 v1 h-3 z M8,3 h2 v1 h-2 z M0,4 h11 v1 h-11 z M0,5 h1 v2 h-1 z M2,5 h7 v1 h-7 z M10,5 h1 v2 h-1 z M2,6 h1 v1 h-1 z M8,6 h1 v1 h-1 z M3,7 h2 v1 h-2 z M6,7 h2 v1 h-2 z" />
-                </g>
-                <g class="frame-2" fill="#38bdf8">
-                    <path d="M2,0 h1 v1 h-1 z M8,0 h1 v1 h-1 z M0,1 h1 v2 h-1 z M3,1 h1 v1 h-1 z M7,1 h1 v1 h-1 z M10,1 h1 v2 h-1 z M2,2 h7 v1 h-7 z M1,3 h2 v1 h-2 z M4,3 h3 v1 h-3 z M8,3 h2 v1 h-2 z M1,4 h9 v1 h-9 z M2,5 h7 v1 h-7 z M2,6 h1 v1 h-1 z M8,6 h1 v1 h-1 z M1,7 h1 v1 h-1 z M9,7 h1 v1 h-1 z" />
-                </g>
-            </svg>
-        </div>
-
-        <!-- Colorful Pixel Sprite 2: Golden & Flame Rocket (Top Right) -->
-        <div class="bg-pixel-item" style="top: 22%; right: 5%; width: 150px; height: 180px; animation-delay: -3s;">
-            <svg viewBox="0 0 12 16">
+    <!-- Roaming Semi-Transparent Pac-Man Ghosts, Space Invaders & Pixel Bots (Click any sprite for Easter Egg!) -->
+    <div class="roaming-arcade-layer" id="roaming-arcade-layer" aria-hidden="true">
+        <!-- Sprite 1: Classic 14x13 Pac-Man Ghost (Blinky Coral-White) -->
+        <div class="roaming-sprite" data-speed="0.55" style="width: 145px; height: 135px;" title="Pac-Ghost #01 (Click me!)">
+            <svg viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
                 <g class="frame-1">
-                    <path fill="#facc15" d="M5,0 h2 v2 h-2 z M4,2 h4 v3 h-4 z M3,5 h6 v5 h-6 z M1,8 h2 v3 h-2 z M9,8 h2 v3 h-2 z" />
-                    <path fill="#38bdf8" d="M5,4 h2 v2 h-2 z" />
-                    <path fill="#f43f5e" d="M4,10 h4 v2 h-4 z M5,12 h2 v3 h-2 z" />
+                    <path fill="#f4f0ea" d="M4 0h6v1h-6z M2 1h10v1h-10z M1 2h12v1h-12z M1 3h12v1h-12z M1 4h2v2h-2z M5 4h4v2h-4z M11 4h2v2h-2z M1 6h12v5h-12z M1 11h2v2h-2z M5 11h4v2h-4z M11 11h2v2h-2z" />
+                    <path fill="#ef4444" d="M4 4h1v2h-1z M10 4h1v2h-1z" />
                 </g>
                 <g class="frame-2">
-                    <path fill="#facc15" d="M5,0 h2 v2 h-2 z M4,2 h4 v3 h-4 z M3,5 h6 v5 h-6 z M1,8 h2 v3 h-2 z M9,8 h2 v3 h-2 z" />
-                    <path fill="#38bdf8" d="M5,4 h2 v2 h-2 z" />
-                    <path fill="#fb923c" d="M4,10 h4 v3 h-4 z M5,13 h2 v3 h-2 z" />
+                    <path fill="#f4f0ea" d="M4 0h6v1h-6z M2 1h10v1h-10z M1 2h12v1h-12z M1 3h12v1h-12z M1 4h2v2h-2z M5 4h4v2h-4z M11 4h2v2h-2z M1 6h12v5h-12z M3 11h2v2h-2z M9 11h2v2h-2z" />
+                    <path fill="#ef4444" d="M3 4h1v2h-1z M9 4h1v2h-1z" />
                 </g>
             </svg>
         </div>
 
-        <!-- Colorful Pixel Sprite 3: Rose-Pink Pixel Heart (Middle Left) -->
-        <div class="bg-pixel-item" style="top: 56%; left: 6%; width: 130px; height: 120px; animation-delay: -6s;">
-            <svg viewBox="0 0 11 10">
-                <g class="frame-1" fill="#f43f5e">
-                    <path d="M2,1 h2 v1 h-2 z M7,1 h2 v1 h-2 z M1,2 h4 v1 h-4 z M6,2 h4 v1 h-4 z M1,3 h9 v3 h-9 z M2,6 h7 v1 h-7 z M3,7 h5 v1 h-5 z M4,8 h3 v1 h-3 z M5,9 h1 v1 h-1 z" />
-                </g>
-                <g class="frame-2" fill="#fb7185">
-                    <path d="M2,0 h2 v1 h-2 z M7,0 h2 v1 h-2 z M1,1 h4 v1 h-4 z M6,1 h4 v1 h-4 z M1,2 h9 v3 h-9 z M2,5 h7 v1 h-7 z M3,6 h5 v1 h-5 z M4,7 h3 v1 h-3 z M5,8 h1 v1 h-1 z" />
-                </g>
-            </svg>
-        </div>
-
-        <!-- Colorful Pixel Sprite 4: Purple & Emerald Gamepad (Bottom Right) -->
-        <div class="bg-pixel-item" style="bottom: 10%; right: 6%; width: 210px; height: 140px; animation-delay: -9s;">
-            <svg viewBox="0 0 16 10">
+        <!-- Sprite 2: Classic 14x13 Pac-Man Ghost (Clyde Phosphor Amber) -->
+        <div class="roaming-sprite" data-speed="0.48" style="width: 125px; height: 116px;" title="Pac-Ghost #02 (Click me!)">
+            <svg viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
                 <g class="frame-1">
-                    <path fill="#c084fc" d="M2,1 h12 v1 h-12 z M1,2 h14 v6 h-14 z M2,8 h12 v1 h-12 z" />
-                    <path fill="#ffffff" d="M3,3 h1 v3 h-1 z M2,4 h3 v1 h-3 z" />
-                    <path fill="#10b981" d="M11,5 h2 v2 h-2 z" />
-                    <path fill="#f43f5e" d="M13,3 h2 v2 h-2 z" />
+                    <path fill="#f59e0b" d="M4 0h6v1h-6z M2 1h10v1h-10z M1 2h12v1h-12z M1 3h12v1h-12z M1 4h2v2h-2z M5 4h4v2h-4z M11 4h2v2h-2z M1 6h12v5h-12z M1 11h2v2h-2z M5 11h4v2h-4z M11 11h2v2h-2z" />
+                    <path fill="#f4f0ea" d="M3 4h1v2h-1z M9 4h1v2h-1z" />
                 </g>
                 <g class="frame-2">
-                    <path fill="#a855f7" d="M2,2 h12 v1 h-12 z M1,3 h14 v6 h-14 z M2,9 h12 v1 h-12 z" />
-                    <path fill="#ffffff" d="M3,4 h1 v3 h-1 z M2,5 h3 v1 h-3 z" />
-                    <path fill="#10b981" d="M11,6 h2 v2 h-2 z" />
-                    <path fill="#f43f5e" d="M13,4 h2 v2 h-2 z" />
+                    <path fill="#f59e0b" d="M4 0h6v1h-6z M2 1h10v1h-10z M1 2h12v1h-12z M1 3h12v1h-12z M1 4h2v2h-2z M5 4h4v2h-4z M11 4h2v2h-2z M1 6h12v5h-12z M3 11h2v2h-2z M9 11h2v2h-2z" />
+                    <path fill="#f4f0ea" d="M4 4h1v2h-1z M10 4h1v2h-1z" />
+                </g>
+            </svg>
+        </div>
+
+        <!-- Sprite 3: Classic 11x8 Space Invader (Bone White) -->
+        <div class="roaming-sprite" data-speed="0.62" style="width: 140px; height: 102px;" title="Space Invader (Click me!)">
+            <svg viewBox="0 0 11 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                <g class="frame-1" fill="#f4f0ea">
+                    <path d="M2 0h1v1h-1z M8 0h1v1h-1z M3 1h1v1h-1z M7 1h1v1h-1z M2 2h7v1h-7z M1 3h2v1h-2z M4 3h3v1h-3z M8 3h2v1h-2z M0 4h11v1h-11z M0 5h1v2h-1z M2 5h7v1h-7z M10 5h1v2h-1z M2 6h1v1h-1z M8 6h1v1h-1z M3 7h2v1h-2z M6 7h2v1h-2z" />
+                </g>
+                <g class="frame-2" fill="#f4f0ea">
+                    <path d="M2 0h1v1h-1z M8 0h1v1h-1z M0 1h1v2h-1z M3 1h1v1h-1z M7 1h1v1h-1z M10 1h1v2h-1z M2 2h7v1h-7z M1 3h2v1h-2z M4 3h3v1h-3z M8 3h2v1h-2z M1 4h9v1h-9z M2 5h7v1h-7z M2 6h1v1h-1z M8 6h1v1h-1z M1 7h1v1h-1z M9 7h1v1h-1z" />
+                </g>
+            </svg>
+        </div>
+
+        <!-- Sprite 4: Pixel Helper Mecha-Bot / Drone (Sage Emerald) -->
+        <div class="roaming-sprite" data-speed="0.44" style="width: 120px; height: 110px;" title="Hermes Bot Drone (Click me!)">
+            <svg viewBox="0 0 12 11" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                <g class="frame-1">
+                    <path fill="#f59e0b" d="M5 0h2v1h-2z" />
+                    <path fill="#f4f0ea" d="M5 1h2v1h-2z M2 2h8v6h-8z M0 4h2v2h-2z M10 4h2v2h-2z M3 8h2v2h-2z M7 8h2v2h-2z M2 10h2v1h-2z M8 10h2v1h-2z" />
+                    <path fill="#10b981" d="M3 4h2v2h-2z M7 4h2v2h-2z" />
+                </g>
+                <g class="frame-2">
+                    <path fill="#ef4444" d="M5 0h2v1h-2z" />
+                    <path fill="#f4f0ea" d="M5 1h2v1h-2z M2 2h8v6h-8z M0 3h2v2h-2z M10 3h2v2h-2z M4 8h2v2h-2z M6 8h2v2h-2z M3 10h2v1h-2z M7 10h2v1h-2z" />
+                    <path fill="#10b981" d="M3 4h2v2h-2z M7 4h2v2h-2z" />
+                </g>
+            </svg>
+        </div>
+
+        <!-- Sprite 5: Mini Pac-Man Ghost (Coral Vermilion) -->
+        <div class="roaming-sprite" data-speed="0.52" style="width: 110px; height: 102px;" title="Pac-Ghost #03 (Click me!)">
+            <svg viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                <g class="frame-1">
+                    <path fill="#ef4444" d="M4 0h6v1h-6z M2 1h10v1h-10z M1 2h12v1h-12z M1 3h12v1h-12z M1 4h2v2h-2z M5 4h4v2h-4z M11 4h2v2h-2z M1 6h12v5h-12z M1 11h2v2h-2z M5 11h4v2h-4z M11 11h2v2h-2z" />
+                    <path fill="#f4f0ea" d="M3 4h1v2h-1z M9 4h1v2h-1z" />
+                </g>
+                <g class="frame-2">
+                    <path fill="#ef4444" d="M4 0h6v1h-6z M2 1h10v1h-10z M1 2h12v1h-12z M1 3h12v1h-12z M1 4h2v2h-2z M5 4h4v2h-4z M11 4h2v2h-2z M1 6h12v5h-12z M3 11h2v2h-2z M9 11h2v2h-2z" />
+                    <path fill="#f4f0ea" d="M4 4h1v2h-1z M10 4h1v2h-1z" />
+                </g>
+            </svg>
+        </div>
+
+        <!-- Sprite 6: Retro Arcade Squid Invader (Warm Gold) -->
+        <div class="roaming-sprite" data-speed="0.58" style="width: 105px; height: 105px;" title="Arcade Squid (Click me!)">
+            <svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                <g class="frame-1" fill="#fbbf24">
+                    <path d="M3 0h2v1h-2z M2 1h4v1h-4z M1 2h6v1h-6z M0 3h2v1h-2z M3 3h2v1h-2z M6 3h2v1h-2z M0 4h8v1h-8z M2 5h1v1h-1z M5 5h1v1h-1z M1 6h1v1h-1z M3 6h2v1h-2z M6 6h1v1h-1z M0 7h1v1h-1z M2 7h1v1h-1z M5 7h1v1h-1z M7 7h1v1h-1z" />
+                </g>
+                <g class="frame-2" fill="#fbbf24">
+                    <path d="M3 0h2v1h-2z M2 1h4v1h-4z M1 2h6v1h-6z M0 3h2v1h-2z M3 3h2v1h-2z M6 3h2v1h-2z M0 4h8v1h-8z M1 5h1v1h-1z M6 5h1v1h-1z M0 6h1v1h-1z M2 6h1v1h-1z M5 6h1v1h-1z M7 6h1v1h-1z M1 7h1v1h-1z M6 7h1v1h-1z" />
                 </g>
             </svg>
         </div>
@@ -108,7 +133,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="#hero" class="logo">Dafa<span>.OS</span></a>
-            <ul class="nav-links">
+            <ul class="nav-links" id="nav-links">
                 <li><a href="#hero" class="nav-link active" data-section="hero">Profile</a></li>
                 <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
                 <li><a href="#education" class="nav-link" data-section="education">Education</a></li>
@@ -116,15 +141,15 @@
                 <li><a href="#projects" class="nav-link" data-section="projects">Projects</a></li>
                 <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
             </ul>
-            <div class="hamburger" id="hamburger">
+            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation Menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
-            </div>
+            </button>
         </div>
     </nav>
 
-    <!-- 3. Balanced Hybrid Hero Section (Left: Typography & Telemetry | Right: Proportional Pixel Character ID Card) -->
+    <!-- 3. Balanced Hybrid Hero Section (Left: Typography & General Achievements | Right: Proportional Pixel Character ID Card) -->
     <section id="hero" class="hero">
         <div class="hero-hybrid-grid">
             <!-- Left Column -->
@@ -139,27 +164,27 @@
                 </h1>
 
                 <p class="hero-subtitle">
-                    <span id="typewriter-text">Fourth-year Computer Engineering student at ITS Surabaya experienced in Full-Stack Systems, Computer Vision &amp; OCR, and Embedded IoT.</span><span class="cursor-blink">_</span>
+                    <span id="typewriter-text">Fourth-year Computer Engineering student at ITS Surabaya specializing in Full-Stack Systems, Computer Vision &amp; OCR, and Embedded IoT.</span><span class="cursor-blink">_</span>
                 </p>
 
-                <!-- Clean Interactive Telemetry Counters (From V1, Balanced for V3) -->
+                <!-- General High-Impact Engineering Headline Stats -->
                 <div class="hero-stats-row">
-                    <div class="hero-stat-box">
-                        <span class="stat-num">82,989<span>+</span></span>
-                        <span class="stat-label">PLN Files Indexed</span>
-                    </div>
-                    <div class="hero-stat-box">
-                        <span class="stat-num">100<span>%</span></span>
-                        <span class="stat-label">MMPI-2 Score Match</span>
-                    </div>
-                    <div class="hero-stat-box">
+                    <a href="#education" class="hero-stat-box">
                         <span class="stat-num">3.93<span>/4.0</span></span>
                         <span class="stat-label">Latest Sem GPA</span>
-                    </div>
-                    <div class="hero-stat-box">
+                    </a>
+                    <a href="#projects" class="hero-stat-box">
                         <span class="stat-num">12<span>+</span></span>
                         <span class="stat-label">Systems Deployed</span>
-                    </div>
+                    </a>
+                    <a href="#experience" class="hero-stat-box">
+                        <span class="stat-num">2x<span> Intern</span></span>
+                        <span class="stat-label">PLN NPS &amp; LAB M-IOT</span>
+                    </a>
+                    <a href="#skills" class="hero-stat-box">
+                        <span class="stat-num">3<span> Pillars</span></span>
+                        <span class="stat-label">Full-Stack · AI · IoT</span>
+                    </a>
                 </div>
 
                 <div class="hero-cta">
@@ -369,12 +394,12 @@
 
                 <div class="cert-card-new glass-card" data-project="hermes">
                     <div class="cert-card-img-wrap">
-                        <img src="assets/screenshots/hermes_telegram_ui.png" alt="Hermes JobSeeker Bot v2.0" />
+                        <img src="assets/screenshots/hermes_telegram_ui.png" alt="Hermes JobSeeker Bot v2.5" />
                     </div>
                     <div class="cert-info-new">
-                        <h4>Hermes JobSeeker v2.0 — 85/85 Pytest PASS &amp; ITS Career Scraper</h4>
-                        <p>Dedicated careers.its.ac.id + @itscareercenter IG Flyer OCR, Entra ID 2FA Bridge &amp; Inbox Tracker</p>
-                        <span class="cert-date-new">Autonomous AI Daemon · 2026</span>
+                        <h4>Hermes JobSeeker v2.5 — 6-Pillar Deep-Link &amp; Auto-Apply Engine</h4>
+                        <p>ITS Career + Dealls/LinkedIn/Kalibrr Deep-Link APIs, Honest Stipend Provenance, Live Tab Bridge &amp; Portal Status Tracker</p>
+                        <span class="cert-date-new">Commercial AI Engine · 2026</span>
                     </div>
                 </div>
             </div>
@@ -462,10 +487,10 @@
                     <span class="tab-subtitle">Expert Staff (Staf Ahli), Event Division</span>
                 </button>
 
-                <div class="selector-group-label" style="margin-top:8px;">Independent Engineering</div>
+                <div class="selector-group-label" style="margin-top:8px;">Commercial &amp; Independent R&amp;D</div>
                 <button class="selector-tab" data-tab="exp-indie">
-                    <span class="tab-title">Autonomous AI &amp; Systems Developer</span>
-                    <span class="tab-subtitle">Hermes JobSeeker v2.0 · SmartCoop · Freedom v2.0</span>
+                    <span class="tab-title">Autonomous AI &amp; Systems Founder</span>
+                    <span class="tab-subtitle">Hermes JobSeeker v2.5 · Freedom v2.0 · SmartCoop</span>
                 </button>
             </div>
 
@@ -539,49 +564,49 @@
                         <span class="panel-date">Mar 2025 – Nov 2025</span>
                     </div>
                     <ul class="panel-bullets">
-                        <li>Contributed to <strong>MAGE XI</strong>, a national-scale IT competition organized by the Computer Engineering Department at ITS covering <strong>Application/Game Development, Robotics, and IoT</strong> categories.</li>
-                        <li>Coordinated division budget planning (<em>Rencana Anggaran Biaya / RAB</em>), national competition rundowns, technical stage operations, and operational staff supervision.</li>
+                        <li>Contributed to <strong>MAGE XI</strong>, a national-scale IT event organized by the Computer Engineering Department at ITS covering <strong>Application/Game Development, Robotics, and IoT</strong> categories.</li>
+                        <li>Coordinated division budget planning (<em>Rencana Anggaran Biaya / RAB</em>), national event rundowns, technical stage operations, and operational staff supervision.</li>
                     </ul>
                     <div class="timeline-img-wrapper">
                         <img src="assets/screenshots/exp_mage_xi.png" alt="MAGE XI ITS Event Division" class="timeline-img" />
                     </div>
                 </div>
 
-                <!-- 5. Independent Systems Development -->
+                <!-- 5. Commercial & Independent Systems Development -->
                 <div class="selector-panel" id="exp-indie">
                     <div class="panel-header">
                         <div>
-                            <h3>Independent Full-Stack, AI &amp; Systems Developer</h3>
-                            <h4>Self-Directed Production Engineering Projects</h4>
+                            <h3>Commercial AI &amp; Network Automation Builder</h3>
+                            <h4>Self-Directed Commercial &amp; Open-Source Engineering</h4>
                         </div>
                         <span class="panel-date">2025 – 2026</span>
                     </div>
                     <ul class="panel-bullets">
-                        <li>Architected <strong>Hermes JobSeeker Bot v2.0</strong> (`85/85 Pytest PASS`) featuring a dedicated <strong>ITS Career Center (`careers.its.ac.id` + `@itscareercenter` IG Gemini Vision Flyer OCR)</strong> scraper, myITS Entra ID 2-digit Authenticator bridge, and Smart HR Inbox Manager.</li>
-                        <li>Delivered <strong>SmartCoop</strong> (Flutter + Supabase RLS + 3-Model ONNX poultry disease detector + NFC tags), <strong>Planner System 4.0</strong> (8-worker swarm engine), and <strong>Freedom v2.0 Speed Edition</strong>.</li>
+                        <li>Architected <strong>Hermes JobSeeker Bot v2.5 (Phase 2 Overhaul)</strong> featuring a 6-pillar architecture: 100% Honest Salary Provenance, Deep-Link Multi-Portal Harvesters (<code>careers.its.ac.id</code>, Dealls API, LinkedIn Guest API, Kalibrr API), Live Paused-Tab Human Input Bridge (<code>/fill</code>), Batch Auto-Apply Queue (<code>/apply_all</code>), and In-Portal Status Tracker (<code>/portal_status</code>).</li>
+                        <li>Developed <strong>Freedom v2.0 (Speed Edition)</strong> commercial plug-and-play USB network provisioning &amp; DPI bypass service, <strong>SmartCoop</strong> (Flutter + 3-Model ONNX + NFC), and <strong>Planner System 4.0</strong>.</li>
                     </ul>
                     <div class="timeline-img-wrapper" data-project="hermes">
-                        <img src="assets/screenshots/hermes_telegram_ui.png" alt="Hermes JobSeeker v2.0" class="timeline-img" />
-                        <span class="timeline-img-caption"><i class="fas fa-expand"></i> Click to inspect Hermes JobSeeker Bot v2.0</span>
+                        <img src="assets/screenshots/hermes_telegram_ui.png" alt="Hermes JobSeeker v2.5" class="timeline-img" />
+                        <span class="timeline-img-caption"><i class="fas fa-expand"></i> Click to inspect Hermes JobSeeker Bot v2.5</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 7. Featured Projects Section (Auto-Sliding Right-to-Left + Pause on Hover + Blur Siblings + Reveal Details on Hover) -->
+    <!-- 7. Featured Projects Section (All 12 Verified Projects + Accurate GitHub Links) -->
     <section id="projects" class="projects section-container">
         <div class="section-header">
             <h2 class="section-title pixel-title">
                 <span class="pixel-art pixel-coin"></span>
                 Featured <span class="gradient-text">Projects</span>
             </h2>
-            <p class="section-subtitle">Auto-gliding showcase — hover any card to pause, focus, and reveal project details, or click to inspect full screenshots</p>
+            <p class="section-subtitle">Auto-gliding showcase — hover or tap any card to inspect full screenshots and verified GitHub repositories</p>
         </div>
 
         <div class="projects-controls-bar">
             <div class="project-filter-pills">
-                <button class="filter-pill active" data-filter="all">All Projects (9)</button>
+                <button class="filter-pill active" data-filter="all">All Projects (12)</button>
                 <button class="filter-pill" data-filter="enterprise">Enterprise &amp; Web</button>
                 <button class="filter-pill" data-filter="ai">AI, Vision &amp; OCR</button>
                 <button class="filter-pill" data-filter="systems">IoT &amp; Systems</button>
@@ -610,7 +635,7 @@
                         </div>
                         <div class="bento-actions">
                             <span class="bento-btn solid"><i class="fas fa-images"></i> 3 Screenshots</span>
-                            <a href="https://github.com/DapppMC/pln-cert-mon" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://github.com/DapppMC/pln-nps-monitoring-web" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -631,28 +656,28 @@
                         </div>
                         <div class="bento-actions">
                             <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
-                            <a href="https://github.com/DapppMC/mmpi2-clinical-automation" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://github.com/DapppMC/MMPI_1_Website" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 3: Hermes JobSeeker Bot v2.0 -->
+                <!-- Card 3: Hermes JobSeeker Bot v2.5 -->
                 <div class="bento-card carousel-card" data-category="ai systems" data-project="hermes">
                     <div class="bento-bg" style="background-image: url('assets/screenshots/hermes_telegram_ui.png');"></div>
                     <div class="bento-overlay"></div>
-                    <span class="bento-top-badge">Hermes v2.0 · 85/85 Tests PASS</span>
+                    <span class="bento-top-badge">Hermes v2.5 · 6-Pillar Engine</span>
                     <div class="bento-content">
-                        <h3>Hermes JobSeeker Bot v2.0 (ITS Career + AI)</h3>
-                        <p>Dedicated careers.its.ac.id &amp; @itscareercenter IG Flyer OCR scraper, myITS Entra ID 2-digit Authenticator bridge, Honest Auto-Apply &amp; Smart HR Inbox Tracker.</p>
+                        <h3>Hermes JobSeeker Bot v2.5 (Phase 2)</h3>
+                        <p>Multi-portal deep-link harvester (ITS Career, Dealls, LinkedIn, Kalibrr), Honest Salary Provenance, Live Paused-Tab Bridge (/fill), Batch Auto-Apply &amp; Portal Status Tracker.</p>
                         <div class="tech-stack-mini">
                             <span class="tech-tag">Playwright CDP</span>
                             <span class="tech-tag">Gemini Vision OCR</span>
-                            <span class="tech-tag">Telegram Bot</span>
+                            <span class="tech-tag">Deep-Link APIs</span>
                             <span class="tech-tag">3NF SQLite WAL</span>
                         </div>
                         <div class="bento-actions">
-                            <span class="bento-btn solid"><i class="fas fa-expand"></i> Inspect v2.0</span>
-                            <a href="https://github.com/DapppMC/hermes-jobseeker-bot" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                            <span class="bento-btn solid"><i class="fas fa-expand"></i> Inspect v2.5</span>
+                            <a href="https://github.com/DapppMC/hermes-jobseeker-bot" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> Showcase Repo</a>
                         </div>
                     </div>
                 </div>
@@ -673,7 +698,7 @@
                         </div>
                         <div class="bento-actions">
                             <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
-                            <a href="https://github.com/DapppMC/certificate-manager-v3" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://github.com/DapppMC/certificate-manager" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -694,7 +719,7 @@
                         </div>
                         <div class="bento-actions">
                             <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
-                            <a href="https://github.com/DapppMC/smartcoop-ml-iot" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://github.com/DapppMC/SMARTCOOP" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -715,19 +740,19 @@
                         </div>
                         <div class="bento-actions">
                             <span class="bento-btn solid"><i class="fas fa-expand"></i> View Screenshot</span>
-                            <a href="https://github.com/DapppMC/planner-system-4" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://github.com/DapppMC/planner-system" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 7: Warung Madura Enterprise POS -->
+                <!-- Card 7: Warung Madura Enterprise POS (DevSprint 3.0 Program) -->
                 <div class="bento-card carousel-card" data-category="enterprise" data-project="warung">
                     <div class="bento-bg" style="background-image: url('assets/screenshots/warung_dashboard.png');"></div>
                     <div class="bento-overlay"></div>
-                    <span class="bento-top-badge">24-Hr FMCG ERP &amp; Express POS</span>
+                    <span class="bento-top-badge">DevSprint 3.0 Program · Retail ERP</span>
                     <div class="bento-content">
                         <h3>Warung Madura Enterprise POS</h3>
-                        <p>Keyboard-first Express POS supporting hierarchical packaging conversions (Eceran, Pak, Slop, Dus, Karung), 3-tier RBAC, and 58mm thermal receipts.</p>
+                        <p>Developed during the DevSprint 3.0 intensive software engineering program: keyboard-first Express POS with multi-unit stock conversion, 3-tier RBAC &amp; 58mm thermal receipts.</p>
                         <div class="tech-stack-mini">
                             <span class="tech-tag">React 18</span>
                             <span class="tech-tag">TypeScript</span>
@@ -736,6 +761,7 @@
                         </div>
                         <div class="bento-actions">
                             <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
+                            <a href="https://github.com/DapppMC/DevSprint-Warung-Madura" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -747,7 +773,7 @@
                     <span class="bento-top-badge">Sub-1ms Local DNS · DPI Bypass</span>
                     <div class="bento-content">
                         <h3>Freedom v2.0 — Speed Edition</h3>
-                        <p>1-click Windows network provisioning suite combining Acrylic local DNS caching, Windows 11 native DoH, and Green Tunnel DPI fragmentation.</p>
+                        <p>Commercial 1-click USB network provisioning suite combining Acrylic local DNS caching, Windows 11 native DoH, and Green Tunnel DPI fragmentation.</p>
                         <div class="tech-stack-mini">
                             <span class="tech-tag">Batch CLI</span>
                             <span class="tech-tag">PowerShell</span>
@@ -756,7 +782,7 @@
                         </div>
                         <div class="bento-actions">
                             <span class="bento-btn solid"><i class="fas fa-expand"></i> View Console</span>
-                            <a href="https://github.com/DapppMC/freedom-network-optimizer" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://github.com/DapppMC/freedom-network-optimizer" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> Showcase Repo</a>
                         </div>
                     </div>
                 </div>
@@ -777,6 +803,70 @@
                         </div>
                         <div class="bento-actions">
                             <span class="bento-btn solid"><i class="fas fa-images"></i> 2 Screenshots</span>
+                            <a href="https://github.com/DapppMC/Project-Epstein-FIle-on-Iran-Automasi-Big-Data-Analisis-Sentiment-Chatbot-AI" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 10: Autonomous Driving Car (ESP32) -->
+                <div class="bento-card carousel-card" data-category="systems" data-project="autocar">
+                    <div class="bento-bg" style="background-image: url('assets/screenshots/autonomous_car.jpg');"></div>
+                    <div class="bento-overlay"></div>
+                    <span class="bento-top-badge">ESP32 · Ultrasonic + IR Fusion</span>
+                    <div class="bento-content">
+                        <h3>Autonomous Obstacle-Avoiding Car</h3>
+                        <p>Self-navigating robotic vehicle powered by ESP32 microcontroller with multi-directional ultrasonic &amp; infrared sensor fusion and PWM motor control.</p>
+                        <div class="tech-stack-mini">
+                            <span class="tech-tag">C / C++</span>
+                            <span class="tech-tag">ESP32</span>
+                            <span class="tech-tag">Ultrasonic HC-SR04</span>
+                            <span class="tech-tag">PWM Control</span>
+                        </div>
+                        <div class="bento-actions">
+                            <span class="bento-btn solid"><i class="fas fa-expand"></i> Details</span>
+                            <a href="https://github.com/DapppMC/Autonomous-Driving-Car" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 11: SmartPot Self-Regulating IoT -->
+                <div class="bento-card carousel-card" data-category="systems" data-project="smartpot">
+                    <div class="bento-bg" style="background-image: url('assets/screenshots/smartpot_dashboard.jpg');"></div>
+                    <div class="bento-overlay"></div>
+                    <span class="bento-top-badge">ESP32 IoT · Closed-Loop Irrigation</span>
+                    <div class="bento-content">
+                        <h3>SmartPot: Self-Maintaining IoT Plant System</h3>
+                        <p>Closed-loop automated plant care system monitoring soil moisture, ambient temperature, and humidity on ESP32 with real-time telemetry dashboard.</p>
+                        <div class="tech-stack-mini">
+                            <span class="tech-tag">ESP32 Firmware</span>
+                            <span class="tech-tag">Soil &amp; DHT Sensors</span>
+                            <span class="tech-tag">Relay Pump</span>
+                            <span class="tech-tag">IoT Telemetry</span>
+                        </div>
+                        <div class="bento-actions">
+                            <span class="bento-btn solid"><i class="fas fa-expand"></i> Details</span>
+                            <a href="https://github.com/DapppMC/SmartPot-Self-Regulating-Self-Maintaining-Smart-Pot-System" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 12: Card Detective OpenCV -->
+                <div class="bento-card carousel-card" data-category="ai" data-project="carddetective">
+                    <div class="bento-bg" style="background-image: url('assets/screenshots/mmpi_dos_grid.png');"></div>
+                    <div class="bento-overlay"></div>
+                    <span class="bento-top-badge">C++ &amp; OpenCV · Real-Time Vision</span>
+                    <div class="bento-content">
+                        <h3>Card Detective: Real-Time OpenCV Vision</h3>
+                        <p>Real-time playing card recognition and interactive computer vision game built with C++ and OpenCV contour, perspective warp, and keypoint matching.</p>
+                        <div class="tech-stack-mini">
+                            <span class="tech-tag">C++</span>
+                            <span class="tech-tag">OpenCV</span>
+                            <span class="tech-tag">Perspective Warp</span>
+                            <span class="tech-tag">Contour Matching</span>
+                        </div>
+                        <div class="bento-actions">
+                            <span class="bento-btn solid"><i class="fas fa-expand"></i> Details</span>
+                            <a href="https://github.com/DapppMC/Card-Detective-OpenCV-Card-Game" target="_blank" class="bento-btn ghost" onclick="event.stopPropagation();"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -792,7 +882,7 @@
                     <span class="pixel-art pixel-envelope"></span>
                     Let's Build <br><span class="gradient-text">Something Together</span>
                 </h2>
-                <p>Have a project, internship opportunity, or question? Send me a message directly through the interactive terminal on the right!</p>
+                <p>Have a project, internship opportunity, or interested in Hermes JobSeeker / Freedom v2.0 services? Send me a message directly through the interactive terminal!</p>
 
                 <div class="contact-links">
                     <a href="mailto:Ahmaddafa1017@gmail.com" class="contact-item">
@@ -818,7 +908,7 @@
                 </div>
             </div>
 
-            <!-- Interactive Contact Messenger Terminal (Just Like Theo's + CLI Support) -->
+            <!-- Interactive Contact Messenger Terminal -->
             <div class="terminal-window" id="terminal-box">
                 <div class="terminal-header">
                     <div class="terminal-buttons">
@@ -826,12 +916,12 @@
                         <span class="term-btn-yellow"></span>
                         <span class="term-btn-green"></span>
                     </div>
-                    <div class="terminal-title">direct-message@dafa-portfolio: ~ (interactive)</div>
+                    <div class="terminal-title">direct-message@dafa-os: ~ (interactive)</div>
                 </div>
                 <div class="terminal-body" id="terminal-body">
                     <div class="terminal-output" id="terminal-output">
-                        <div class="term-line" style="color:#94a3b8;">Initializing secure connection to <strong>Ahmad Dafa Salam</strong>...</div>
-                        <div class="term-line" style="color:#4ade80;">[OK] Connected! Send a direct message step-by-step below (or type <span class="term-cmd">/help</span> for CLI commands).</div>
+                        <div class="term-line" style="color:#a39e93;">Initializing secure connection to <strong>Ahmad Dafa Salam (dafa-os.vercel.app)</strong>...</div>
+                        <div class="term-line" style="color:#34d399;">[OK] Connected! Send a direct message step-by-step below (or type <span class="term-cmd">/help</span> for CLI commands).</div>
                         <div class="term-line" style="margin-top:6px;"><span class="term-prompt">? Step 1/3:</span> <strong>What is your name?</strong> (Type below &amp; press Enter)</div>
                     </div>
                     <div class="term-input-line">
@@ -857,8 +947,8 @@
         <div class="modal-window">
             <button class="modal-close" id="modal-close">&times;</button>
             <span id="modal-badge" class="cert-date-new" style="margin-bottom:10px;"></span>
-            <h2 id="modal-title" style="font-size:1.85rem;margin-bottom:6px;"></h2>
-            <p id="modal-subtitle" style="color:var(--accent-cyan);margin-bottom:14px;"></p>
+            <h2 id="modal-title" style="font-size:clamp(1.35rem, 3vw, 1.85rem);margin-bottom:6px;"></h2>
+            <p id="modal-subtitle" style="color:var(--accent-gold);margin-bottom:14px;font-size:0.92rem;"></p>
             <img id="modal-img" class="modal-hero-img" src="" alt="Project Screenshot" />
             <div id="modal-gallery" style="display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;"></div>
             <div class="modal-grid">
@@ -879,7 +969,7 @@
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2026 Ahmad Dafa Salam. All rights reserved.</p>
+            <p>&copy; 2026 Ahmad Dafa Salam (<a href="https://dafa-os.vercel.app/" style="color:var(--accent-gold);text-decoration:none;">dafa-os.vercel.app</a>). All rights reserved.</p>
             <p>Fourth-Year Computer Engineering Student @ ITS Surabaya (NRP 5024231024)</p>
         </div>
     </footer>

@@ -1,5 +1,5 @@
 // ============================================================================
-// Ahmad Dafa Salam — Portfolio Engine v3.0 (Balanced Hybrid Edition)
+// Ahmad Dafa Salam — Portfolio Engine v4.0 (Terminal & Tungsten / Roaming Arcade Edition)
 // ============================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (preloader && greetingText && barFill) {
-        const stepMs = 240;
+        const stepMs = 230;
         const interval = setInterval(() => {
             if (introClosed) {
                 clearInterval(interval);
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 greetingText.textContent = greetings[greetIdx];
             } else {
                 clearInterval(interval);
-                setTimeout(finishIntro, 220);
+                setTimeout(finishIntro, 200);
             }
         }, stepMs);
 
@@ -64,29 +64,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------------------------------------
-    // 2. INTERACTIVE PIXEL STARFIELD & CONSTELLATION BACKGROUND CANVAS
+    // 2. WARM HARDWARE PIXEL STARFIELD & CONSTELLATION BACKGROUND CANVAS
     // ------------------------------------------------------------------------
     const canvas = document.getElementById("bg-canvas");
+    const mouse = { x: -9999, y: -9999 };
+    window.addEventListener("mousemove", (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
     if (canvas) {
         const ctx = canvas.getContext("2d");
         let w = (canvas.width = window.innerWidth);
         let h = (canvas.height = window.innerHeight);
 
-        const colors = ["#38bdf8", "#fbbf24", "#c084fc", "#f43f5e", "#ffffff"];
-        const particles = Array.from({ length: 48 }, () => ({
+        const colors = ["#f59e0b", "#fbbf24", "#ef4444", "#10b981", "#f4f0ea"];
+        const particles = Array.from({ length: 42 }, () => ({
             x: Math.random() * w,
             y: Math.random() * h,
-            vx: (Math.random() - 0.5) * 0.45,
-            vy: (Math.random() - 0.5) * 0.45,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4,
             size: Math.random() < 0.3 ? 3 : 2,
             color: colors[Math.floor(Math.random() * colors.length)]
         }));
-
-        const mouse = { x: -9999, y: -9999 };
-        window.addEventListener("mousemove", (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
 
         window.addEventListener("resize", () => {
             w = canvas.width = window.innerWidth;
@@ -110,8 +110,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const dxm = p.x - mouse.x;
                 const dym = p.y - mouse.y;
                 const distMouse = Math.sqrt(dxm * dxm + dym * dym);
-                if (distMouse < 150) {
-                    ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - distMouse / 150) * 0.35})`;
+                if (distMouse < 145) {
+                    ctx.strokeStyle = `rgba(245, 158, 11, ${(1 - distMouse / 145) * 0.32})`;
                     ctx.lineWidth = 1;
                     ctx.beginPath();
                     ctx.moveTo(p.x, p.y);
@@ -125,11 +125,114 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------------------------------------
-    // 3. 3D-TILT INTERACTIVE HERO CHARACTER CARD
+    // 3. ROAMING SEMI-TRANSPARENT PAC-MAN GHOSTS, INVADERS & PIXEL BOTS ENGINE
+    // ------------------------------------------------------------------------
+    const spriteEls = Array.from(document.querySelectorAll(".roaming-sprite"));
+    if (spriteEls.length > 0) {
+        const initialZones = [
+            { xPct: 0.06, yPct: 0.14, vx: 0.55, vy: 0.28 },
+            { xPct: 0.82, yPct: 0.18, vx: -0.48, vy: 0.32 },
+            { xPct: 0.12, yPct: 0.58, vx: 0.62, vy: -0.26 },
+            { xPct: 0.78, yPct: 0.64, vx: -0.44, vy: -0.30 },
+            { xPct: 0.45, yPct: 0.25, vx: 0.50, vy: 0.35 },
+            { xPct: 0.32, yPct: 0.80, vx: -0.52, vy: -0.28 }
+        ];
+
+        const roamers = spriteEls.map((el, idx) => {
+            const z = initialZones[idx % initialZones.length];
+            const speedMult = parseFloat(el.getAttribute("data-speed") || "0.5");
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            const isMobile = vw <= 768;
+            const scale = isMobile ? 0.62 : 1.0;
+            return {
+                el,
+                x: z.xPct * Math.max(240, vw - 160),
+                y: z.yPct * Math.max(240, vh - 160),
+                vx: z.vx * (0.85 + speedMult * 0.5),
+                vy: z.vy * (0.85 + speedMult * 0.5),
+                phase: idx * 1.35,
+                scale,
+                facing: z.vx >= 0 ? 1 : -1,
+                boostUntil: 0
+            };
+        });
+
+        roamers.forEach((r) => {
+            r.el.addEventListener("click", (e) => {
+                e.stopPropagation();
+                r.el.classList.add("scared-mode");
+                r.vx = -r.vx * 1.8;
+                r.vy = -r.vy * 1.8;
+                r.facing = r.vx >= 0 ? 1 : -1;
+                r.boostUntil = Date.now() + 1800;
+
+                const pop = document.createElement("div");
+                pop.className = "arcade-score-pop";
+                pop.textContent = "+200 PTS";
+                pop.style.left = `${e.clientX - 24}px`;
+                pop.style.top = `${e.clientY - 16}px`;
+                document.body.appendChild(pop);
+                setTimeout(() => pop.remove(), 900);
+                setTimeout(() => {
+                    r.el.classList.remove("scared-mode");
+                    r.vx = Math.sign(r.vx) * Math.min(Math.abs(r.vx), 0.75);
+                    r.vy = Math.sign(r.vy) * Math.min(Math.abs(r.vy), 0.55);
+                }, 1800);
+            });
+        });
+
+        function tickRoamingArcade(now) {
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            const isMobile = vw <= 768;
+            const padX = isMobile ? 90 : 150;
+            const padY = isMobile ? 90 : 140;
+
+            for (let i = 0; i < roamers.length; i++) {
+                const r = roamers[i];
+                r.scale = isMobile ? 0.58 : 1.0;
+
+                // Gentle sine wave drift so movement feels organic & alive
+                const waveY = Math.sin(now * 0.0016 + r.phase) * 0.22;
+                r.x += r.vx;
+                r.y += r.vy + waveY;
+
+                // Bounce softly off viewport edges and turn around
+                if (r.x < 12) {
+                    r.x = 12;
+                    r.vx = Math.abs(r.vx);
+                    r.facing = 1;
+                } else if (r.x > vw - padX) {
+                    r.x = Math.max(12, vw - padX);
+                    r.vx = -Math.abs(r.vx);
+                    r.facing = -1;
+                }
+
+                if (r.y < 54) {
+                    r.y = 54;
+                    r.vy = Math.abs(r.vy);
+                } else if (r.y > vh - padY) {
+                    r.y = Math.max(54, vh - padY);
+                    r.vy = -Math.abs(r.vy);
+                }
+
+                const flipX = r.facing * r.scale;
+                const scaleY = r.scale;
+                r.el.style.transform = `translate3d(${r.x.toFixed(1)}px, ${r.y.toFixed(1)}px, 0) scale(${flipX}, ${scaleY})`;
+            }
+            requestAnimationFrame(tickRoamingArcade);
+        }
+        requestAnimationFrame(tickRoamingArcade);
+    }
+
+    // ------------------------------------------------------------------------
+    // 4. 3D-TILT INTERACTIVE HERO CHARACTER CARD
     // ------------------------------------------------------------------------
     const charCard = document.getElementById("character-card");
     if (charCard) {
         charCard.addEventListener("mousemove", (e) => {
+            if (window.innerWidth <= 768) return;
             const rect = charCard.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
@@ -143,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------------------------------------
-    // 4. NAVBAR CLICK HIGHLIGHT + SCROLLSPY (Active Highlight on Click & Scroll)
+    // 5. NAVBAR CLICK HIGHLIGHT + SCROLLSPY + MOBILE HAMBURGER MENU
     // ------------------------------------------------------------------------
     const navLinks = Array.from(document.querySelectorAll(".nav-links a.nav-link"));
     const sections = navLinks
@@ -154,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .filter(Boolean);
 
     const hamburger = document.getElementById("hamburger");
-    const navMenu = document.querySelector(".nav-links");
+    const navMenu = document.getElementById("nav-links");
     let clickScrollLockUntil = 0;
 
     function setActiveNavById(sectionId) {
@@ -168,6 +271,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function closeMobileMenu() {
+        if (navMenu) navMenu.classList.remove("active");
+        if (hamburger) hamburger.classList.remove("active");
+    }
+
     navLinks.forEach((link) => {
         link.addEventListener("click", (e) => {
             const targetId = link.getAttribute("data-section") || link.getAttribute("href").replace("#", "");
@@ -176,20 +284,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.preventDefault();
                 setActiveNavById(targetId);
                 clickScrollLockUntil = Date.now() + 800;
-                const yOffset = -80;
+                const yOffset = -76;
                 const y = targetEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
                 window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
                 history.replaceState(null, "", `#${targetId}`);
             }
-            if (navMenu && navMenu.classList.contains("active")) {
-                navMenu.classList.remove("active");
-            }
+            closeMobileMenu();
         });
     });
 
     if (hamburger && navMenu) {
-        hamburger.addEventListener("click", () => {
+        hamburger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            hamburger.classList.toggle("active");
             navMenu.classList.toggle("active");
+        });
+        document.addEventListener("click", (e) => {
+            if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                closeMobileMenu();
+            }
         });
     }
 
@@ -213,14 +326,14 @@ document.addEventListener("DOMContentLoaded", () => {
     updateActiveNavOnScroll();
 
     // ------------------------------------------------------------------------
-    // 5. HERO TYPEWRITER SUBTITLE
+    // 6. HERO TYPEWRITER SUBTITLE
     // ------------------------------------------------------------------------
     const typewriterEl = document.getElementById("typewriter-text");
     const phrases = [
-        "Fourth-year Computer Engineering student at ITS Surabaya experienced in Full-Stack Systems, Computer Vision & OCR, and Embedded IoT.",
-        "Software Engineering & IT Intern at PT PLN Nusantara Power Services (82,989 Certificates & 1,137 Resource Codes Indexed).",
-        "Software Engineering Intern at LAB M-IOT (MMPI-2 Automated Psychological Assessment with 100.0% Scoring Accuracy).",
-        "Creator of Hermes JobSeeker Bot v2.0 (ITS Career Center Scraper, Gemini Vision Flyer OCR & Smart HR Inbox Tracker)."
+        "Fourth-year Computer Engineering student at ITS Surabaya specializing in Full-Stack Systems, Computer Vision & OCR, and Embedded IoT.",
+        "Software Engineering & IT Intern at PT PLN Nusantara Power Services & LAB M-IOT ITS.",
+        "Creator of Hermes JobSeeker Bot v2.5 (6-Pillar Deep-Link Harvester, Honest Salary Provenance & Live Auto-Apply Engine).",
+        "Building production enterprise software, edge AI vision pipelines, and hardware-bound network automation."
     ];
     let phraseIdx = 0;
     let charIdx = phrases[0].length;
@@ -238,7 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(tickTypewriter, 3200);
                 return;
             }
-            setTimeout(tickTypewriter, 26);
+            setTimeout(tickTypewriter, 25);
         } else {
             charIdx--;
             typewriterEl.textContent = currentPhrase.slice(0, charIdx);
@@ -257,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3800);
 
     // ------------------------------------------------------------------------
-    // 6. SKILLS & EXPERIENCES TABS
+    // 7. SKILLS & EXPERIENCES TABS
     // ------------------------------------------------------------------------
     const skillTabBtns = document.querySelectorAll(".skills-tab-btn");
     const skillTabContents = document.querySelectorAll(".skills-tab-content");
@@ -288,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ------------------------------------------------------------------------
-    // 7. AUTO-SLIDING FEATURED PROJECTS CAROUSEL (PAUSE ON HOVER + DRAG)
+    // 8. AUTO-SLIDING FEATURED PROJECTS CAROUSEL (DESKTOP HOVER + MOBILE TOUCH)
     // ------------------------------------------------------------------------
     const carousel = document.getElementById("projects-carousel");
     const prevBtn = document.getElementById("carousel-prev");
@@ -298,9 +411,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let isCarouselPaused = false;
     let isDragging = false;
+    let touchPauseUntil = 0;
     let startX = 0;
     let scrollLeft = 0;
-    let autoSlideDir = 1; // 1 = right-to-left (scrollLeft increases)
+    let autoSlideDir = 1;
 
     if (carousel) {
         carousel.addEventListener("mouseenter", () => {
@@ -310,6 +424,20 @@ document.addEventListener("DOMContentLoaded", () => {
             isCarouselPaused = false;
             isDragging = false;
         });
+
+        carousel.addEventListener("touchstart", () => {
+            isCarouselPaused = true;
+            touchPauseUntil = Date.now() + 4500;
+        }, { passive: true });
+
+        carousel.addEventListener("touchend", () => {
+            touchPauseUntil = Date.now() + 4500;
+            setTimeout(() => {
+                if (Date.now() >= touchPauseUntil) {
+                    isCarouselPaused = false;
+                }
+            }, 4600);
+        }, { passive: true });
 
         carousel.addEventListener("mousedown", (e) => {
             isDragging = true;
@@ -330,19 +458,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (prevBtn && nextBtn) {
             prevBtn.addEventListener("click", () => {
-                carousel.scrollBy({ left: -490, behavior: "smooth" });
+                touchPauseUntil = Date.now() + 3500;
+                carousel.scrollBy({ left: -380, behavior: "smooth" });
             });
             nextBtn.addEventListener("click", () => {
-                carousel.scrollBy({ left: 490, behavior: "smooth" });
+                touchPauseUntil = Date.now() + 3500;
+                carousel.scrollBy({ left: 380, behavior: "smooth" });
             });
         }
 
-        // Smooth continuous right-to-left auto-scroll when not hovered
         function tickCarousel() {
-            if (!isCarouselPaused && !isDragging) {
+            if (!isCarouselPaused && !isDragging && Date.now() >= touchPauseUntil) {
                 const maxScroll = carousel.scrollWidth - carousel.clientWidth;
                 if (maxScroll > 10) {
-                    carousel.scrollLeft += 1.05 * autoSlideDir;
+                    carousel.scrollLeft += 0.95 * autoSlideDir;
                     if (carousel.scrollLeft >= maxScroll - 2) {
                         autoSlideDir = -1;
                     } else if (carousel.scrollLeft <= 2) {
@@ -374,7 +503,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ------------------------------------------------------------------------
-    // 8. CASE STUDY MODAL WITH 100% VERIFIED REAL SCREENSHOTS
+    // 9. CASE STUDY MODAL WITH 100% VERIFIED GITHUB REPOSITORY LINKS
     // ------------------------------------------------------------------------
     const PROJECT_DATA = {
         pln: {
@@ -388,7 +517,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
             arch: "Architected for PT PLN Nusantara Power Services (Divisi TDC) to track 1,137 standardized competency codes (Resource Code & Level 1–9 SKP), separating 3/5-year expiring technical certifications from non-expiring training records across generation units. Includes an idempotent H-30/H-20 email notification engine, a 4-format header-detecting corporate Excel importer, monthly Ellipse HR mutation reconciliation, and an 82,989-file Synology NAS/FTP index.",
             impact: "• 82,989 certificate & training files indexed across Synology NAS/FTP shares.\n• 1,137 standardized Resource Codes & Level 1–9 SKP competencies tracked.\n• Automated H-30 & H-20 expiration email alerts with CC to TDC Planning.",
-            github: "https://github.com/DapppMC/pln-cert-mon"
+            github: "https://github.com/DapppMC/pln-nps-monitoring-web"
         },
         mmpi: {
             badge: "LAB M-IOT · Psychological Assessment Platform · Sep 2026 – Present",
@@ -400,17 +529,17 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
             arch: "Resolved a critical 74.0% (185/250 scales) scoring accuracy bottleneck in the 566-item MMPI-2 psychological assessment platform caused by legacy Tesseract OCR glyph confusion (8 vs 0, 6 vs 5) and narrow column slicing. Engineered a deterministic 80x25 DOS character-cell bitmap matcher (baca_layar.py) with SetProcessDPIAware() calibration and PID-bound Win32 window focus locking.",
             impact: "• 100.0% psychological scoring accuracy (250/250 clinical, validity, and research scales across 10 test patterns) with zero external OCR dependency.\n• Pre-scoring 566-item +/- screen buffer verification prior to Esc commit.",
-            github: "https://github.com/DapppMC/mmpi2-clinical-automation"
+            github: "https://github.com/DapppMC/MMPI_1_Website"
         },
         hermes: {
-            badge: "Autonomous Career & ATS Engine v2.0 · 85/85 Pytest PASS",
-            title: "Hermes JobSeeker Bot v2.0 (ITS Career Center + Honest Auto-Apply + Inbox Tracker)",
-            subtitle: "Python · Playwright CDP · Gemini Vision OCR · myITS Entra ID 2FA Bridge · Telegram API · 3NF SQLite WAL",
+            badge: "Commercial Career & ATS Automation Engine · Phase 2 Overhaul (v2.5)",
+            title: "Hermes JobSeeker Bot v2.5 (6-Pillar Deep-Link Harvester & Auto-Apply Engine)",
+            subtitle: "Python · Playwright CDP · Gemini Vision OCR · Dealls/LinkedIn/Kalibrr APIs · myITS Entra ID 2FA Bridge · 3NF SQLite WAL",
             images: [
                 "assets/screenshots/hermes_telegram_ui.png"
             ],
-            arch: "Comprehensive job intelligence & auto-apply ecosystem featuring: (1) Dedicated ITS Career Center scraper harvesting careers.its.ac.id/lowongan UUID pages + @itscareercenter Instagram flyers via a 4-layer anti-block pipeline and Gate 3 dHash + Gemini Vision OCR; (2) Multi-Channel Honest Auto-Apply Engine supporting direct SMTP email, careers.its.ac.id myITS Microsoft Entra ID SSO with live 2-digit Authenticator Number Matching (#idRichContext_DisplaySign) bridged to Telegram, and ATS forms; (3) Smart HR Email & Inbox Manager (inbox_tracker.py) classifying HR replies into Offered, Interview Scheduled, Online Assessment, and Rejected.",
-            impact: "• 196 verified jobs in normalized 3NF SQLite WAL database (103 High-Match >= 85%, 53 ITS Career Center postings).\n• 85/85 automated Pytest suite passing (100% pass rate) across 3 active systemd services.",
+            arch: "Commercial-grade career intelligence & auto-apply ecosystem built on 6 core pillars: (1) 100% Honest Salary/Stipend Provenance Engine (zero fabricated numbers, strict API/ad provenance tagging); (2) Strict Deep-Link Policy (is_deep_job_url) & active deadline verification; (3) Multi-Portal Official API & Deep-Link Harvesters across ITS Career Center (careers.its.ac.id + @itscareercenter IG Gemini Vision Flyer OCR), Dealls API, LinkedIn Guest API, Kalibrr API, and Glints; (4) Live Paused-Tab Human Input Bridge (/fill), myITS Entra ID 2-digit Authenticator Number Matching (#idRichContext_DisplaySign), and Top-10 Batch Auto-Apply Queue (/apply_all); (5) In-Portal Status Tracker (portal_status_tracker.py + /portal_status) & Dual IMAP Inbox Monitor.",
+            impact: "• 315+ verified deep-link job postings in 3NF SQLite WAL DB (219 High-Match >= 85%).\n• Commercial Managed Service: Public GitHub repository provides architecture documentation & showcase stubs to protect proprietary commercial automation modules.",
             github: "https://github.com/DapppMC/hermes-jobseeker-bot"
         },
         cert: {
@@ -423,7 +552,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
             arch: "Offline-first PDF certificate slicer and 3-database employee matcher (sertifikat, pegawai, diklat) combining PyMuPDF vector text parsing, multi-threaded RapidOCR, and Gemini 2.5 Flash fallback with interactive canvas rotation/cropping and 1-click export to 4 standardized corporate Excel templates.",
             impact: "• Exports 4 official Excel formats (Monitoring, Per-Folder, Master Simpel, Master Lengkap).\n• Directly integrated with the 82,989-file Synology NAS/FTP archive index.",
-            github: "https://github.com/DapppMC/certificate-manager-v3"
+            github: "https://github.com/DapppMC/certificate-manager"
         },
         smartcoop: {
             badge: "Cross-Platform Mobile & Edge AI · 2026",
@@ -435,7 +564,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
             arch: "Cross-platform mobile application (Flutter + Supabase) that detects poultry diseases from droppings or physical condition photos through a three-model ONNX pipeline served by a containerized FastAPI backend. Backed by a 12-table PostgreSQL schema with Row Level Security (RLS) and per-bird medical records linked via unique NFC tags.",
             impact: "• 3-model ONNX inference pipeline for real-time poultry disease classification.\n• 8-phase guided biosecurity SOP with NFC tag scanning and strict multi-farm RLS isolation.",
-            github: "https://github.com/DapppMC/smartcoop-ml-iot"
+            github: "https://github.com/DapppMC/SMARTCOOP"
         },
         planner: {
             badge: "Multi-Agent Swarm Orchestrator · 2026",
@@ -446,29 +575,29 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
             arch: "Deterministic multi-agent software engineering orchestrator coordinating 8 parallel worker accounts with strict port isolation (3000–3799 / 8000–8799), atomic SQLite WAL ticket leasing, and Chameleon quota failover. Enforces Bicameral Zero-Trust verification with HMAC-SHA256 Sealed Oracles and an AST Saboteur mutation testing gate.",
             impact: "• >= 80% AST mutation kill score enforced across 7/7 Golden Benchmarks.\n• Zero multi-agent port or file collisions across 8 parallel worker instances.",
-            github: "https://github.com/DapppMC/planner-system-4"
+            github: "https://github.com/DapppMC/planner-system"
         },
         warung: {
-            badge: "24-Hour FMCG Retail ERP · DevSprint 3.0 · 2026",
+            badge: "24-Hour FMCG Retail ERP · DevSprint 3.0 Program · 2026",
             title: "Warung Madura Enterprise POS & Multi-Unit Inventory Manager",
             subtitle: "Node.js · Express · TypeScript · React 18 · Tailwind CSS · 3-Tier RBAC",
             images: [
                 "assets/screenshots/warung_dashboard.png",
                 "assets/screenshots/warung_pos_receipt.png"
             ],
-            arch: "24-hour FMCG retail ERP and keyboard-first Express POS (Sat-Set) supporting hierarchical packaging conversions (Eceran, Pak, Slop, Dus, Karung), atomic stock deduction, and 58mm thermal receipt printing. Enforces three-tier RBAC (Owner, Warehouse, Cashier) with API-level wholesale cost (harga_beli) masking.",
+            arch: "Developed as a capstone engineering project during the DevSprint 3.0 intensive software engineering program: a 24-hour FMCG retail ERP and keyboard-first Express POS (Sat-Set) supporting hierarchical packaging conversions (Eceran, Pak, Slop, Dus, Karung), atomic stock deduction, and 58mm thermal receipt printing. Enforces three-tier RBAC (Owner, Warehouse, Cashier) with API-level wholesale cost (harga_beli) masking.",
             impact: "• Sub-second keyboard-first cashier checkout with automatic multi-unit inventory conversion.\n• Complete Purchase Order lifecycle and smart safety-stock reorder proposals.",
-            github: "https://github.com/DapppMC"
+            github: "https://github.com/DapppMC/DevSprint-Warung-Madura"
         },
         freedom: {
-            badge: "Windows Network & Encrypted Tunneling Daemon · 2026",
+            badge: "Commercial Network & Encrypted Tunneling Suite · 2026",
             title: "Freedom v2.0 (Speed Edition) — DoH, Acrylic DNS & DPI Fragmentation",
             subtitle: "PowerShell · Windows Service Manager · Acrylic DNS · Green Tunnel · SMBIOS Hardware Crypto",
             images: [
                 "assets/screenshots/freedom_speed_edition.png"
             ],
-            arch: "1-click USB-deployable network provisioning suite installing a self-healing Windows service and local Acrylic DNS proxy (127.0.0.1) paired with Windows 11 native DNS-over-HTTPS and Green Tunnel TLS ClientHello fragmentation, plus Status Check.bat real-time diagnostics.",
-            impact: "• Sub-millisecond cached DNS lookups via 127.0.0.1 and 68% lower memory overhead.\n• Deterministic SMBIOS hardware binding and 1-click health verification.",
+            arch: "Commercial 1-click USB-deployable network provisioning suite installing a self-healing Windows service and local Acrylic DNS proxy (127.0.0.1) paired with Windows 11 native DNS-over-HTTPS and Green Tunnel TLS ClientHello fragmentation, plus Status Check.bat real-time diagnostics.",
+            impact: "• Sub-millisecond cached DNS lookups via 127.0.0.1 and 68% lower memory overhead.\n• Commercial Managed Service: Public GitHub repository provides architecture documentation & showcase interfaces to protect proprietary commercial provisioning scripts.",
             github: "https://github.com/DapppMC/freedom-network-optimizer"
         },
         bigdata: {
@@ -481,7 +610,40 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
             arch: "Automated end-to-end intelligence pipeline (web crawling -> LLM sentiment, emotion, and key-point extraction via Llama 3.3 70B -> Supabase PostgreSQL storage) paired with an interactive Telegram RAG chatbot and real-time Chart.js analytics dashboard.",
             impact: "• Automated multi-source sentiment and emotion classification into structured PostgreSQL tables.\n• Natural-language RAG querying directly from Telegram.",
-            github: "https://github.com/DapppMC"
+            github: "https://github.com/DapppMC/Project-Epstein-FIle-on-Iran-Automasi-Big-Data-Analisis-Sentiment-Chatbot-AI"
+        },
+        autocar: {
+            badge: "Embedded Robotics & Sensor Fusion · 2024",
+            title: "Autonomous Obstacle-Avoiding Car (ESP32)",
+            subtitle: "C / C++ · ESP32 Microcontroller · Ultrasonic HC-SR04 · Infrared Sensors · L298N PWM Motor Driver",
+            images: [
+                "assets/screenshots/autonomous_car.jpg"
+            ],
+            arch: "Self-navigating robotic vehicle powered by an ESP32 microcontroller integrating multi-directional ultrasonic and infrared obstacle detection with real-time PWM motor speed and steering control.",
+            impact: "• Low-latency collision avoidance and autonomous path recovery in dynamic indoor corridors.\n• Modular C/C++ firmware architecture for rapid sensor calibration.",
+            github: "https://github.com/DapppMC/Autonomous-Driving-Car"
+        },
+        smartpot: {
+            badge: "Closed-Loop Embedded IoT · 2024",
+            title: "SmartPot: Self-Regulating & Self-Maintaining IoT Plant System",
+            subtitle: "C / C++ · ESP32 · Soil Moisture & DHT11 Sensors · Automated Relay Pump · Web Telemetry",
+            images: [
+                "assets/screenshots/smartpot_dashboard.jpg"
+            ],
+            arch: "Closed-loop IoT plant maintenance system built on ESP32 that continuously monitors soil moisture, ambient temperature, and humidity, triggering precision relay-controlled irrigation and streaming live telemetry to a web dashboard.",
+            impact: "• Fully automated soil moisture regulation preventing over-watering and dehydration.\n• Real-time environmental telemetry dashboard.",
+            github: "https://github.com/DapppMC/SmartPot-Self-Regulating-Self-Maintaining-Smart-Pot-System"
+        },
+        carddetective: {
+            badge: "Real-Time Computer Vision · 2024",
+            title: "Card Detective: Real-Time OpenCV Card Recognition Game",
+            subtitle: "C++ · OpenCV · Contour Detection · Perspective Homography Warp · Template Matching",
+            images: [
+                "assets/screenshots/mmpi_dos_grid.png"
+            ],
+            arch: "Real-time computer vision system written in C++ and OpenCV that detects playing cards from a live camera feed, applies 4-point perspective homography transformation, and classifies rank and suit via corner glyph matching.",
+            impact: "• Real-time 30+ FPS card contour isolation and perspective rectification under varying tilt angles.\n• Interactive game loop built natively in C++ OpenCV.",
+            github: "https://github.com/DapppMC/Card-Detective-OpenCV-Card-Game"
         }
     };
 
@@ -542,7 +704,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------------------------------------
-    // 9. REAL INTERACTIVE CONTACT MESSENGER TERMINAL (NAME -> EMAIL -> MESSAGE)
+    // 10. REAL INTERACTIVE CONTACT MESSENGER TERMINAL (NAME -> EMAIL -> MESSAGE)
     // ------------------------------------------------------------------------
     const termInput = document.getElementById("terminal-input");
     const termOutput = document.getElementById("terminal-output");
@@ -551,7 +713,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const termPills = document.querySelectorAll(".term-pill");
 
     let msgState = {
-        step: 1, // 1 = name, 2 = email, 3 = message
+        step: 1,
         name: "",
         email: "",
         message: ""
@@ -585,8 +747,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (termOutput) {
             termOutput.innerHTML = "";
         }
-        appendTermLine(`<span style="color:#94a3b8;">Initializing secure connection to <strong>Ahmad Dafa Salam</strong>...</span>`);
-        appendTermLine(`<span style="color:#4ade80;">[OK] Ready! Send a direct message step-by-step below (or type <span class="term-cmd">/help</span>).</span>`);
+        appendTermLine(`<span style="color:#a39e93;">Initializing secure connection to <strong>Ahmad Dafa Salam (dafa-os.vercel.app)</strong>...</span>`);
+        appendTermLine(`<span style="color:#34d399;">[OK] Ready! Send a direct message step-by-step below (or type <span class="term-cmd">/help</span>).</span>`);
         appendTermLine(`<span class="term-prompt">? Step 1/3:</span> <strong>What is your name?</strong>`);
         updatePromptUI();
     }
@@ -602,8 +764,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 `Commands:\n` +
                 `  • Type normally to send a direct message (Name -> Email -> Message)\n` +
                 `  • <span class="term-cmd">/reset</span>    — Restart direct message wizard\n` +
-                `  • <span class="term-cmd">/projects</span> — List all 9 featured engineering projects\n` +
-                `  • <span class="term-cmd">/hermes</span>   — Open Hermes JobSeeker Bot v2.0 Case Study\n` +
+                `  • <span class="term-cmd">/projects</span> — List all 12 engineering projects\n` +
+                `  • <span class="term-cmd">/hermes</span>   — Open Hermes JobSeeker Bot v2.5 (Phase 2) Case Study\n` +
                 `  • <span class="term-cmd">/pln</span>      — Open PT PLN Nusantara Power Services Case Study\n` +
                 `  • <span class="term-cmd">/mmpi</span>     — Open LAB M-IOT MMPI-2 Assessment Case Study\n` +
                 `  • <span class="term-cmd">/cv</span>       — Open Ahmad Dafa Salam's CV PDF`
@@ -612,35 +774,36 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (cmd === "/projects" || cmd === "projects") {
             appendTermLine(
-                `[1] PLN Cert-Mon (82,989 files, 1,137 codes) | [2] MMPI-2 Psychological Assessment (100% match)\n` +
-                `[3] Hermes JobSeeker v2.0 (ITS Career + AI)  | [4] Certificate Manager v3.0 (cert-slicer)\n` +
-                `[5] SmartCoop (Flutter + 3-Model ONNX + NFC) | [6] Planner System 4.0 (8-Worker Swarm)\n` +
-                `[7] Warung Madura Enterprise POS             | [8] Freedom v2.0 Speed Edition\n` +
-                `[9] Big Data Llama 3.3 RAG Pipeline`
+                `[01] PLN Cert-Mon (pln-nps-monitoring-web)     | [02] MMPI-2 Assessment (MMPI_1_Website)\n` +
+                `[03] Hermes JobSeeker v2.5 (6-Pillar Engine)   | [04] Certificate Manager v3.0 (certificate-manager)\n` +
+                `[05] SmartCoop (Flutter + 3-Model ONNX + NFC)  | [06] Planner System 4.0 (planner-system)\n` +
+                `[07] Warung Madura ERP (DevSprint 3.0 Program) | [08] Freedom v2.0 Speed Edition\n` +
+                `[09] Big Data Llama 3.3 RAG Pipeline           | [10] Autonomous Driving Car (ESP32)\n` +
+                `[11] SmartPot Closed-Loop IoT                  | [12] Card Detective (C++ OpenCV)`
             );
             return;
         }
         if (cmd === "/hermes" || cmd === "hermes") {
             openProjectModal("hermes");
-            appendTermLine(`<span style="color:#4ade80;">Opened Hermes JobSeeker Bot v2.0 Case Study Modal.</span>`);
+            appendTermLine(`<span style="color:#34d399;">Opened Hermes JobSeeker Bot v2.5 (Phase 2) Case Study Modal.</span>`);
             return;
         }
         if (cmd === "/pln" || cmd === "pln") {
             openProjectModal("pln");
-            appendTermLine(`<span style="color:#4ade80;">Opened PLN Cert-Mon Case Study Modal.</span>`);
+            appendTermLine(`<span style="color:#34d399;">Opened PLN Cert-Mon Case Study Modal.</span>`);
             return;
         }
         if (cmd === "/mmpi" || cmd === "mmpi") {
             openProjectModal("mmpi");
-            appendTermLine(`<span style="color:#4ade80;">Opened MMPI-2 Psychological Assessment Case Study Modal.</span>`);
+            appendTermLine(`<span style="color:#34d399;">Opened MMPI-2 Psychological Assessment Case Study Modal.</span>`);
             return;
         }
         if (cmd === "/cv" || cmd === "cv") {
             window.open("Ahmad_Dafa_Salam_CV.pdf", "_blank");
-            appendTermLine(`<span style="color:#4ade80;">Opened Ahmad_Dafa_Salam_CV.pdf in a new tab.</span>`);
+            appendTermLine(`<span style="color:#34d399;">Opened Ahmad_Dafa_Salam_CV.pdf in a new tab.</span>`);
             return;
         }
-        appendTermLine(`<span style="color:#f43f5e;">Unknown command '${cmd}'. Type /help or continue entering your message.</span>`);
+        appendTermLine(`<span style="color:#ef4444;">Unknown command '${cmd}'. Type /help or continue entering your message.</span>`);
     }
 
     function processTerminalInput(rawVal) {
@@ -655,14 +818,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (msgState.step === 1) {
             msgState.name = val;
             appendTermLine(`<span class="term-prompt">name@guest:~$</span> ${val}`);
-            appendTermLine(`<span style="color:#4ade80;">✓ Nice to meet you, <strong>${val}</strong>!</span>`);
+            appendTermLine(`<span style="color:#34d399;">✓ Nice to meet you, <strong>${val}</strong>!</span>`);
             appendTermLine(`<span class="term-prompt">? Step 2/3:</span> <strong>What is your email address?</strong>`);
             msgState.step = 2;
             updatePromptUI();
         } else if (msgState.step === 2) {
             msgState.email = val;
             appendTermLine(`<span class="term-prompt">email@guest:~$</span> ${val}`);
-            appendTermLine(`<span style="color:#4ade80;">✓ Email recorded: <strong>${val}</strong></span>`);
+            appendTermLine(`<span style="color:#34d399;">✓ Email recorded: <strong>${val}</strong></span>`);
             appendTermLine(`<span class="term-prompt">? Step 3/3:</span> <strong>Type your message for Dafa:</strong>`);
             msgState.step = 3;
             updatePromptUI();
@@ -670,7 +833,7 @@ document.addEventListener("DOMContentLoaded", () => {
             msgState.message = val;
             appendTermLine(`<span class="term-prompt">msg@guest:~$</span> ${val}`);
 
-            const subject = encodeURIComponent(`[Portfolio Message] from ${msgState.name}`);
+            const subject = encodeURIComponent(`[Dafa.OS Portfolio Message] from ${msgState.name}`);
             const body = encodeURIComponent(
                 `Hello Ahmad Dafa Salam,\n\nName: ${msgState.name}\nEmail: ${msgState.email}\n\nMessage:\n${msgState.message}`
             );
@@ -679,17 +842,17 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             appendTermLine(
-                `<div style="margin-top:8px;padding:12px;background:rgba(16,185,129,0.1);border:1px solid #10b981;border-radius:8px;">` +
-                `<div style="color:#4ade80;font-weight:700;margin-bottom:6px;">🚀 [PACKET READY] Message formatted for Ahmad Dafa Salam!</div>` +
-                `<div style="font-size:0.84rem;color:#cbd5e1;margin-bottom:10px;">From: <strong>${msgState.name}</strong> &lt;${msgState.email}&gt;<br/>"${msgState.message}"</div>` +
+                `<div style="margin-top:8px;padding:12px;background:rgba(245,158,11,0.1);border:1px solid #f59e0b;border-radius:8px;">` +
+                `<div style="color:#fbbf24;font-weight:700;margin-bottom:6px;">🚀 [PACKET READY] Message formatted for Ahmad Dafa Salam!</div>` +
+                `<div style="font-size:0.84rem;color:#e6e2dd;margin-bottom:10px;">From: <strong>${msgState.name}</strong> &lt;${msgState.email}&gt;<br/>"${msgState.message}"</div>` +
                 `<div style="display:flex;gap:10px;flex-wrap:wrap;">` +
-                `<a href="mailto:Ahmaddafa1017@gmail.com?subject=${subject}&body=${body}" style="background:#38bdf8;color:#06070b;padding:6px 14px;border-radius:5px;text-decoration:none;font-weight:700;font-size:0.82rem;">📧 Send via Email App</a>` +
-                `<a href="https://wa.me/6282214009950?text=${waText}" target="_blank" style="background:#10b981;color:#06070b;padding:6px 14px;border-radius:5px;text-decoration:none;font-weight:700;font-size:0.82rem;">💬 Send via WhatsApp</a>` +
+                `<a href="mailto:Ahmaddafa1017@gmail.com?subject=${subject}&body=${body}" style="background:#fbbf24;color:#0b0b0a;padding:6px 14px;border-radius:5px;text-decoration:none;font-weight:700;font-size:0.82rem;">📧 Send via Email App</a>` +
+                `<a href="https://wa.me/6282214009950?text=${waText}" target="_blank" style="background:#10b981;color:#0b0b0a;padding:6px 14px;border-radius:5px;text-decoration:none;font-weight:700;font-size:0.82rem;">💬 Send via WhatsApp</a>` +
                 `</div></div>`
             );
 
             msgState.step = 1;
-            appendTermLine(`<div style="margin-top:8px;color:#94a3b8;">Want to send another message? Enter your name below (or click <strong>✉️ New Message</strong>):</div>`);
+            appendTermLine(`<div style="margin-top:8px;color:#a39e93;">Want to send another message? Enter your name below (or click <strong>✉️ New Message</strong>):</div>`);
             updatePromptUI();
         }
     }
